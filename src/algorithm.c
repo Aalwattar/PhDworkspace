@@ -27,7 +27,6 @@
  * - ARG1 = the seed for the random number generator
  */
 int main(int argc, char * argv[]){
-    int i;
     
     // FIX - validate each of the arguments
     // FIX - Improve the error message

@@ -31,7 +31,7 @@ typedef struct architecture{
     double power;
 } Architecture; 
 
-enum operation { add, sub, mult, div };
+enum operation { a, s, m, d };
 static Architecture ** performance;
 
 /********************************
@@ -45,6 +45,8 @@ double randomNumber(void);
 /********************************
  * FILE READING FUNCTIONS
  ********************************/
+
+void initPerformanceInfo();
 
 #endif	/* PROBLEM_H */
 
