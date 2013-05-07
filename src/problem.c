@@ -1,18 +1,14 @@
-/* 
- * File:   problem.c
- * Author: Jennifer
- *
- * Created on May 7, 2013, 11:24 AM
- */
-
-#include <stdio.h>
-#include <stdlib.h>
-
-/*
+/*******************************************************************************
+ * FILE NAME : problem.c
  * 
- */
-int main(int argc, char** argv) {
-
-    return (EXIT_SUCCESS);
-}
-
+ * Genetic Algorithm practice for Ahmed Al-Watter
+ * 
+ * PURPOSE : library for the representation and manipulation of a problem
+ *      instance
+ * 
+ * AUTHOR : Jennifer Winer
+ * Email  : jwiner@uoguelph.ca
+ * 
+ * DATE CREATED : May 7, 2013
+ * LAST MODIFIED : May 7, 2013
+ ******************************************************************************/

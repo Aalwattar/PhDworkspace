@@ -1,23 +1,20 @@
-/* 
- * File:   problem.h
- * Author: Jennifer
- *
- * Created on May 7, 2013, 11:25 AM
- */
+/*******************************************************************************
+ * FILE NAME : problem.h
+ * 
+ * Genetic Algorithm practice for Ahmed Al-Watter
+ * 
+ * PURPOSE : a header for problem.c
+ * 
+ * AUTHOR : Jennifer Winer
+ * Email  : jwiner@uoguelph.ca
+ * 
+ * DATE CREATED : May 7, 2013
+ * LAST MODIFIED : May 7, 2013
+ ******************************************************************************/
 
 #ifndef PROBLEM_H
 #define	PROBLEM_H
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
-
-
-
-
-#ifdef	__cplusplus
-}
-#endif
 
 #endif	/* PROBLEM_H */
 
