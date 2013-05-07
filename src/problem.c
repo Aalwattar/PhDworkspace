@@ -13,12 +13,18 @@
  * LAST MODIFIED : May 7, 2013
  ******************************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "problem.h"
 
 void initRandGenerator(int seed){
+    srand(seed);
+}
+
+void randSeed(void){
+    int seed;
+    
+    seed = time(NULL);
+    fprintf(stdout, "Seed: %d\n", seed);
+    
     srand(seed);
 }
 

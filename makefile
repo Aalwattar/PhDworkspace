@@ -23,7 +23,7 @@ OBJDIR	    = obj/
 BINDIR	    = bin/
 
 SOURCE	    = $(SRCDIR)algorithm.c $(SRCDIR)individual.c $(SRCDIR)population.c $(SRCDIR)problem.c 
-OBJS	    = $(OBJDIR)main.o
+OBJS	    = $(OBJDIR)algorithm.o $(OBJDIR)individual.o $(OBJDIR)population.o $(OBJDIR)problem.o
 PROGNAME    = $(BINDIR)GA.exe
 	
 #####################################################

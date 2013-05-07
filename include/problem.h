@@ -12,13 +12,18 @@
  * LAST MODIFIED : May 7, 2013
  ******************************************************************************/
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <stdbool.h>
+
 #ifndef PROBLEM_H
 #define	PROBLEM_H
 
-#define addTable  "add_table.txt"
-#define subTable  "sub_table.txt"
-#define multTable "mult_table.txt"
-#define divTable  "div_table.txt"
+/***********************************************
+ * ARCHITECTURE PERFORMANCE INFORMATION STORAGE
+ ***********************************************/
+#define arch_filename "performance_data.txt"
 
 typedef struct architecture{
     double area;
@@ -26,10 +31,20 @@ typedef struct architecture{
     double power;
 } Architecture; 
 
-void initRandGenerator(int);
+enum operation { add, sub, mult, div };
+static Architecture ** performance;
+
+/********************************
+ * RANDOM NUMBER GENERATION
+ ********************************/
+void seedRandGenerator(int);
+void randSeed(void);
+
 double randomNumber(void);
 
-// FILE READING FUNCTIONS
+/********************************
+ * FILE READING FUNCTIONS
+ ********************************/
 
 #endif	/* PROBLEM_H */
 

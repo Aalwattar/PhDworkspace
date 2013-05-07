@@ -15,16 +15,29 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "problem.h"
+
 // stopping conditions
 
 // different combinations of the various sub-algorithms
 
+
+/* ASSUMPTIONS
+ * 
+ * - ARG1 = the seed for the random number generator
+ */
 int main(int argc, char * argv[]){
     int i;
     
-    for(i=0; i<argc; i++){
-        printf("%d) %s", (i+1), argv[i]);
+    // FIX - validate each of the arguments
+    // FIX - Improve the error message
+    if(argc < 2){
+        fprintf(stderr, "Improper arguments. \nPlease try again, using the following format : "
+                "\n\tGA.exe <rand_seed> \n\nFor more information, please view the README file");
+        exit(1);
     }
+    
+    return 0;
 }
 
 /*
