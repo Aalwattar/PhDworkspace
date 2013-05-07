@@ -12,8 +12,7 @@
 
 
 CC	    = gcc
-CFLAGS	    = -Wall -std=c99 -pedantic -g -O0 
-# consider -ansi?
+CFLAGS	    = -Wall -std=c99 -pedantic -g -O0
 
 CINCLUDES   = -Iinclude
 #CINCLUDES  = -I/usr/include/python2.6 -I/usr/include/libxml2
@@ -23,7 +22,7 @@ SRCDIR	    = src/
 OBJDIR	    = obj/
 BINDIR	    = bin/
 
-SOURCE	    = $(SRCDIR)main.c 
+SOURCE	    = $(SRCDIR)algorithm.c $(SRCDIR)individual.c $(SRCDIR)population.c $(SRCDIR)problem.c 
 OBJS	    = $(OBJDIR)main.o
 PROGNAME    = $(BINDIR)GA.exe
 	

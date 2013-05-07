@@ -15,5 +15,22 @@
 #ifndef POPULATION_H
 #define	POPULATION_H
 
+// REPRESENTATION
+typedef struct{
+    Individual * organism;
+    double totalFitness;
+}Population;
+
+
+// SELECTION ALGORITHM - generate mating pool
+
+// COUPLING ALGORITHM - choose pairs to mate
+
+// REPLACEMENT ALGORITHM - generational, steady state?, replace worst?
+
+// FIND THE BEST INDIVIDUAL - when the algorithm ends
+
+// TERMINATION CONDITION
+
 #endif	/* POPULATION_H */
 

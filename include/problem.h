@@ -15,6 +15,21 @@
 #ifndef PROBLEM_H
 #define	PROBLEM_H
 
+#define addTable  "add_table.txt"
+#define subTable  "sub_table.txt"
+#define multTable "mult_table.txt"
+#define divTable  "div_table.txt"
+
+typedef struct architecture{
+    double area;
+    double runtime;
+    double power;
+} Architecture; 
+
+void initRandGenerator(int);
+double randomNumber(void);
+
+// FILE READING FUNCTIONS
 
 #endif	/* PROBLEM_H */
 

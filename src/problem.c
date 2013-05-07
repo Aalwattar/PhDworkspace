@@ -12,3 +12,19 @@
  * DATE CREATED : May 7, 2013
  * LAST MODIFIED : May 7, 2013
  ******************************************************************************/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "problem.h"
+
+void initRandGenerator(int seed){
+    srand(seed);
+}
+
+double randomNumber(void){
+    return rand() / (double) RAND_MAX;
+}
+
+
+// Random number generator

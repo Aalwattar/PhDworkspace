@@ -15,5 +15,18 @@
 #ifndef INDIVIDUAL_H
 #define	INDIVIDUAL_H
 
+
+// REPRESENTATION OF THE PROBLEM
+typedef struct{
+    int * gene;
+    double fitness;
+} Individual;
+
+// FITNESS FUNCTION
+
+// MUTATION OPERATOR
+
+// CROSSOVER OPERATOR
+
 #endif	/* INDIVIDUAL_H */
 
