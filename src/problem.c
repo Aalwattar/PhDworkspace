@@ -10,7 +10,7 @@
  * Email  : jwiner@uoguelph.ca
  * 
  * DATE CREATED : May 7, 2013
- * LAST MODIFIED : May 7, 2013
+ * LAST MODIFIED : May 8, 2013
  ******************************************************************************/
 
 #include "problem.h"
@@ -83,9 +83,11 @@ Operation * initPerformanceInfo(FILE * fp){
     return performance;
 }
 
-// FIX - needs error checking
-void initArchInfo(FILE * fp, Architecture * arch){
-    fscanf(fp, "%lf %lf %lf", &(arch->runtime), &(arch->power), &(arch->area));
+bool initArchInfo(FILE * fp, Architecture * arch){
+    if(fscanf(fp, "%lf %lf %lf", &(arch->runtime), &(arch->power), &(arch->area)) != 3)
+        return false;
+    
+    return true;
 }
 
 void freePerformanceInfo(Operation * perf){

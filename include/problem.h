@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <stdbool.h>
 
 #ifndef PROBLEM_H
 #define	PROBLEM_H
@@ -122,10 +123,13 @@ Operation * initPerformanceInfo(FILE *);
  * PRECONDITIONS : the file pointer must be currently placed at the start of an
  *      architecture line formatted exactly as described in the README file
  * 
+ * RETURNS : true if the line followed the format specified in the README
+ *           false otherwise
+ * 
  * NOTE : this is a helper function for initPerformanceInfo. Please refrain
  *              from using otherwise.
  *****************************************************************************/
-void initArchInfo(FILE *, Architecture *);
+bool initArchInfo(FILE *, Architecture *);
 
 /******************************************************************************
  * NAME : freePerformanceInfo
