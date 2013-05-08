@@ -17,8 +17,6 @@
 
 #include "problem.h"
 
-
-
 // stopping conditions
 
 // different combinations of the various sub-algorithms
@@ -37,13 +35,9 @@ int main(int argc, char * argv[]){
 //                "\n\tGA.exe <rand_seed> \n\nFor more information, please view the README file");
 //        exit(1);
 //    }
-    
-    if(initProblem(ARCH_FILENAME) == false){
-        return 1;
-    }
-    
-    printProblem();
-    freePerformanceInfo();
+    initArchLibrary(ARCH_FILENAME);
+    printArchLibrary();
+    freeArchLibrary();
     
     return 0;
 }

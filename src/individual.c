@@ -27,3 +27,17 @@
 
 #include "individual.h"
 
+
+/*
+ * eg. 001 10 00 000 11 111
+ * 
+ * # of genes
+ *      = the number of nodes in the task graph
+ * 
+ * # of bits of each gene
+ *      = number of architectures for that gene's operation
+ * 
+ */
+
+        
+        

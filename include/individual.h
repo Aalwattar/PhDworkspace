@@ -27,6 +27,9 @@ typedef struct{
     double cfitness;
 } Individual;
 
+static int num_genes;
+static int num_alleles[4];
+
 // FITNESS FUNCTION
 
 // MUTATION OPERATOR

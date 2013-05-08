@@ -10,11 +10,11 @@ PROGRAM OUTPUT
     - All other program output is printed to stdout
 
 
-TRIVIAL PROBLEM DEFINITION
+TRIVIAL ARCHITECTURE DEFINITION
     - uses the arbitrarily created table of architectures and their performances
         instead of real data from the scheduler
 
-TRIVIAL PERFORMANCE FILE FORMAT
+TRIVIAL ARCHITECTURE FILE FORMAT
     - ALL FOUR OPERATIONS ARE ASSUMED TO BE PRESENT IN THE FOLLOWING ORDER
     - {a, s, m, d} <number of architectures of that operation type>
         eg. a 6
@@ -44,3 +44,4 @@ FUTURE IMPLEMENTATION IDEAS
 
 QUESTIONS
     - what are the dimensions for area (assumed mm^2 for simplicity)
+    - assumed access to data.h and parameters.h from DFG2Naplion

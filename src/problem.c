@@ -37,11 +37,14 @@ double randomNumber(void){
 }
 
 /******************************************************************************
- *****************              PROBLEM FILE I/O              *****************
+ *****************            ARCHITECTURE FILE I/O           *****************
  *****************************************************************************/
 
-bool initProblem(char * filename){
+bool parseArchLibrary(FILE * fp);
+
+bool initArchLibrary(char * filename){
     FILE * fp;
+    bool status = true;
     
     if(filename == NULL)
         return false;
@@ -52,69 +55,80 @@ bool initProblem(char * filename){
         return false;
     }
     
-    initPerformanceInfo(fp);
+    if(parseArchLibrary(fp) == false)
+        status = false;
+    
     fclose(fp);
     
-    return true;
+    return status;
 }
 
+/******************************************************************************
+ * NAME : parseArchLibrary
+ * 
+ * PURPOSE : initializes the architecture library with information from the file
+ *              pointer provided by initArchLibrary()
+ * ARGUMENTS : FILE * = a file pointer to a file that contains the 
+ *              architecture information for each operation
+ * 
+ * PRECONDITIONS : This is a helper function that should only ever be called
+ *                      from initArchLibrary()
+ * 
+ * RETURNS : false if the file did not follow the specified format
+ *           true otherwise (successful completion)
+ *****************************************************************************/
+
 // FIX - CREATES MEMORY LEAKS IF THE FILE IS NOT FORMATTED CORRECTLY
-bool initPerformanceInfo(FILE * fp){
+bool parseArchLibrary(FILE * fp){
     char op_type;
     int num_impl;
     int i, j;
     
-    performance = malloc(sizeof(Operation) * 4);
+    operation = malloc(sizeof(Operation) * 4);
     for(i=0; i<4; i++){
+        
         // FIX - find a better way to handle newlines in the file
         fscanf(fp, "\n");
         if(fscanf(fp, "%c %d", &op_type, &num_impl) != 2)
             return false;
         
-        (performance[i]).num_arch = num_impl;
-        (performance[i]).arch = malloc(sizeof(Architecture) * (performance[i]).num_arch);
+        (operation[i]).num_arch = num_impl;
+        (operation[i]).arch = malloc(sizeof(Architecture) * (operation[i]).num_arch);
         
         for(j=0; j<num_impl; j++){
-            if(initArchInfo(fp, &((performance[i]).arch[j])) == false){
+            if(fscanf(fp, "%lf %lf %lf", &(((operation[i]).arch[j]).runtime),
+                    &(((operation[i]).arch[j]).power),
+                    &(((operation[i]).arch[j]).area)) != 3){
                 return false;
             }
         }
     }
-    
     return true;
 }
 
-bool initArchInfo(FILE * fp, Architecture * arch){
-    if(fscanf(fp, "%lf %lf %lf", &(arch->runtime), &(arch->power), &(arch->area)) != 3){
-        return false;
-    }
-    
-    return true;
-}
-
-void freePerformanceInfo(){
+void freeArchLibrary(){
     int i;
     
     for(i=0; i<4; i++){
-        free((performance[i]).arch);
+        free((operation[i]).arch);
     }
     
-    free(performance);
+    free(operation);
 }
 
 /******************************************************************************
  *****************             TESTING FUNCTIONS              *****************
  *****************************************************************************/
 
-void printProblem(){
+void printArchLibrary(){
     char * names[] = {"Addition", "Subtraction", "Multiplication", "Division"};
     int i, j;
     
     for(i=0; i<4; i++){
         fprintf(stdout, "%s:\n", names[i]);
-        for(j=0; j<(performance[i]).num_arch; j++){
-            fprintf(stdout, "%.1lf\t%.1lf\t%.1lf\n", ((performance[i]).arch[j]).runtime,
-                        ((performance[i]).arch[j]).power, ((performance[i]).arch[j]).area);
+        for(j=0; j<(operation[i]).num_arch; j++){
+            fprintf(stdout, "%.1lf\t%.1lf\t%.1lf\n", ((operation[i]).arch[j]).runtime,
+                        ((operation[i]).arch[j]).power, ((operation[i]).arch[j]).area);
         }
     }
 }

@@ -22,27 +22,6 @@
 
 
 /******************************************************************************
- *****************      ARCHITECTURE INFORMATION STORAGE      *****************
- *****************************************************************************/
-#define ARCH_FILENAME "performance_data.txt"
-
-// Contains all relevant data about a specific architecture
-typedef struct {
-    double area;
-    double runtime;
-    double power;
-} Architecture; 
-
-// contains all of the architectures of an operation
-typedef struct{
-    int num_arch;
-    Architecture * arch;
-}Operation;
-
-static Operation * performance;
-enum operation { a=0, s, m, d };
-
-/******************************************************************************
  *****************          RANDOM NUMBER GENERATION          *****************
  *****************************************************************************/
 
@@ -76,61 +55,49 @@ double randomNumber(void);
 
 
 /******************************************************************************
- *****************              PROBLEM FILE I/O              *****************
+ *****************          ARCHITECTURE DATA STORAGE         *****************
+ *****************************************************************************/
+
+#define ARCH_FILENAME "performance_data.txt"
+
+// Contains all relevant data about a specific architecture
+typedef struct {
+    double area;
+    double runtime;
+    double power;
+} Architecture; 
+
+// contains all of the architectures of an operation
+typedef struct{
+    int num_arch;
+    Architecture * arch;
+}Operation;
+
+static Operation * operation;
+enum ops { a=0, s, m, d };
+
+
+
+/******************************************************************************
+ *****************           ARCHITECTURE FILE I/O            *****************
  *****************************************************************************/
 
 /******************************************************************************
- * NAME : initProblem
+ * NAME : initArchLibrary
  * 
- * PURPOSE : Imports the trivial problem definition from a file and initializes
+ * PURPOSE : Imports the architecture information from a file and initializes
  *              static performance variables
- * ARGUMENTS : char * = the filename that contains the problem information
+ * ARGUMENTS : char * = the name of the file that contains the architecture
+ *               information
  * 
  * RETURNS : false if the filename could not be found or opened or the file did 
  *              not follow the specified format
  *           true otherwise (successful completion)
  * 
  * NOTE : please see the README file for more information about the format
- *              and contents of the trivial problem definition.
- *        please see problem.h for more information about the Operation and 
- *              Architecture data structures.
+ *              and contents of the architecture information file
  *****************************************************************************/
-bool initProblem(char *);
-
-/******************************************************************************
- * NAME : initPerformanceInfo
- * 
- * PURPOSE : creates and initializes the performance information from the file
- *              pointer provided by initProblem and initializes static 
- *              performance variables
- * ARGUMENTS : FILE * = a file pointer to a file that contains the 
- *              architecture information for each operation
- * 
- * PRECONDITIONS : The file pointer must currently point to the start of the
- *      file, and the file must be formatted exactly as described in the README
- * 
- * RETURNS : false if the file did not follow the specified format
- *           true otherwise (successful completion)
- *****************************************************************************/
-bool initPerformanceInfo(FILE *);
-
-/******************************************************************************
- * NAME : initArchInfo
- * 
- * PURPOSE : Initializes a Architecture struct with one architecture
- * ARGUMENTS : FILE * = a file pointer to the file that contains the 
- *              architecture information
- * 
- * PRECONDITIONS : the file pointer must be currently placed at the start of an
- *      architecture line formatted exactly as described in the README file
- * 
- * RETURNS : true if the line followed the format specified in the README
- *           false otherwise
- * 
- * NOTE : this is a helper function for initPerformanceInfo. Please refrain
- *              from using otherwise.
- *****************************************************************************/
-bool initArchInfo(FILE *, Architecture *);
+bool initArchLibrary(char *);
 
 /******************************************************************************
  * NAME : freePerformanceInfo
@@ -141,7 +108,7 @@ bool initArchInfo(FILE *, Architecture *);
  * PRECONDITIONS : the Operation struct MUST have been previously initialized 
  *                      by initProblem
  *****************************************************************************/
-void freePerformanceInfo();
+void freeArchLibrary();
 
 /******************************************************************************
  * NAME : printProblem
@@ -153,7 +120,7 @@ void freePerformanceInfo();
  * 
  * NOTE : this function exists for testing and debugging purposes only.
  *****************************************************************************/
-void printProblem();
+void printArchLibrary();
 
 #endif	/* PROBLEM_H */
 
