@@ -40,7 +40,7 @@ link : compile
 
 compile : $(SOURCE)
 	$(CC) $(CINCLUDES) $(CFLAGS) -c $(SOURCE)
-	mv *.o $(OBJDIR)/
+	mv *.o $(OBJDIR)
 
 
 

@@ -18,9 +18,11 @@
 
 // REPRESENTATION OF THE PROBLEM
 typedef struct{
-    int * gene;
-    double fitness;
+    char * gene;
+    int numGenes;
+    int * geneLength;
     
+    double fitness;
     double rfitness;
     double cfitness;
 } Individual;

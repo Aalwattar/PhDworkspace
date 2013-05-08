@@ -39,6 +39,7 @@ typedef struct{
     Architecture * arch;
 }Operation;
 
+static Operation * performance;
 enum operation { a=0, s, m, d };
 
 /******************************************************************************
@@ -81,37 +82,37 @@ double randomNumber(void);
 /******************************************************************************
  * NAME : initProblem
  * 
- * PURPOSE : Imports the trivial problem definition from a file
+ * PURPOSE : Imports the trivial problem definition from a file and initializes
+ *              static performance variables
  * ARGUMENTS : char * = the filename that contains the problem information
  * 
- * RETURNS : NULL if the filename could not be found or opened or the file did 
+ * RETURNS : false if the filename could not be found or opened or the file did 
  *              not follow the specified format
- *           Otherwise, an Operation struct that contains the parameters of each
- *              architecture of each operation
+ *           true otherwise (successful completion)
  * 
  * NOTE : please see the README file for more information about the format
  *              and contents of the trivial problem definition.
  *        please see problem.h for more information about the Operation and 
  *              Architecture data structures.
  *****************************************************************************/
-Operation * initProblem(char *);
+bool initProblem(char *);
 
 /******************************************************************************
  * NAME : initPerformanceInfo
  * 
  * PURPOSE : creates and initializes the performance information from the file
- *              pointer provided by initProblem
+ *              pointer provided by initProblem and initializes static 
+ *              performance variables
  * ARGUMENTS : FILE * = a file pointer to a file that contains the 
  *              architecture information for each operation
  * 
  * PRECONDITIONS : The file pointer must currently point to the start of the
  *      file, and the file must be formatted exactly as described in the README
  * 
- * RETURNS : NULL if the file did not follow the specified format
- *           Otherwise, an Operation struct that contains the parameters of each
- *              architecture of each operation
+ * RETURNS : false if the file did not follow the specified format
+ *           true otherwise (successful completion)
  *****************************************************************************/
-Operation * initPerformanceInfo(FILE *);
+bool initPerformanceInfo(FILE *);
 
 /******************************************************************************
  * NAME : initArchInfo

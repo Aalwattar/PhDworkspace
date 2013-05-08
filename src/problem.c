@@ -40,28 +40,26 @@ double randomNumber(void){
  *****************              PROBLEM FILE I/O              *****************
  *****************************************************************************/
 
-Operation * initProblem(char * filename){
-    Operation * performance;
+bool initProblem(char * filename){
     FILE * fp;
     
     if(filename == NULL)
-        return NULL;
+        return false;
     
     fp = fopen(filename, "r");
     if(fp == NULL){
         fprintf(stderr, "Unable to find or open file %s\n", filename);
-        return NULL;
+        return false;
     }
     
     performance = initPerformanceInfo(fp);
     fclose(fp);
     
-    return performance;
+    return true;
 }
 
-// FIX - needs error checking
-Operation * initPerformanceInfo(FILE * fp){
-    Operation * performance;
+// FIX - CREATES MEMORY LEAKS IF THE FILE IS NOT FORMATTED CORRECTLY
+bool initPerformanceInfo(FILE * fp){
     char op_type;
     int num_impl;
     int i, j;
@@ -70,17 +68,19 @@ Operation * initPerformanceInfo(FILE * fp){
     for(i=0; i<4; i++){
         // FIX - find a better way to handle newlines in the file
         fscanf(fp, "\n");
-        fscanf(fp, "%c %d", &op_type, &num_impl);
+        if(fscanf(fp, "%c %d", &op_type, &num_impl) != 2)
+            return false;
         
         (performance[i]).num_arch = num_impl;
         (performance[i]).arch = malloc(sizeof(Architecture) * (performance[i]).num_arch);
         
         for(j=0; j<num_impl; j++){
-            initArchInfo(fp, &((performance[i]).arch[j]));
+            if(initArchInfo(fp, &((performance[i]).arch[j])) == false)
+                return false;
         }
     }
     
-    return performance;
+    return true;
 }
 
 bool initArchInfo(FILE * fp, Architecture * arch){
