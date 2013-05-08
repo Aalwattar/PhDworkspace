@@ -75,8 +75,9 @@ bool initPerformanceInfo(FILE * fp){
         (performance[i]).arch = malloc(sizeof(Architecture) * (performance[i]).num_arch);
         
         for(j=0; j<num_impl; j++){
-            if(initArchInfo(fp, &((performance[i]).arch[j])) == false)
+            if(initArchInfo(fp, &((performance[i]).arch[j])) == false){
                 return false;
+            }
         }
     }
     
@@ -84,35 +85,36 @@ bool initPerformanceInfo(FILE * fp){
 }
 
 bool initArchInfo(FILE * fp, Architecture * arch){
-    if(fscanf(fp, "%lf %lf %lf", &(arch->runtime), &(arch->power), &(arch->area)) != 3)
+    if(fscanf(fp, "%lf %lf %lf", &(arch->runtime), &(arch->power), &(arch->area)) != 3){
         return false;
+    }
     
     return true;
 }
 
-void freePerformanceInfo(Operation * perf){
+void freePerformanceInfo(){
     int i;
     
     for(i=0; i<4; i++){
-        free((perf[i]).arch);
+        free((performance[i]).arch);
     }
     
-    free(perf);
+    free(performance);
 }
 
 /******************************************************************************
  *****************             TESTING FUNCTIONS              *****************
  *****************************************************************************/
 
-void printProblem(Operation * perf){
+void printProblem(){
     char * names[] = {"Addition", "Subtraction", "Multiplication", "Division"};
     int i, j;
     
     for(i=0; i<4; i++){
         fprintf(stdout, "%s:\n", names[i]);
-        for(j=0; j<(perf[i]).num_arch; j++){
-            fprintf(stdout, "%.1lf\t%.1lf\t%.1lf\n", ((perf[i]).arch[j]).runtime,
-                        ((perf[i]).arch[j]).power, ((perf[i]).arch[j]).area);
+        for(j=0; j<(performance[i]).num_arch; j++){
+            fprintf(stdout, "%.1lf\t%.1lf\t%.1lf\n", ((performance[i]).arch[j]).runtime,
+                        ((performance[i]).arch[j]).power, ((performance[i]).arch[j]).area);
         }
     }
 }

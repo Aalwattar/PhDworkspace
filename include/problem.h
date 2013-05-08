@@ -135,8 +135,8 @@ bool initArchInfo(FILE *, Architecture *);
 /******************************************************************************
  * NAME : freePerformanceInfo
  * 
- * PURPOSE : Frees all memory from within a Operation struct
- * ARGUMENTS : Operation * = the operation that you wish to free
+ * PURPOSE : Frees all static dynamically allocated memory for the problem 
+ *              definition
  * 
  * PRECONDITIONS : the Operation struct MUST have been previously initialized 
  *                      by initProblem
@@ -146,8 +146,7 @@ void freePerformanceInfo();
 /******************************************************************************
  * NAME : printProblem
  * 
- * PURPOSE : print the contents of an Operation struct
- * ARGUMENTS : Operation * = the struct that you wish to print
+ * PURPOSE : print the static information about the problem definition
  * 
  * PRECONDITIONS : the Operation struct MUST have been previously initialized 
  *                      by initProblem
