@@ -18,7 +18,7 @@
 // REPRESENTATION
 typedef struct{
     Individual * organism;
-    double totalFitness;
+    double total_fitness;
 }Population;
 
 

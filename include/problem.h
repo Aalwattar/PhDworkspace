@@ -15,7 +15,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <stdbool.h>
 
 #ifndef PROBLEM_H
 #define	PROBLEM_H
@@ -23,16 +22,20 @@
 /***********************************************
  * ARCHITECTURE PERFORMANCE INFORMATION STORAGE
  ***********************************************/
-#define arch_filename "performance_data.txt"
+#define ARCH_FILENAME "performance_data.txt"
 
-typedef struct architecture{
+typedef struct {
     double area;
     double runtime;
     double power;
 } Architecture; 
 
-enum operation { a, s, m, d };
-static Architecture ** performance;
+typedef struct{
+    int num_arch;
+    Architecture * arch;
+}Operation;
+
+enum operation { a=0, s, m, d };
 
 /********************************
  * RANDOM NUMBER GENERATION
@@ -46,7 +49,13 @@ double randomNumber(void);
  * FILE READING FUNCTIONS
  ********************************/
 
-void initPerformanceInfo();
+Operation * initProblem(char *);
+Operation * initPerformanceInfo(FILE *);
+void initArchInfo(FILE *, Architecture *);
+
+void freePerformanceInfo(Operation *);
+
+void printProblem(Operation *);
 
 #endif	/* PROBLEM_H */
 

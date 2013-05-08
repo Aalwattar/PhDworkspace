@@ -22,7 +22,8 @@ PERFORMANCE FILE FORMAT
     - ALL WHITESPACE MUST BE EXACTLY ONE SPACE!!!
 
     - my dummy file multiplies each operation's runtime by the following
-        operator, but keeps the area and power consumption constant
+        operator, but keeps the ratio of the runtime to area, and the runtime
+        to the power consumption constant
             a = 1x
             s = 1.5x
             m = 4x

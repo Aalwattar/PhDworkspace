@@ -27,14 +27,23 @@
  * - ARG1 = the seed for the random number generator
  */
 int main(int argc, char * argv[]){
+    Operation * performance;
     
     // FIX - validate each of the arguments
     // FIX - Improve the error message
-    if(argc < 2){
-        fprintf(stderr, "Improper arguments. \nPlease try again, using the following format : "
-                "\n\tGA.exe <rand_seed> \n\nFor more information, please view the README file");
-        exit(1);
+//    if(argc < 2){
+//        fprintf(stderr, "Improper arguments. \nPlease try again, using the following format : "
+//                "\n\tGA.exe <rand_seed> \n\nFor more information, please view the README file");
+//        exit(1);
+//    }
+    
+    performance = initProblem(ARCH_FILENAME);
+    if(performance == NULL){
+        return 1;
     }
+    
+    printProblem(performance);
+    freePerformanceInfo(performance);
     
     return 0;
 }

@@ -32,29 +32,75 @@ double randomNumber(void){
     return rand() / (double) RAND_MAX;
 }
 
-void initPerformanceInfo(){
+
+Operation * initProblem(char * filename){
+    Operation * performance;
     FILE * fp;
-    char op_Type;
-    int num_arch;
-    int i, j;
     
-    fp = fopen(arch_filename, "r");
+    fp = fopen(filename, "r");
     if(fp == NULL){
-        fprintf(stderr, "Unable to find or open file %s\n", arch_filename);
-        exit(1);
+        fprintf(stderr, "Unable to find or open file %s\n", filename);
+        return NULL;
     }
     
-    performance = malloc(sizeof(Architecture *) * 4);    
-    for(i=0; i<4; i++){
-        fscanf(fp, "%c %d", op_Type, num_arch);
-        performance[i] = malloc(sizeof(Architecture) * num_arch + 1);
-        
-        for(j=0; j<num_arch; j++){
-            
-        }
-    }
+    performance = initPerformanceInfo(fp);
+    fclose(fp);
+    
+    return performance;
 }
 
-void freePerformanceInfo(){
+// FIX - needs error checking
+Operation * initPerformanceInfo(FILE * fp){
+    Operation * performance;
+    char op_type;
+    int num_impl;
+    int i, j;
     
+    performance = malloc(sizeof(Operation) * 4);
+    for(i=0; i<4; i++){
+        // FIX - find a better way to handle newlines in the file
+        fscanf(fp, "\n");
+        fscanf(fp, "%c %d", &op_type, &num_impl);
+        
+        (performance[i]).num_arch = num_impl;
+        (performance[i]).arch = malloc(sizeof(Architecture) * (performance[i]).num_arch);
+        
+        for(j=0; j<num_impl; j++){
+            initArchInfo(fp, &((performance[i]).arch[j]));
+        }
+    }
+    
+    return performance;
+}
+
+// FIX - needs error checking
+void initArchInfo(FILE * fp, Architecture * arch){
+    fscanf(fp, "%lf %lf %lf", &(arch->runtime), &(arch->power), &(arch->area));
+}
+
+void freePerformanceInfo(Operation * perf){
+    int i;
+    
+    for(i=0; i<4; i++){
+        free((perf[i]).arch);
+    }
+    
+    free(perf);
+}
+
+/***********************************
+ *        TESTING FUNCTIONS        *
+ ***********************************/
+
+void printProblem(Operation * perf){
+    char * names[] = {"Addition", "Subtraction", "Multiplication", "Division"};
+    int i, j;
+    
+    for(i=0; i<4; i++){
+        fprintf(stdout, "%s:\n", names[i]);
+        for(j=0; j<(perf[i]).num_arch; j++){
+            fprintf(stdout, "%.1lf\t%.1lf\t%.1lf\n", ((perf[i]).arch[j]).runtime,
+                        ((perf[i]).arch[j]).power, ((perf[i]).arch[j]).area);
+        }
+    }
 }
