@@ -15,7 +15,11 @@
 
 #include "problem.h"
 
-void initRandGenerator(int seed){
+/******************************************************************************
+ *****************          RANDOM NUMBER GENERATION          *****************
+ *****************************************************************************/
+
+void seedRandGenerator(int seed){
     srand(seed);
 }
 
@@ -32,10 +36,16 @@ double randomNumber(void){
     return rand() / (double) RAND_MAX;
 }
 
+/******************************************************************************
+ *****************              PROBLEM FILE I/O              *****************
+ *****************************************************************************/
 
 Operation * initProblem(char * filename){
     Operation * performance;
     FILE * fp;
+    
+    if(filename == NULL)
+        return NULL;
     
     fp = fopen(filename, "r");
     if(fp == NULL){
@@ -88,9 +98,9 @@ void freePerformanceInfo(Operation * perf){
     free(perf);
 }
 
-/***********************************
- *        TESTING FUNCTIONS        *
- ***********************************/
+/******************************************************************************
+ *****************             TESTING FUNCTIONS              *****************
+ *****************************************************************************/
 
 void printProblem(Operation * perf){
     char * names[] = {"Addition", "Subtraction", "Multiplication", "Division"};

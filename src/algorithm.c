@@ -51,3 +51,14 @@ int main(int argc, char * argv[]){
 /*
  * Individual evolutionaryAlgorithm (Problem 
  */
+
+
+// COMMENTING TEMPLATE
+
+/******************************************************************************
+ * NAME : initRandGenerator
+ * PURPOSE : 
+ * ARGUMENTS : 
+ * PRECONDITIONS : 
+ * RETURNS : 
+ *****************************************************************************/

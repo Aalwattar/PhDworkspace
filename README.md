@@ -9,7 +9,12 @@ PROGRAM OUTPUT
     - Error messages are currently being printed to stderr
     - All other program output is printed to stdout
 
-PERFORMANCE FILE FORMAT
+
+TRIVIAL PROBLEM DEFINITION
+    - uses the arbitrarily created table of architectures and their performances
+        instead of real data from the scheduler
+
+TRIVIAL PERFORMANCE FILE FORMAT
     - ALL FOUR OPERATIONS ARE ASSUMED TO BE PRESENT IN THE FOLLOWING ORDER
     - {a, s, m, d} <number of architectures of that operation type>
         eg. a 6
@@ -28,6 +33,9 @@ PERFORMANCE FILE FORMAT
             s = 1.5x
             m = 4x
             d = 5x
+
+
+
 
 FUTURE IMPLEMENTATION IDEAS
     - Allow the user to enter their own seed with an option (eg. -rand_seed=1)
