@@ -29,7 +29,6 @@
  * - ARG1 = the seed for the random number generator
  */
 int main(int argc, char * argv[]){
-    Operation * performance;
     
     // FIX - validate each of the arguments
     // FIX - Improve the error message
@@ -39,13 +38,12 @@ int main(int argc, char * argv[]){
 //        exit(1);
 //    }
     
-    performance = initProblem(ARCH_FILENAME);
-    if(performance == NULL){
+    if(initProblem(ARCH_FILENAME) == false){
         return 1;
     }
     
-    printProblem(performance);
-    freePerformanceInfo(performance);
+    printProblem();
+    freePerformanceInfo();
     
     return 0;
 }

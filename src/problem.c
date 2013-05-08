@@ -52,7 +52,7 @@ bool initProblem(char * filename){
         return false;
     }
     
-    performance = initPerformanceInfo(fp);
+    initPerformanceInfo(fp);
     fclose(fp);
     
     return true;

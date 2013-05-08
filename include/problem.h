@@ -141,7 +141,7 @@ bool initArchInfo(FILE *, Architecture *);
  * PRECONDITIONS : the Operation struct MUST have been previously initialized 
  *                      by initProblem
  *****************************************************************************/
-void freePerformanceInfo(Operation *);
+void freePerformanceInfo();
 
 /******************************************************************************
  * NAME : printProblem
@@ -154,7 +154,7 @@ void freePerformanceInfo(Operation *);
  * 
  * NOTE : this function exists for testing and debugging purposes only.
  *****************************************************************************/
-void printProblem(Operation *);
+void printProblem();
 
 #endif	/* PROBLEM_H */
 
