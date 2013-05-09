@@ -22,8 +22,10 @@
 
 
 // REPRESENTATION OF THE PROBLEM
+#define MAX_GENE_SIZE 20
+
 typedef struct{
-    char * gene;
+    char * chrom;
     
     double fitness;
     double rfitness;
@@ -33,15 +35,8 @@ typedef struct{
 static int num_genes;
 static int num_alleles[4];
 
-//Individual * initRandomIndividual(){
-//    Individual * chromosome;
-//    int i;
-//    
-//    chromosome = malloc(sizeof(Individual));
-//    chromosome->gene = malloc(sizeof(char) * )
-//    
-//    for(i=0; i<)
-//}
+Individual * initRandomIndividual();
+void generateRandGene(int opr, char *);
 
 // FITNESS FUNCTION
 

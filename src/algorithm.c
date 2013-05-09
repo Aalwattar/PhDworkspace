@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "problem.h"
+#include "individual.h"
 
 // stopping conditions
 
@@ -23,8 +23,14 @@
 
 
 int main(int argc, char * argv[]){
+    char allele[50];
+    
     
     initProblem(ARCH_FILENAME, DFG_FILENAME);
+    
+    //generateRandGene(0, allele);
+    
+    //printf("The gene is %s\n", allele);
     
     freeProblem();
     

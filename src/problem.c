@@ -33,12 +33,7 @@ bool initProblem(char * arc_filename, char * dfg_filename){
         template->opr[i] = graph->operation[i];
         template->gene_length[i] = ceil(log(operation[template->opr[i]].num_arch)/log(2));
         template->chrom_length = template->chrom_length + template->gene_length[i];
-        
-        printf("Gene % .2d is of type %d and should be %d bits long\n", (i+1),
-                template->opr[i], template->gene_length[i]);
     }
-    
-    printf("\nThe chromosome should be %d bits in length\n", template->chrom_length);
     
     
     freeDFG(graph);

@@ -28,6 +28,44 @@
 #include "individual.h"
 
 
+Individual * initRandomIndividual(){
+    Individual * individual;
+    int i;
+    int j = 0;
+    
+    individual = malloc(sizeof(Individual));
+    individual->chrom = malloc(sizeof(char) * (template->chrom_length) + 1);
+    
+    for(i=0; i<template->num_genes; i++){
+        generateRandGene(template->opr[i], &(individual->chrom[j]));
+        j = strlen(individual->chrom);
+    }
+    
+    return individual;
+}
+
+// FIX - needs to handle variable numbers of implementations
+void generateRandGene(int opr, char * allele){
+    int rand_arch;
+    int i = 0, j;
+    int length;
+    char temp;
+    
+    rand_arch = (operation[opr].num_arch * randomNumber());
+    
+    while(rand_arch != 0){
+        allele[i++] = rand_arch % 2 + '0';
+        rand_arch = rand_arch / 2;
+    }
+    allele[i] = '\0';
+    
+    length = strlen(allele) - 1;
+    for(i=0, j = length; i<j; i++, j--){
+        temp = allele[i];
+        allele[i] = allele[j];
+        allele[j] = temp;
+    }
+}
 /*
  * eg. 001 10 00 000 11 111
  * 
