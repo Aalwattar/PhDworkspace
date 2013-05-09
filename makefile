@@ -49,7 +49,7 @@ clean :
 	
 	
 	
-run: prog
+run: 
 	$(PROGNAME)
 
 #$(PROGNAME) datafilenamehere

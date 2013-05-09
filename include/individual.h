@@ -35,8 +35,9 @@ typedef struct{
 static int num_genes;
 static int num_alleles[4];
 
-Individual * initRandomIndividual();
-void generateRandGene(int opr, char *);
+Individual * generateRandIndividual();
+void generateRandGene(int opr, int, char *);
+void freeIndividual(Individual *);
 
 // FITNESS FUNCTION
 

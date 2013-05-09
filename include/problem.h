@@ -30,7 +30,7 @@ typedef struct{
     int chrom_length;
 }Representation;
 
-static Representation * template;
+Representation * template;
 
 // FIX - needs comment
 bool initProblem(char *, char *);
@@ -89,7 +89,7 @@ typedef struct{
     Architecture * arch;
 }Operation;
 
-static Operation * operation;
+Operation * operation;
 enum ops { a=0, s, m, d };
 
 

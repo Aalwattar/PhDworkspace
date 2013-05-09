@@ -20,6 +20,9 @@ bool initProblem(char * arc_filename, char * dfg_filename){
     DFG * graph;
     int i;
     
+    // FIX - make option to enter your own seed
+    randSeed();
+    
     initArchLibrary(arc_filename);
     graph = initDFG(dfg_filename);
     
@@ -35,6 +38,7 @@ bool initProblem(char * arc_filename, char * dfg_filename){
         template->chrom_length = template->chrom_length + template->gene_length[i];
     }
     
+    printf("The chromosome will have a length of %d\n", template->chrom_length);
     
     freeDFG(graph);
     return true;
