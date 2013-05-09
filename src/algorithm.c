@@ -22,10 +22,6 @@
 // different combinations of the various sub-algorithms
 
 
-/* ASSUMPTIONS
- * 
- * - ARG1 = the seed for the random number generator
- */
 int main(int argc, char * argv[]){
     
     // FIX - validate each of the arguments
@@ -35,16 +31,11 @@ int main(int argc, char * argv[]){
 //                "\n\tGA.exe <rand_seed> \n\nFor more information, please view the README file");
 //        exit(1);
 //    }
-    initArchLibrary(ARCH_FILENAME);
-    printArchLibrary();
-    freeArchLibrary();
+    initProblem(ARCH_FILENAME, DFG_FILENAME);
+    
     
     return 0;
 }
-
-/*
- * Individual evolutionaryAlgorithm (Problem 
- */
 
 
 // COMMENTING TEMPLATE

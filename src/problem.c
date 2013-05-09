@@ -15,6 +15,30 @@
 
 #include "problem.h"
 
+
+bool initProblem(char * arc_filename, char * dfg_filename){
+    DFG * graph;
+    int i;
+    
+    initArchLibrary(arc_filename);
+    graph = initDFG(dfg_filename);
+    
+    template.num_genes = graph->num_nodes;
+    
+    template.opr = malloc(sizeof(int) * template.num_genes);
+    for(i=0; i<(template.num_genes); i++){
+       template.opr[i] = graph->operation[i];
+    }
+    
+    template.gene_length = malloc(sizeof(int) * template.num_genes);
+    for(i=0; i<(template.num_genes); i++){
+        template.gene_length[i] = ceil(log(operation[template.opr[i]].num_arch)/log(2));
+    }
+    
+    return true;
+}
+
+
 /******************************************************************************
  *****************          RANDOM NUMBER GENERATION          *****************
  *****************************************************************************/
@@ -114,6 +138,62 @@ void freeArchLibrary(){
     }
     
     free(operation);
+}
+
+
+
+/******************************************************************************
+ ***********************           DFG FILE I/O         ***********************
+ *****************************************************************************/
+
+int getNextOperation(FILE *);
+
+// FIX - could use some more error checking
+DFG * initDFG(char * filename){
+    FILE * fp;
+    
+    DFG * graph;
+    int num_nodes;
+    int i;
+    
+    if(filename == NULL)
+        return false;
+    
+    fp = fopen(filename, "r");
+    if(fp == NULL){
+        fprintf(stderr, "Unable to find or open file %s\n", filename);
+        return false;
+    }
+    
+    fscanf(fp, "%d", &num_nodes);
+    graph = malloc(sizeof(DFG));
+    graph->num_nodes = num_nodes;
+    graph->operation = malloc(sizeof(int) * num_nodes);
+    
+    for(i=0; i<num_nodes; i++){
+        graph->operation[i] = getNextOperation(fp);
+    }
+    
+    fclose(fp);
+    return graph;
+}
+
+int getNextOperation(FILE * fp){
+    char buffer[20];
+    
+    fscanf(fp, "%20s", buffer);
+    
+    if(strcmp("OpAdd", buffer) == 0){
+        return a;
+    }
+    if(strcmp("OpSub", buffer) == 0){
+        return s;
+    }
+//    if(strcmp("OPMult", buffer) == 0){
+//        return m;
+//    }
+//    return d;
+    return m;
 }
 
 /******************************************************************************

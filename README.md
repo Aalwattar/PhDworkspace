@@ -34,7 +34,11 @@ TRIVIAL ARCHITECTURE FILE FORMAT
             m = 4x
             d = 5x
 
+TRIVIAL DFG FILE FORMAT
+    - The first line of the file must contain how many nodes follow
 
+    - it must contain only the operation that each node will take
+    - each line is one operation
 
 
 FUTURE IMPLEMENTATION IDEAS

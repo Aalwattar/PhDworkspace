@@ -14,12 +14,25 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <math.h>
 #include <time.h>
 #include <stdbool.h>
 
 #ifndef PROBLEM_H
 #define	PROBLEM_H
 
+
+typedef struct{
+    int num_genes;
+    int * gene_length;
+    int * opr;
+}Representation;
+
+static Representation template;
+
+// FIX - needs comment
+bool initProblem(char *, char *);
 
 /******************************************************************************
  *****************          RANDOM NUMBER GENERATION          *****************
@@ -58,7 +71,7 @@ double randomNumber(void);
  *****************          ARCHITECTURE DATA STORAGE         *****************
  *****************************************************************************/
 
-#define ARCH_FILENAME "performance_data.txt"
+#define ARCH_FILENAME "architecture_library.txt"
 
 // Contains all relevant data about a specific architecture
 typedef struct {
@@ -121,6 +134,42 @@ void freeArchLibrary();
  * NOTE : this function exists for testing and debugging purposes only.
  *****************************************************************************/
 void printArchLibrary();
+
+
+
+/******************************************************************************
+ *********************           DFG DATA STORAGE         *********************
+ *****************************************************************************/
+
+#define DFG_FILENAME "DFG.txt"
+
+typedef struct{
+    int num_nodes;
+    int * operation; 
+}DFG;
+
+
+
+/******************************************************************************
+ ***********************           DFG FILE I/O         ***********************
+ *****************************************************************************/
+
+/******************************************************************************
+ * NAME : initDFG
+ * 
+ * PURPOSE : Imports a DFG from a template file
+ * ARGUMENTS : char * = the name of the file that contains the DFG
+ * 
+ * RETURNS : false if the filename could not be found or opened or the file did 
+ *              not follow the specified format
+ *           true otherwise (successful completion)
+ * 
+ * NOTE : please see the README file for more information about the format
+ *              and contents of the DFG file
+ *****************************************************************************/
+DFG * initDFG(char *);
+
+
 
 #endif	/* PROBLEM_H */
 
