@@ -25,22 +25,24 @@
 #define MAX_GENE_SIZE 20
 
 typedef struct{
-    char * chrom;
+    char * encoding;
     
     double fitness;
     double rfitness;
     double cfitness;
 } Individual;
 
-static int num_genes;
-static int num_alleles[4];
-
 Individual * generateRandIndividual();
-void generateRandGene(int opr, int, char *);
+void generateRandGene(Individual * individual, int gene_num, int chrom_position);
 void freeIndividual(Individual *);
 
 // FITNESS FUNCTION
+// FIX - FOR TESTING PURPOSES ONLY
 
+#define RUNTIME_WEIGHT 0.6
+#define POWER_WEIGHT 1 - RUNTIME_WEIGHT
+
+int encodingToAllele(char * encoding);
 // MUTATION OPERATOR
 
 // CROSSOVER OPERATOR

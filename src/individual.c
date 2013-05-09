@@ -34,57 +34,67 @@ Individual * generateRandIndividual(){
     int j = 0;
     
     individual = malloc(sizeof(Individual));
-    individual->chrom = malloc(sizeof(char) * (template->chrom_length + 1));
+    individual->encoding = malloc(sizeof(char) * (template->chrom_length + 1));
     
     for(i=0; i<template->num_genes; i++){
-        generateRandGene(template->opr[i], template->gene_length[i],
-                &(individual->chrom[j]));
-        j = strlen(individual->chrom);
+        generateRandGene(individual, i, j);
+        j = strlen(individual->encoding);
     }
     
     return individual;
 }
 
 // FIX - needs to handle variable numbers of implementations
-void generateRandGene(int opr, int allele_length, char * allele){
-    int rand_arch;
+void generateRandGene(Individual * individual, int gene_num, int chrom_position){
+    //template->gene_length[i]);
+    int rand_arch_num;
+    char * gene;
+    int gene_length;
+    
     int i = 0, j;
     int length;
     char temp;
     
-    rand_arch = (operation[opr].num_arch * randomNumber());
+    gene = &(individual->encoding[chrom_position]);
+    gene_length = template->gene_length[template->opr[gene_num]];
+    rand_arch_num = (operation[template->opr[gene_num]].num_arch * randomNumber());
     
-    while(rand_arch != 0){
-        allele[i++] = rand_arch % 2 + '0';
-        rand_arch = rand_arch / 2;
+    while(rand_arch_num != 0){
+        gene[i++] = rand_arch_num % 2 + '0';
+        rand_arch_num = rand_arch_num / 2;
     }
-    allele[i] = '\0';
+    gene[i] = '\0';
     
-    while(strlen(allele) < allele_length){
-        allele[i++] = '0';
-        allele[i] = '\0';
+    while(strlen(gene) < gene_length){
+        gene[i++] = '0';
+        gene[i] = '\0';
     }
     
-    length = strlen(allele) - 1;
+    length = strlen(gene) - 1;
     for(i=0, j = length; i<j; i++, j--){
-        temp = allele[i];
-        allele[i] = allele[j];
-        allele[j] = temp;
+        temp = gene[i];
+        gene[i] = gene[j];
+        gene[j] = temp;
     }
 }
 
 void freeIndividual(Individual * i){
-    free(i->chrom);
+    free(i->encoding);
     free(i);
 }
-/*
- * eg. 001 10 00 000 11 111
- * 
- * # of genes
- *      = the number of nodes in the task graph
- * 
- * # of bits of each gene
- *      = number of architectures for that gene's operation
- * 
- */
 
+int encodingToAllele(char * encoding){
+    int sum;
+    int length;
+    int i;
+    
+    sum = 0;
+    length = strlen(encoding);
+    i = 0;
+    
+    while(i < length){
+        sum = sum + pow(2, length - i - 1) * (encoding[i++] - '0');
+    }
+    
+    return sum;
+}

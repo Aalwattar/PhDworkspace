@@ -174,6 +174,5 @@ DFG * initDFG(char *);
 
 void freeDFG(DFG *);
 
-
 #endif	/* PROBLEM_H */
 

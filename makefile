@@ -16,7 +16,7 @@ CFLAGS	    = -Wall -std=c99 -pedantic -g -O0
 
 CINCLUDES   = -Iinclude
 #CINCLUDES  = -I/usr/include/python2.6 -I/usr/include/libxml2
-#LINCLUDES  = -lxml2 
+LINCLUDES  = -lm
 
 SRCDIR	    = src/
 OBJDIR	    = obj/
@@ -36,7 +36,7 @@ all : prog
 prog : link
 
 link : compile
-	$(CC) $(OBJS) -o $(PROGNAME)
+	$(CC) $(OBJS) $(LINCLUDES) -o $(PROGNAME)
 
 compile : $(SOURCE)
 	$(CC) $(CINCLUDES) $(CFLAGS) -c $(SOURCE)

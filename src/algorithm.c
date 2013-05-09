@@ -16,7 +16,6 @@
 #include <stdlib.h>
 
 #include "individual.h"
-#include "problem.h"
 
 // stopping conditions
 
@@ -24,16 +23,15 @@
 
 
 int main(int argc, char * argv[]){
-    Individual * organism;
-    int i;
     
     initProblem(ARCH_FILENAME, DFG_FILENAME);
-
-    for(i=0; i<50; i++){
-        organism = generateRandIndividual();
-        printf("%s\n", organism->chrom);
-        freeIndividual(organism);
-    }
+    
+    printf("encoded: %s\nallele: %d\n\n", "1", encodingToAllele("1"));
+    printf("encoded: %s\nallele: %d\n\n", "11", encodingToAllele("11"));
+    printf("encoded: %s\nallele: %d\n\n", "101", encodingToAllele("101"));
+    printf("encoded: %s\nallele: %d\n\n", "001010", encodingToAllele("001010"));
+    printf("encoded: %s\nallele: %d\n\n", "001", encodingToAllele("001"));
+    printf("encoded: %s\nallele: %d\n\n", "0", encodingToAllele("0"));
     
     
     freeProblem();
