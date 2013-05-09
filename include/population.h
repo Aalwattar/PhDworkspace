@@ -9,7 +9,7 @@
  * Email  : jwiner@uoguelph.ca
  * 
  * DATE CREATED : May 7, 2013
- * LAST MODIFIED : May 7, 2013
+ * LAST MODIFIED : May 9, 2013
  ******************************************************************************/
 
 #ifndef POPULATION_H

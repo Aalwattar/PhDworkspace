@@ -12,15 +12,18 @@
  * LAST MODIFIED : May 8, 2013
  ******************************************************************************/
 
+#include "problem.h"
+
 #ifndef INDIVIDUAL_H
 #define	INDIVIDUAL_H
+
+// CHANGE ALL STATIC VARIABLES TO NON-POINTERS
+
 
 
 // REPRESENTATION OF THE PROBLEM
 typedef struct{
     char * gene;
-    int numGenes;
-    int * geneLength;
     
     double fitness;
     double rfitness;
@@ -29,6 +32,16 @@ typedef struct{
 
 static int num_genes;
 static int num_alleles[4];
+
+//Individual * initRandomIndividual(){
+//    Individual * chromosome;
+//    int i;
+//    
+//    chromosome = malloc(sizeof(Individual));
+//    chromosome->gene = malloc(sizeof(char) * )
+//    
+//    for(i=0; i<)
+//}
 
 // FITNESS FUNCTION
 

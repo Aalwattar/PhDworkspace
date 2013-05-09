@@ -23,20 +23,34 @@ bool initProblem(char * arc_filename, char * dfg_filename){
     initArchLibrary(arc_filename);
     graph = initDFG(dfg_filename);
     
-    template.num_genes = graph->num_nodes;
+    template = malloc(sizeof(Representation));
+    template->num_genes = graph->num_nodes;
+    template->opr = malloc(sizeof(int) * template->num_genes);
+    template->gene_length = malloc(sizeof(int) * template->num_genes);
+    template->chrom_length = 0;
     
-    template.opr = malloc(sizeof(int) * template.num_genes);
-    for(i=0; i<(template.num_genes); i++){
-       template.opr[i] = graph->operation[i];
+    for(i=0; i<(template->num_genes); i++){
+        template->opr[i] = graph->operation[i];
+        template->gene_length[i] = ceil(log(operation[template->opr[i]].num_arch)/log(2));
+        template->chrom_length = template->chrom_length + template->gene_length[i];
+        
+        printf("Gene % .2d is of type %d and should be %d bits long\n", (i+1),
+                template->opr[i], template->gene_length[i]);
     }
     
-    template.gene_length = malloc(sizeof(int) * template.num_genes);
-    for(i=0; i<(template.num_genes); i++){
-        template.gene_length[i] = ceil(log(operation[template.opr[i]].num_arch)/log(2));
-    }
+    printf("\nThe chromosome should be %d bits in length\n", template->chrom_length);
+    
     
     freeDFG(graph);
     return true;
+}
+
+void freeProblem(){
+    freeArchLibrary();
+    
+    free(template->gene_length);
+    free(template->opr);
+    free(template);
 }
 
 

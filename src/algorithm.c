@@ -24,15 +24,9 @@
 
 int main(int argc, char * argv[]){
     
-    // FIX - validate each of the arguments
-    // FIX - Improve the error message
-//    if(argc < 2){
-//        fprintf(stderr, "Improper arguments. \nPlease try again, using the following format : "
-//                "\n\tGA.exe <rand_seed> \n\nFor more information, please view the README file");
-//        exit(1);
-//    }
     initProblem(ARCH_FILENAME, DFG_FILENAME);
     
+    freeProblem();
     
     return 0;
 }
@@ -47,3 +41,12 @@ int main(int argc, char * argv[]){
  * PRECONDITIONS : 
  * RETURNS : 
  *****************************************************************************/
+
+
+    // FIX - validate each of the arguments
+    // FIX - Improve the error message
+//    if(argc < 2){
+//        fprintf(stderr, "Improper arguments. \nPlease try again, using the following format : "
+//                "\n\tGA.exe <rand_seed> \n\nFor more information, please view the README file");
+//        exit(1);
+//    }

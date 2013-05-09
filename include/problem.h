@@ -27,12 +27,15 @@ typedef struct{
     int num_genes;
     int * gene_length;
     int * opr;
+    int chrom_length;
 }Representation;
 
-static Representation template;
+static Representation * template;
 
 // FIX - needs comment
 bool initProblem(char *, char *);
+
+void freeProblem();
 
 /******************************************************************************
  *****************          RANDOM NUMBER GENERATION          *****************
