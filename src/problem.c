@@ -195,17 +195,16 @@ int getNextOperation(FILE * fp){
     
     fscanf(fp, "%20s", buffer);
     
-    if(strcmp("OpAdd", buffer) == 0){
+    if(strcmp("1", buffer) == 0){
         return a;
     }
-    if(strcmp("OpSub", buffer) == 0){
+    if(strcmp("2", buffer) == 0){
         return s;
     }
-//    if(strcmp("OPMult", buffer) == 0){
-//        return m;
-//    }
-//    return d;
-    return m;
+    if(strcmp("3", buffer) == 0){
+        return m;
+    }
+    return d;
 }
 
 void freeDFG(DFG * graph){

@@ -42,7 +42,11 @@ void freeIndividual(Individual *);
 #define RUNTIME_WEIGHT 0.6
 #define POWER_WEIGHT 1 - RUNTIME_WEIGHT
 
-int encodingToAllele(char * encoding);
+void calculateFitness(Individual *);
+double evaluateGene(char *, int);
+int encodingToAllele(char *);
+void alleleToEncoding(int , int , char *);
+
 // MUTATION OPERATOR
 
 // CROSSOVER OPERATOR

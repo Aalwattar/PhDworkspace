@@ -41,27 +41,89 @@ Individual * generateRandIndividual(){
         j = strlen(individual->encoding);
     }
     
+    individual->fitness = 0;
+    individual->cfitness = 0;
+    individual->rfitness = 0;
+    
     return individual;
 }
 
 // FIX - needs to handle variable numbers of implementations
 void generateRandGene(Individual * individual, int gene_num, int chrom_position){
-    //template->gene_length[i]);
     int rand_arch_num;
     char * gene;
-    int gene_length;
-    
-    int i = 0, j;
-    int length;
-    char temp;
     
     gene = &(individual->encoding[chrom_position]);
-    gene_length = template->gene_length[template->opr[gene_num]];
     rand_arch_num = (operation[template->opr[gene_num]].num_arch * randomNumber());
     
-    while(rand_arch_num != 0){
-        gene[i++] = rand_arch_num % 2 + '0';
-        rand_arch_num = rand_arch_num / 2;
+    alleleToEncoding(rand_arch_num, gene_num, gene);
+}
+
+void freeIndividual(Individual * i){
+    free(i->encoding);
+    free(i);
+}
+
+
+
+void calculateFitness(Individual * individual){
+    double fitness;
+    char allele[MAX_GENE_SIZE];
+    int i, j;
+    
+    j = 0;
+    fitness = 0;
+    for(i=0; i<template->num_genes; i++){
+        strncpy(allele, &(individual->encoding[j]), template->gene_length[i]);
+        allele[template->gene_length[i]] = '\0';
+        j = j + template->gene_length[i];
+        
+        fitness = fitness + evaluateGene(allele, template->opr[i]);
+    }
+    
+    individual->fitness = fitness;
+}
+
+double evaluateGene(char * gene, int oper){
+    int allele;
+    double runtime;
+    double power;
+    
+    allele = encodingToAllele(gene);
+    runtime = operation[oper].arch[allele].runtime;
+    power = operation[oper].arch[allele].power;
+    
+    return (RUNTIME_WEIGHT)*runtime + (POWER_WEIGHT)*power;
+}
+
+
+
+int encodingToAllele(char * encoding){
+    int sum;
+    int length;
+    int i = 0;
+    
+    sum = 0;
+    length = strlen(encoding);
+    
+    while(i < length){
+        sum = sum + pow(2, length - i - 1) * (encoding[i++] - '0');
+    }
+    
+    return sum;
+}
+
+void alleleToEncoding(int allele, int gene_num, char * gene){
+    int gene_length;
+    int i = 0;
+    int j;
+    char temp;
+    
+    gene_length = template->gene_length[gene_num];
+    
+    while(allele != 0){
+        gene[i++] = allele % 2 + '0';
+        allele = allele / 2;
     }
     gene[i] = '\0';
     
@@ -70,31 +132,10 @@ void generateRandGene(Individual * individual, int gene_num, int chrom_position)
         gene[i] = '\0';
     }
     
-    length = strlen(gene) - 1;
-    for(i=0, j = length; i<j; i++, j--){
+    gene_length = strlen(gene) - 1;
+    for(i=0, j = gene_length; i<j; i++, j--){
         temp = gene[i];
         gene[i] = gene[j];
         gene[j] = temp;
     }
-}
-
-void freeIndividual(Individual * i){
-    free(i->encoding);
-    free(i);
-}
-
-int encodingToAllele(char * encoding){
-    int sum;
-    int length;
-    int i;
-    
-    sum = 0;
-    length = strlen(encoding);
-    i = 0;
-    
-    while(i < length){
-        sum = sum + pow(2, length - i - 1) * (encoding[i++] - '0');
-    }
-    
-    return sum;
 }
