@@ -35,6 +35,7 @@ bool initProblem(char * arc_filename, char * dfg_filename){
         template.gene_length[i] = ceil(log(operation[template.opr[i]].num_arch)/log(2));
     }
     
+    freeDFG(graph);
     return true;
 }
 
@@ -194,6 +195,11 @@ int getNextOperation(FILE * fp){
 //    }
 //    return d;
     return m;
+}
+
+void freeDFG(DFG * graph){
+    free(graph->operation);
+    free(graph);
 }
 
 /******************************************************************************
