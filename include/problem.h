@@ -9,7 +9,7 @@
  * Email  : jwiner@uoguelph.ca
  * 
  * DATE CREATED : May 7, 2013
- * LAST MODIFIED : May 10, 2013
+ * LAST MODIFIED : May 12, 2013
  ******************************************************************************/
 
 #include <stdio.h>
@@ -40,20 +40,20 @@ typedef struct {
 
 // contains all of the architectures of an operation
 typedef struct{
-    int num_impl;
-    Implementation * impl;
+    int num_impl;               // the number of architectures for that operation
+    Implementation * impl;      // the Implementation properties of each architecture
 }Operation;
 
 // encapsulates relevant aspects of the DFG we are trying to schedule
 typedef struct{
-    int num_nodes;
-    int * oper; 
+    int num_nodes;      // The number of nodes (tasks) in the DFG
+    int * oper;         // The operation of each task
 }DFG;
 
 // contains information for representing the problem as a chromosome
 typedef struct{
-    int num_genes;
-    int * oper;
+    int num_genes;      // the number of tasks (the number of genes on a chromosome)
+    int * oper;         // the type of operation of each task
 }Representation;
 
 

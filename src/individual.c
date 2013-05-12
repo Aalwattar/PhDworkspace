@@ -10,7 +10,7 @@
  * Email  : jwiner@uoguelph.ca
  * 
  * DATE CREATED : May 7, 2013
- * LAST MODIFIED : May 10, 2013
+ * LAST MODIFIED : May 12, 2013
  ******************************************************************************/
 
 #include "individual.h"
@@ -33,7 +33,6 @@ void initRandIndividual(Individual * individual){
 
 void freeIndividual(Individual * i){
     free(i->encoding);
-    free(i);
 }
 
 Individual * duplicateIndividual(Individual * original){
