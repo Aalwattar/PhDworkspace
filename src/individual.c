@@ -33,8 +33,7 @@ void initRandIndividual(Individual * individual){
 
 void freeIndividual(Individual * i){
     free(i->encoding);
-    // FIX
-    //free(i);
+    free(i);
 }
 
 Individual * duplicateIndividual(Individual * original){
@@ -96,34 +95,6 @@ void crossover(Individual * p1, Individual * p2){
     int temp;
     int i;
     
-//    static int ind1 = 0;
-//    static int ind2 = 0;
-//    
-//    printf("i=%d    j=%d\t", ind1, ind2);
-//    
-//    for(i=ind1; i <= ind2; i++){
-//        temp = p1->encoding[i];
-//        p1->encoding[i] = p2->encoding[i];
-//        p2->encoding[i] = temp;
-//    }
-//    
-//    if(ind1 > ind2){
-//        printf("INVAILD %d is bigger than %d\n", ind1, ind2);
-//    }
-//    else{
-//        for(i=0; i<template->num_genes; i++){
-//            printf("%d", p1->encoding[i]);
-//        }
-//        printf("\n");
-//    }
-//    
-//    
-//    ind2++;
-//    if(ind2 >= template->num_genes){
-//        ind2 = 0;
-//        ind1++;
-//    }
-    
     cross1 = template->num_genes * randomNumber();
     cross2 = template->num_genes * randomNumber();
     
@@ -131,16 +102,20 @@ void crossover(Individual * p1, Individual * p2){
         cross2 = template->num_genes * randomNumber();
     }
     if(cross1 > cross2){
-        temp = cross1;
+        // Unnecessary, but fun!
+//        Individual * swap;
+//        swap = p1;
+//        p1 = p2;
+//        p2 = swap;
+        
+        temp = cross1; 
         cross1 = cross2;
         cross2 = temp;
     }
     
-    
-    
     for(i=cross1; i <= cross2; i++){
         temp = p1->encoding[i];
-        p1->encoding = p2->encoding[i];
-        p2->encoding = temp;
+        p1->encoding[i] = p2->encoding[i];
+        p2->encoding[i] = temp;
     }
 }

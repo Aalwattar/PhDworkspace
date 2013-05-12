@@ -15,16 +15,16 @@
 
 #include "population.h"
 
-Population * genRandPopulation(){
-	Population * pop;
-	int i;
-
-	pop = malloc(sizeof(Population));
-	pop->organism = malloc(sizeof(Individual) * POP_SIZE);
-    pop->total_fitness = 0;
-	pop->best_individual = -1;
-
- 	for (i=0; i<POP_SIZE; i++){
-        initRandIndividual(&(pop->organism[i]));
-    }
-}
+//Population * genRandPopulation(){
+//	Population * pop;
+//	int i;
+//
+//	pop = malloc(sizeof(Population));
+//	pop->organism = malloc(sizeof(Individual) * POP_SIZE);
+//    pop->total_fitness = 0;
+//	pop->best_individual = -1;
+//
+// 	for (i=0; i<POP_SIZE; i++){
+//        initRandIndividual(&(pop->organism[i]));
+//    }
+//}

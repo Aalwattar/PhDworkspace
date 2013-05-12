@@ -48,26 +48,16 @@ int main(int argc, char * argv[]){
         p2.encoding[i] = 0;
     }
     
-    
-    for(i=0; i<template->num_genes; i++){
-        printf("%d", p1.encoding[i]);
-    }
-    printf("\n");
-    
     for(int i=0; i<template->num_genes; i++){
-        for(int j=0; j<template->num_genes; j++){
-            copy1 = duplicateIndividual(&p1);
-            copy2 = duplicateIndividual(&p2);
-            
-            crossover(copy1, copy2);
-            
-            freeIndividual(copy1);
-            freeIndividual(copy2);
-            free(copy1);
-            free(copy2);
-        }
-        
-        printf("\n");
+        copy1 = duplicateIndividual(&p1);
+        copy2 = duplicateIndividual(&p2);
+
+        crossover(copy1, copy2);
+
+        freeIndividual(copy1);
+        freeIndividual(copy2);
+        free(copy1);
+        free(copy2);
     }
     
     free(p1.encoding);
