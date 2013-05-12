@@ -35,11 +35,9 @@ void freeIndividual(Individual * i){
     free(i->encoding);
 }
 
-Individual * duplicateIndividual(Individual * original){
-    Individual * copy;
+void duplicateIndividual(Individual * copy, Individual * original){
     int i;
     
-    copy = malloc(sizeof(Individual));
     copy->encoding = malloc(sizeof(int) * (template->num_genes));
     
     for(i=0; i<template->num_genes; i++){
@@ -49,8 +47,6 @@ Individual * duplicateIndividual(Individual * original){
     copy->fitness = 0;
     copy->cfitness = 0;
     copy->rfitness = 0; 
-    
-    return copy;
 }
 
 

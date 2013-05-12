@@ -21,8 +21,8 @@
 #define RUNTIME_WEIGHT 0.6
 #define POWER_WEIGHT 1 - RUNTIME_WEIGHT
 
-#define CROSSOVER_RATE  0.8
-#define MUTATION_RATE   0.05
+#define CROSSOVER_RATE  0.6
+#define MUTATION_RATE   0.001
 
 
 
@@ -58,7 +58,8 @@ void initRandIndividual(Individual *);
  * NAME : duplicateIndividual
  * 
  * PURPOSE : Creates a deep copy of the individual passed in as an argument 
- * ARGUMENTS : Individual * = the individual that you wish to copy
+ * ARGUMENTS : Individual * = the destination for the copy
+ *             Individual * = the individual that you wish to copy
  * 
  * RETURNS : An individual that contains the same data as the individual passed
  *              in as an argument
@@ -67,7 +68,7 @@ void initRandIndividual(Individual *);
  *      previously created either through initRandIndividual() or 
  *      duplicateIndividual().
  *****************************************************************************/
-Individual * duplicateIndividual(Individual *);
+void duplicateIndividual(Individual *, Individual *);
 
 /******************************************************************************
  * NAME : freeIndividual

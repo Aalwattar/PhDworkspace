@@ -9,7 +9,7 @@
  * Email  : jwiner@uoguelph.ca
  * 
  * DATE CREATED : May 7, 2013
- * LAST MODIFIED : May 9, 2013
+ * LAST MODIFIED : May 12, 2013
  ******************************************************************************/
 
 #include "individual.h"
@@ -17,16 +17,14 @@
 #ifndef POPULATION_H
 #define	POPULATION_H
 
-#define POP_SIZE  50               /* population size */
-#define MAXGENS   1000             /* max. number of generations */
-
-
+#define POP_SIZE        50      // MUST BE AN EVEN NUMBER
+#define STOP_CONDITION  10000
 
 int generation_num;
 
 // REPRESENTATION
 typedef struct{
-    Individual * organism;
+    Individual member[POP_SIZE];
     double total_fitness;
 
     int best_individual;
@@ -34,14 +32,16 @@ typedef struct{
 
 
 Population * genRandPopulation();
-
-
+void freePopulation(Population *);
 
 // SELECTION ALGORITHM - generate mating pool
+Population * generateMatingPool(Population *);
 
 // COUPLING ALGORITHM - choose pairs to mate
+void generateNextGeneration(Population *);
 
 // REPLACEMENT ALGORITHM - generational, steady state?, replace worst?
+        // FIX - I AM ASSUMING THAT THE ENTIRE GENERATION IS REPLACED FOR NOW
 
 // FIND THE BEST INDIVIDUAL - when the algorithm ends
 
