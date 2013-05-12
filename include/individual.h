@@ -9,7 +9,7 @@
  * Email  : jwiner@uoguelph.ca
  * 
  * DATE CREATED : May 7, 2013
- * LAST MODIFIED : May 8, 2013
+ * LAST MODIFIED : May 10, 2013
  ******************************************************************************/
 
 #include "problem.h"
@@ -17,39 +17,33 @@
 #ifndef INDIVIDUAL_H
 #define	INDIVIDUAL_H
 
-// CHANGE ALL STATIC VARIABLES TO NON-POINTERS
 
+#define RUNTIME_WEIGHT 0.6
+#define POWER_WEIGHT 1 - RUNTIME_WEIGHT
 
-
+#define CROSSOVER_RATE  0.8               /* probability of crossover */
+#define MUTATION_RATE   0.05           /* probability of mutation */
 // REPRESENTATION OF THE PROBLEM
-#define MAX_GENE_SIZE 20
-
 typedef struct{
-    char * encoding;
+    int * encoding;
     
     double fitness;
     double rfitness;
     double cfitness;
 } Individual;
 
-Individual * generateRandIndividual();
-void generateRandGene(Individual * individual, int gene_num, int chrom_position);
+void initRandIndividual(Individual *);
+Individual * duplicateIndividual(Individual *);
 void freeIndividual(Individual *);
 
 // FITNESS FUNCTION
-// FIX - FOR TESTING PURPOSES ONLY
-
-#define RUNTIME_WEIGHT 0.6
-#define POWER_WEIGHT 1 - RUNTIME_WEIGHT
-
-void calculateFitness(Individual *);
-double evaluateGene(char *, int);
-int encodingToAllele(char *);
-void alleleToEncoding(int , int , char *);
+void evaluateFitness(Individual *);
 
 // MUTATION OPERATOR
+void mutate(Individual *);
 
 // CROSSOVER OPERATOR
+void crossover(Individual *, Individual *);
 
 #endif	/* INDIVIDUAL_H */
 

@@ -10,132 +10,137 @@
  * Email  : jwiner@uoguelph.ca
  * 
  * DATE CREATED : May 7, 2013
- * LAST MODIFIED : May 8, 2013
+ * LAST MODIFIED : May 10, 2013
  ******************************************************************************/
-
-/* NOTES
- * - each gene will correspond to one task (eg. addition, multiplication, etc.)
- * - each allele will correspond to a specific hardware implementation of that task
- *      - the allele will be an integer = the row number of a table provided
- */
-
-/* PRECONDITIONS  
- * 
- * - the file that contains the table of values (areas, times, and power) has been
- *      previously initialized and set in the #DEFINE statements
- */
 
 #include "individual.h"
 
 
-Individual * generateRandIndividual(){
-    Individual * individual;
+void initRandIndividual(Individual * individual){
     int i;
-    int j = 0;
     
-    individual = malloc(sizeof(Individual));
-    individual->encoding = malloc(sizeof(char) * (template->chrom_length + 1));
+    individual->encoding = malloc(sizeof(int) * (template->num_genes));
     
     for(i=0; i<template->num_genes; i++){
-        generateRandGene(individual, i, j);
-        j = strlen(individual->encoding);
+        individual->encoding[i] = arch_library[template->oper[i]].num_impl
+                * randomNumber();
     }
     
     individual->fitness = 0;
     individual->cfitness = 0;
     individual->rfitness = 0;
-    
-    return individual;
-}
-
-// FIX - needs to handle variable numbers of implementations
-void generateRandGene(Individual * individual, int gene_num, int chrom_position){
-    int rand_arch_num;
-    char * gene;
-    
-    gene = &(individual->encoding[chrom_position]);
-    rand_arch_num = (operation[template->opr[gene_num]].num_arch * randomNumber());
-    
-    alleleToEncoding(rand_arch_num, gene_num, gene);
 }
 
 void freeIndividual(Individual * i){
     free(i->encoding);
-    free(i);
+    // FIX
+    //free(i);
+}
+
+Individual * duplicateIndividual(Individual * original){
+    Individual * copy;
+    int i;
+    
+    copy = malloc(sizeof(Individual));
+    copy->encoding = malloc(sizeof(int) * (template->num_genes));
+    
+    for(i=0; i<template->num_genes; i++){
+        copy->encoding[i] = original->encoding[i];
+    }
+    
+    copy->fitness = 0;
+    copy->cfitness = 0;
+    copy->rfitness = 0; 
+    
+    return copy;
 }
 
 
 
-void calculateFitness(Individual * individual){
+void evaluateFitness(Individual * individual){
     double fitness;
-    char allele[MAX_GENE_SIZE];
-    int i, j;
+    double runtime;
+    double power;
     
-    j = 0;
+    int oper;
+    int allele;
+    int i;
+    
     fitness = 0;
     for(i=0; i<template->num_genes; i++){
-        strncpy(allele, &(individual->encoding[j]), template->gene_length[i]);
-        allele[template->gene_length[i]] = '\0';
-        j = j + template->gene_length[i];
+        oper = template->oper[i];
+        allele = individual->encoding[i];
         
-        fitness = fitness + evaluateGene(allele, template->opr[i]);
+        runtime = arch_library[oper].impl[allele].runtime;
+        power = arch_library[oper].impl[allele].power;
+    
+        fitness = fitness + (RUNTIME_WEIGHT)*runtime + (POWER_WEIGHT)*power;
     }
     
     individual->fitness = fitness;
 }
 
-double evaluateGene(char * gene, int oper){
-    int allele;
-    double runtime;
-    double power;
+void mutate(Individual * ind){
+    int i;
     
-    allele = encodingToAllele(gene);
-    runtime = operation[oper].arch[allele].runtime;
-    power = operation[oper].arch[allele].power;
-    
-    return (RUNTIME_WEIGHT)*runtime + (POWER_WEIGHT)*power;
+    for(i=0; i<template->num_genes; i++){
+        if(randomNumber() < MUTATION_RATE){
+            ind->encoding[i] = arch_library[template->oper[i]].num_impl
+                * randomNumber();
+        }
+    }
 }
 
-
-
-int encodingToAllele(char * encoding){
-    int sum;
-    int length;
-    int i = 0;
+void crossover(Individual * p1, Individual * p2){
+    int cross1, cross2;
+    int temp;
+    int i;
     
-    sum = 0;
-    length = strlen(encoding);
+//    static int ind1 = 0;
+//    static int ind2 = 0;
+//    
+//    printf("i=%d    j=%d\t", ind1, ind2);
+//    
+//    for(i=ind1; i <= ind2; i++){
+//        temp = p1->encoding[i];
+//        p1->encoding[i] = p2->encoding[i];
+//        p2->encoding[i] = temp;
+//    }
+//    
+//    if(ind1 > ind2){
+//        printf("INVAILD %d is bigger than %d\n", ind1, ind2);
+//    }
+//    else{
+//        for(i=0; i<template->num_genes; i++){
+//            printf("%d", p1->encoding[i]);
+//        }
+//        printf("\n");
+//    }
+//    
+//    
+//    ind2++;
+//    if(ind2 >= template->num_genes){
+//        ind2 = 0;
+//        ind1++;
+//    }
     
-    while(i < length){
-        sum = sum + pow(2, length - i - 1) * (encoding[i++] - '0');
+    cross1 = template->num_genes * randomNumber();
+    cross2 = template->num_genes * randomNumber();
+    
+    while(cross1 == cross2){
+        cross2 = template->num_genes * randomNumber();
+    }
+    if(cross1 > cross2){
+        temp = cross1;
+        cross1 = cross2;
+        cross2 = temp;
     }
     
-    return sum;
-}
-
-void alleleToEncoding(int allele, int gene_num, char * gene){
-    int gene_length;
-    int i = 0;
-    int j;
-    char temp;
     
-    gene_length = template->gene_length[gene_num];
     
-    while(allele != 0){
-        gene[i++] = allele % 2 + '0';
-        allele = allele / 2;
-    }
-    gene[i] = '\0';
-    
-    while(strlen(gene) < gene_length){
-        gene[i++] = '0';
-        gene[i] = '\0';
-    }
-    
-    gene_length = strlen(gene) - 1;
-    for(i=0, j = gene_length; i<j; i++, j--){
-        temp = gene[i];
-        gene[i] = gene[j];
-        gene[j] = temp;
+    for(i=cross1; i <= cross2; i++){
+        temp = p1->encoding[i];
+        p1->encoding = p2->encoding[i];
+        p2->encoding = temp;
     }
 }

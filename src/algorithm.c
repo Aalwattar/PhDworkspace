@@ -27,18 +27,51 @@
 //      - fitness = 8379
 
 int main(int argc, char * argv[]){
-    Individual * person;
+    Individual p1, p2;
+    Individual * copy1, * copy2;
     int i;
     
     initProblem(ARCH_FILENAME, DFG_FILENAME);
     
-    for(i=0; i<50; i++){
-        person = generateRandIndividual();
-        calculateFitness(person);
-        printf("Person : %s\tFitness : %.2lf\n", person->encoding, person->fitness);
-        freeIndividual(person);
+    // for(i=0; i<50; i++){
+    //     person = generateRandIndividual();
+    //     calculateFitness(person);
+    //     printf("Person : %s\tFitness : %.2lf\n", person->encoding, person->fitness);
+    //     freeIndividual(person);
+    // }
+    
+    p1.encoding = malloc(sizeof(int) * template->num_genes);
+    p2.encoding = malloc(sizeof(int) * template->num_genes);
+    
+    for(i=0; i<template->num_genes; i++){
+        p1.encoding[i] = 1;
+        p2.encoding[i] = 0;
     }
-
+    
+    
+    for(i=0; i<template->num_genes; i++){
+        printf("%d", p1.encoding[i]);
+    }
+    printf("\n");
+    
+    for(int i=0; i<template->num_genes; i++){
+        for(int j=0; j<template->num_genes; j++){
+            copy1 = duplicateIndividual(&p1);
+            copy2 = duplicateIndividual(&p2);
+            
+            crossover(copy1, copy2);
+            
+            freeIndividual(copy1);
+            freeIndividual(copy2);
+            free(copy1);
+            free(copy2);
+        }
+        
+        printf("\n");
+    }
+    
+    free(p1.encoding);
+    free(p2.encoding);
     freeProblem();
     return 0;
 }

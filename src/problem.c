@@ -10,67 +10,43 @@
  * Email  : jwiner@uoguelph.ca
  * 
  * DATE CREATED : May 7, 2013
- * LAST MODIFIED : May 8, 2013
+ * LAST MODIFIED : May 10, 2013
  ******************************************************************************/
 
 #include "problem.h"
 
 
-bool initProblem(char * arc_filename, char * dfg_filename){
-    DFG * graph;
+bool initProblem(char * arch_filename, char * dfg_filename){
     int i;
     
     // FIX - make option to enter your own seed
     randSeed();
     
-    initArchLibrary(arc_filename);
-    graph = initDFG(dfg_filename);
+    initArchLibrary(arch_filename);
+    initDFG(dfg_filename);
     
     template = malloc(sizeof(Representation));
     template->num_genes = graph->num_nodes;
-    template->opr = malloc(sizeof(int) * template->num_genes);
-    template->gene_length = malloc(sizeof(int) * template->num_genes);
-    template->chrom_length = 0;
+    template->oper = malloc(sizeof(int) * template->num_genes);
     
     for(i=0; i<(template->num_genes); i++){
-        template->opr[i] = graph->operation[i];
-        template->gene_length[i] = ceil(log(operation[template->opr[i]].num_arch)/log(2));
-        template->chrom_length = template->chrom_length + template->gene_length[i];
+        template->oper[i] = graph->oper[i];
     }
     
-    freeDFG(graph);
+    freeDFG();
     return true;
 }
+
+
 
 void freeProblem(){
     freeArchLibrary();
     
-    free(template->gene_length);
-    free(template->opr);
+    free(template->oper);
     free(template);
 }
 
 
-/******************************************************************************
- *****************          RANDOM NUMBER GENERATION          *****************
- *****************************************************************************/
-
-void seedRandGenerator(int seed){
-    srand(seed);
-}
-
-void randSeed(void){
-    int seed;
-    
-    seed = time(NULL);
-    fprintf(stdout, "Seed: %d\n", seed);
-    
-    srand(seed);
-}
-
-double randomNumber(void){
-    return rand() / (double) RAND_MAX;
-}
 
 /******************************************************************************
  *****************            ARCHITECTURE FILE I/O           *****************
@@ -116,25 +92,25 @@ bool initArchLibrary(char * filename){
 
 // FIX - CREATES MEMORY LEAKS IF THE FILE IS NOT FORMATTED CORRECTLY
 bool parseArchLibrary(FILE * fp){
-    char op_type;
+    char oper_type;
     int num_impl;
     int i, j;
     
-    operation = malloc(sizeof(Operation) * 4);
+    arch_library = malloc(sizeof(Operation) * 4);
     for(i=0; i<4; i++){
         
         // FIX - find a better way to handle newlines in the file
         fscanf(fp, "\n");
-        if(fscanf(fp, "%c %d", &op_type, &num_impl) != 2)
+        if(fscanf(fp, "%c %d", &oper_type, &num_impl) != 2)
             return false;
         
-        (operation[i]).num_arch = num_impl;
-        (operation[i]).arch = malloc(sizeof(Architecture) * (operation[i]).num_arch);
+        (arch_library[i]).num_impl = num_impl;
+        (arch_library[i]).impl = malloc(sizeof(Implementation) * (arch_library[i]).num_impl);
         
         for(j=0; j<num_impl; j++){
-            if(fscanf(fp, "%lf %lf %lf", &(((operation[i]).arch[j]).runtime),
-                    &(((operation[i]).arch[j]).power),
-                    &(((operation[i]).arch[j]).area)) != 3){
+            if(fscanf(fp, "%lf %lf %lf", &(((arch_library[i]).impl[j]).runtime),
+                    &(((arch_library[i]).impl[j]).power),
+                    &(((arch_library[i]).impl[j]).area)) != 3){
                 return false;
             }
         }
@@ -146,13 +122,24 @@ void freeArchLibrary(){
     int i;
     
     for(i=0; i<4; i++){
-        free((operation[i]).arch);
+        free((arch_library[i]).impl);
     }
     
-    free(operation);
+    free(arch_library);
 }
 
-
+void printArchLibrary(){
+    char * names[] = {"Addition", "Subtraction", "Multiplication", "Division"};
+    int i, j;
+    
+    for(i=0; i<4; i++){
+        fprintf(stdout, "%s:\n", names[i]);
+        for(j=0; j<(arch_library[i]).num_impl; j++){
+            fprintf(stdout, "%.1lf\t%.1lf\t%.1lf\n", ((arch_library[i]).impl[j]).runtime,
+                        ((arch_library[i]).impl[j]).power, ((arch_library[i]).impl[j]).area);
+        }
+    }
+}
 
 /******************************************************************************
  ***********************           DFG FILE I/O         ***********************
@@ -161,10 +148,8 @@ void freeArchLibrary(){
 int getNextOperation(FILE *);
 
 // FIX - could use some more error checking
-DFG * initDFG(char * filename){
+bool initDFG(char * filename){
     FILE * fp;
-    
-    DFG * graph;
     int num_nodes;
     int i;
     
@@ -180,16 +165,17 @@ DFG * initDFG(char * filename){
     fscanf(fp, "%d", &num_nodes);
     graph = malloc(sizeof(DFG));
     graph->num_nodes = num_nodes;
-    graph->operation = malloc(sizeof(int) * num_nodes);
+    graph->oper = malloc(sizeof(int) * num_nodes);
     
     for(i=0; i<num_nodes; i++){
-        graph->operation[i] = getNextOperation(fp);
+        graph->oper[i] = getNextOperation(fp);
     }
     
     fclose(fp);
-    return graph;
+    return true;
 }
 
+// FIX
 int getNextOperation(FILE * fp){
     char buffer[20];
     
@@ -207,25 +193,30 @@ int getNextOperation(FILE * fp){
     return d;
 }
 
-void freeDFG(DFG * graph){
-    free(graph->operation);
+void freeDFG(void){
+    free(graph->oper);
     free(graph);
 }
 
 
+
 /******************************************************************************
- *****************             TESTING FUNCTIONS              *****************
+ *****************          RANDOM NUMBER GENERATION          *****************
  *****************************************************************************/
 
-void printArchLibrary(){
-    char * names[] = {"Addition", "Subtraction", "Multiplication", "Division"};
-    int i, j;
+void seedRandGenerator(int seed){
+    srand(seed);
+}
+
+void randSeed(void){
+    int seed;
     
-    for(i=0; i<4; i++){
-        fprintf(stdout, "%s:\n", names[i]);
-        for(j=0; j<(operation[i]).num_arch; j++){
-            fprintf(stdout, "%.1lf\t%.1lf\t%.1lf\n", ((operation[i]).arch[j]).runtime,
-                        ((operation[i]).arch[j]).power, ((operation[i]).arch[j]).area);
-        }
-    }
+    seed = time(NULL);
+    fprintf(stdout, "Seed: %d\n", seed);
+    
+    srand(seed);
+}
+
+double randomNumber(void){
+    return rand() / (double) RAND_MAX;
 }
