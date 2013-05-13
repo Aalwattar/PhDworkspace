@@ -39,6 +39,11 @@ Population * genRandPopulation(){
 }
 
 void freePopulation(Population * pop){
+    int i;
+    
+    for(i=0; i<POP_SIZE; i++){
+        freeIndividual(&(pop->member[i]));
+    }
     free(pop);
 }
 

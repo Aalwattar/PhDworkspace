@@ -60,6 +60,7 @@ int main(int argc, char * argv[]){
         printf("\n");
     }
     
+    freePopulation(pop);
     freeProblem();
     return 0;
 }
