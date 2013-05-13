@@ -10,7 +10,7 @@
  * Email  : jwiner@uoguelph.ca
  * 
  * DATE CREATED : May 7, 2013
- * LAST MODIFIED : May 12, 2013
+ * LAST MODIFIED : May 13, 2013
  ******************************************************************************/
 
 #include "population.h"
@@ -48,7 +48,7 @@ void freePopulation(Population * pop){
 }
 
 // tournament selection of size 2
-Population * generateMatingPool(Population * original){
+Population * selectMatingPool(Population * original){
     Population * mating_pool;
     int p1, p2;
     int i;
@@ -70,6 +70,7 @@ Population * generateMatingPool(Population * original){
     return mating_pool;
 }
 
+// a Generational algorithm
 void generateNextGeneration(Population * pop){
     int i;
     

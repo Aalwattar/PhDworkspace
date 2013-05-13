@@ -10,7 +10,7 @@
  * Email  : jwiner@uoguelph.ca
  * 
  * DATE CREATED : May 7, 2013
- * LAST MODIFIED : May 10, 2013
+ * LAST MODIFIED : May 13, 2013
  ******************************************************************************/
 
 #include "problem.h"
@@ -39,7 +39,7 @@ bool initProblem(char * arch_filename, char * dfg_filename){
 
 
 
-void freeProblem(){
+void freeProblem(void){
     freeArchLibrary();
     
     free(template->oper);
@@ -118,7 +118,7 @@ bool parseArchLibrary(FILE * fp){
     return true;
 }
 
-void freeArchLibrary(){
+void freeArchLibrary(void){
     int i;
     
     for(i=0; i<4; i++){
@@ -128,7 +128,7 @@ void freeArchLibrary(){
     free(arch_library);
 }
 
-void printArchLibrary(){
+void printArchLibrary(void){
     char * names[] = {"Addition", "Subtraction", "Multiplication", "Division"};
     int i, j;
     

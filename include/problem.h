@@ -9,7 +9,7 @@
  * Email  : jwiner@uoguelph.ca
  * 
  * DATE CREATED : May 7, 2013
- * LAST MODIFIED : May 12, 2013
+ * LAST MODIFIED : May 13, 2013
  ******************************************************************************/
 
 #include <stdio.h>
@@ -92,7 +92,7 @@ bool initProblem(char *, char *);
  * PRECONDITIONS : this function should only be called if initProblem() 
  *                  returned true
  *****************************************************************************/
-void freeProblem();
+void freeProblem(void);
 
 
 
@@ -124,7 +124,7 @@ bool initArchLibrary(char *);
  * PRECONDITIONS : This function should only be called if initArchLibrary()
  *                  returned true
  *****************************************************************************/
-void freeArchLibrary();
+void freeArchLibrary(void);
 
 /******************************************************************************
  * NAME : printArchLibrary
@@ -136,7 +136,7 @@ void freeArchLibrary();
  * 
  * NOTE : this function exists for testing and debugging purposes only.
  *****************************************************************************/
-void printArchLibrary();
+void printArchLibrary(void);
 
 
 
