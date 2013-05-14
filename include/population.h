@@ -17,13 +17,14 @@
 #ifndef POPULATION_H
 #define	POPULATION_H
 
-#define POP_SIZE 50      // MUST BE AN EVEN NUMBER
+//#define POP_SIZE 50      // MUST BE AN EVEN NUMBER
+extern int POP_SIZE;
 
 /******************************************************************************
  *****************         POPULATION REPRESENTATION         ******************
  *****************************************************************************/
 typedef struct{
-    Individual member[POP_SIZE];
+    Individual * member;
     double total_fitness;
 
     int best_individual;

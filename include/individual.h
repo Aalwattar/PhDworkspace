@@ -21,9 +21,10 @@
 #define RUNTIME_WEIGHT 0.6
 #define POWER_WEIGHT 1 - RUNTIME_WEIGHT
 
-#define CROSSOVER_RATE  0.6
-#define MUTATION_RATE   0.001
-
+//#define CROSSOVER_RATE  0.85
+//#define MUTATION_RATE   0.001
+extern double CROSSOVER_RATE;
+extern double MUTATION_RATE;
 
 
 /******************************************************************************

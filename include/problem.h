@@ -23,8 +23,11 @@
 #define	PROBLEM_H
 
 
-#define ARCH_FILENAME "architecture_library.txt"
-#define DFG_FILENAME  "DFG.txt"
+//#define ARCH_FILENAME "architecture_library.txt"
+//#define DFG_FILENAME  "DFG.txt"
+
+extern char * ARCH_FILENAME;
+extern char * DFG_FILENAME;
 
 
 /******************************************************************************

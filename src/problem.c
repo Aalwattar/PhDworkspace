@@ -15,12 +15,16 @@
 
 #include "problem.h"
 
+char * ARCH_FILENAME = "architecture_library.txt";
+char * DFG_FILENAME = "DFG.txt";
+
 
 bool initProblem(char * arch_filename, char * dfg_filename){
     int i;
     
     // FIX - make option to enter your own seed
     randSeed();
+    //seedRandGenerator(1368463890);
     
     initArchLibrary(arch_filename);
     initDFG(dfg_filename);

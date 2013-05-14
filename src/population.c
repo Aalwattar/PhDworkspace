@@ -15,12 +15,15 @@
 
 #include "population.h"
 
+int POP_SIZE = 50;
+
 Population * genRandPopulation(){
     Population * pop;
     int min_fitness;
     int i;
 
     pop = malloc(sizeof(Population));
+    pop->member = malloc(sizeof(Individual) * POP_SIZE);
 
     pop->total_fitness = 0;
     pop->best_individual = -1;
@@ -44,6 +47,8 @@ void freePopulation(Population * pop){
     for(i=0; i<POP_SIZE; i++){
         freeIndividual(&(pop->member[i]));
     }
+    
+    free(pop->member);
     free(pop);
 }
 
@@ -54,6 +59,7 @@ Population * selectMatingPool(Population * original){
     int i;
     
     mating_pool = malloc(sizeof(Population));
+    mating_pool->member = malloc(sizeof(Individual) * POP_SIZE);
     
     // FIX - do I need to ensure that the two chosen for comparison are different?
     for(i=0; i<POP_SIZE; i++){

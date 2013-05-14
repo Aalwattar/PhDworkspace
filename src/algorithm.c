@@ -18,23 +18,35 @@
 #include "population.h"
 
 // stopping conditions
-#define STOP_CONDITION 10000
+//#define STOP_CONDITION 500
 
+
+extern char * ARCH_FILENAME;
+extern char * DFG_FILENAME;
+
+extern double CROSSOVER_RATE;
+extern double MUTATION_RATE;
+extern int POP_SIZE;
+
+int STOP_CONDITION = 500;
 int generation_num;
-
-// different combinations of the various sub-algorithms
 
 
 // IDEAL SOLUTION:
 //      - all 0's
 //      - fitness = 8379
 
+void initParameters(int num_tokens, char ** input_token);
+
 int main(int argc, char * argv[]){
     Population * pop;
     Population * mating_pop;
     int i, j;
     
+    
+    initParameters(argc, argv);
     initProblem(ARCH_FILENAME, DFG_FILENAME);
+    
     pop = genRandPopulation();
     
     printf("Starting Population:\n");
@@ -68,6 +80,32 @@ int main(int argc, char * argv[]){
     return 0;
 }
 
+void initParameters(int num_tokens, char ** input_token){
+    int i;
+    
+    // FIX - make more robust
+    for(i=0; i<num_tokens; i++){
+        if(strncmp(input_token[i], "-ps=", 4) == 0){
+            POP_SIZE = atoi(&(input_token[i][4]));
+        }
+        if(strncmp(input_token[i], "-mr=", 4) == 0){
+            MUTATION_RATE = atof(&(input_token[i][4]));
+        }
+        if(strncmp(input_token[i], "-cr=", 4) == 0){
+            CROSSOVER_RATE = atof(&(input_token[i][4]));
+        }
+        if(strncmp(input_token[i], "-g=", 3) == 0){
+            STOP_CONDITION = atoi(&(input_token[i][4]));
+        }
+        if(strncmp(input_token[i], "-arch=", 6) == 0){
+            ARCH_FILENAME = &(input_token[i][6]);
+        }
+        if(strncmp(input_token[i], "-dfg=", 5) == 0){
+            DFG_FILENAME = &(input_token[i][6]);
+        }
+    }
+}
+
 
 // COMMENTING TEMPLATE
 
@@ -88,3 +126,12 @@ int main(int argc, char * argv[]){
 //                "\n\tGA.exe <rand_seed> \n\nFor more information, please view the README file");
 //        exit(1);
 //    }
+
+
+//    1. Pop size
+//    2. Mutation rate
+//    3. Crossover rate
+//    4. Termination criterion
+//    5. selection method
+//    6. crossover type
+//    7. mutation type
