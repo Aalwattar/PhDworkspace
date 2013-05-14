@@ -45,16 +45,17 @@ int main(int argc, char * argv[]){
     
     
     initParameters(argc, argv);
-    initProblem(ARCH_FILENAME, DFG_FILENAME);
+    initProblem();
     
     pop = genRandPopulation();
     
-    printf("Starting Population:\n");
+    fprintf(stdout, "\n----------------------------------------------------------\n");
+    fprintf(stdout, "Starting Population:\n");
     for(i=0; i<POP_SIZE; i++){
         for(j=0; j<template->num_genes; j++){
-            printf("%d", pop->member[i].encoding[j]);
+            fprintf(stdout, "%d", pop->member[i].encoding[j]);
         }
-        printf("\n");
+        fprintf(stdout, "\n");
     }
     
     while(generation_num < STOP_CONDITION){
@@ -67,12 +68,12 @@ int main(int argc, char * argv[]){
         generation_num++;
     }
     
-    printf("\nFinal Population:\n");
+    fprintf(stdout, "\nFinal Population:\n");
     for(i=0; i<POP_SIZE; i++){
         for(j=0; j<template->num_genes; j++){
-            printf("%d", pop->member[i].encoding[j]);
+            fprintf(stdout, "%d", pop->member[i].encoding[j]);
         }
-        printf("\n");
+        fprintf(stdout, "\n");
     }
     
     freePopulation(pop);
@@ -95,15 +96,25 @@ void initParameters(int num_tokens, char ** input_token){
             CROSSOVER_RATE = atof(&(input_token[i][4]));
         }
         if(strncmp(input_token[i], "-g=", 3) == 0){
-            STOP_CONDITION = atoi(&(input_token[i][4]));
+            STOP_CONDITION = atoi(&(input_token[i][3]));
         }
         if(strncmp(input_token[i], "-arch=", 6) == 0){
             ARCH_FILENAME = &(input_token[i][6]);
         }
         if(strncmp(input_token[i], "-dfg=", 5) == 0){
+            DFG_FILENAME = &(input_token[i][5]);
+        }
+        
+        if(strncmp(input_token[i], "-seed=", 6) == 0){
             DFG_FILENAME = &(input_token[i][6]);
         }
     }
+    
+    fprintf(stdout, "Parameters:\n");
+    fprintf(stdout, "\tPopulation Size       = %d\n", POP_SIZE);
+    fprintf(stdout, "\tNumber of Generations = %d\n\n", STOP_CONDITION);
+    fprintf(stdout, "\tMutation Rate  = %.4lf\n", MUTATION_RATE);
+    fprintf(stdout, "\tCrossover Rate = %.4lf\n\n\t", CROSSOVER_RATE);
 }
 
 

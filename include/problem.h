@@ -83,7 +83,7 @@ Representation * template;
  * NOTE : please see the README file for more information about the format
  *              and contents of both required files
  *****************************************************************************/
-bool initProblem(char *, char *);
+bool initProblem(void);
 
 
 /******************************************************************************

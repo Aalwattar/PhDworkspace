@@ -18,16 +18,15 @@
 char * ARCH_FILENAME = "architecture_library.txt";
 char * DFG_FILENAME = "DFG.txt";
 
-
-bool initProblem(char * arch_filename, char * dfg_filename){
+bool initProblem(void){
     int i;
     
     // FIX - make option to enter your own seed
     randSeed();
     //seedRandGenerator(1368463890);
     
-    initArchLibrary(arch_filename);
-    initDFG(dfg_filename);
+    initArchLibrary(ARCH_FILENAME);
+    initDFG(DFG_FILENAME);
     
     template = malloc(sizeof(Representation));
     template->num_genes = graph->num_nodes;
@@ -216,7 +215,7 @@ void randSeed(void){
     int seed;
     
     seed = time(NULL);
-    fprintf(stdout, "Seed: %d\n", seed);
+    fprintf(stdout, "Seed = %d\n", seed);
     
     srand(seed);
 }
