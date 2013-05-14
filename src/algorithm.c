@@ -37,6 +37,21 @@ int generation_num;
 //      - fitness = 8379
 
 void initParameters(int num_tokens, char ** input_token);
+bool populationConverged(Population * pop){
+    int i, j;
+    
+    for(i=0; i<POP_SIZE; i++){
+        for(j=0; j<template->num_genes; j++){
+            if(pop->member[i].encoding[j] != 0){
+                break;
+            }
+        }
+        if(j == template->num_genes){
+            return true;
+        }
+    }
+    return false;
+}
 
 int main(int argc, char * argv[]){
     Population * pop;
@@ -58,7 +73,8 @@ int main(int argc, char * argv[]){
         fprintf(stdout, "\n");
     }
     
-    while(generation_num < STOP_CONDITION){
+    //while(generation_num < STOP_CONDITION){
+    while(!populationConverged(pop)){
         mating_pop = selectMatingPool(pop);
         freePopulation(pop);
         
@@ -68,13 +84,14 @@ int main(int argc, char * argv[]){
         generation_num++;
     }
     
-    fprintf(stdout, "\nFinal Population:\n");
-    for(i=0; i<POP_SIZE; i++){
-        for(j=0; j<template->num_genes; j++){
-            fprintf(stdout, "%d", pop->member[i].encoding[j]);
-        }
-        fprintf(stdout, "\n");
-    }
+    fprintf(stdout, "\nGenerations to create best solution = %d\n", generation_num);
+//    fprintf(stdout, "\nFinal Population:\n");
+//    for(i=0; i<POP_SIZE; i++){
+//        for(j=0; j<template->num_genes; j++){
+//            fprintf(stdout, "%d", pop->member[i].encoding[j]);
+//        }
+//        fprintf(stdout, "\n");
+//    }
     
     freePopulation(pop);
     freeProblem();
@@ -83,6 +100,10 @@ int main(int argc, char * argv[]){
 
 void initParameters(int num_tokens, char ** input_token){
     int i;
+    
+//    5. selection method
+//    6. crossover type
+//    7. mutation type
     
     // FIX - make more robust
     for(i=0; i<num_tokens; i++){
@@ -139,10 +160,6 @@ void initParameters(int num_tokens, char ** input_token){
 //    }
 
 
-//    1. Pop size
-//    2. Mutation rate
-//    3. Crossover rate
-//    4. Termination criterion
 //    5. selection method
 //    6. crossover type
 //    7. mutation type
