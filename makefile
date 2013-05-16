@@ -1,13 +1,13 @@
 ###############################################################################
 # 	Makefile
 #
-# Genetic Algorithm practice for Ahmed Al-Watter
+# Genetic Algorithm for Ahmed Al-Watter
 # 
 # AUTHOR : Jennifer Winer
 # Email  : jwiner@uoguelph.ca
 #
 # CREATED : May 7, 2013
-# LAST MODIFIED : May 7, 2013
+# LAST MODIFIED : May 16, 2013
 ###############################################################################
 
 
@@ -22,8 +22,8 @@ SRCDIR	    = src/
 OBJDIR	    = obj/
 BINDIR	    = bin/
 
-SOURCE	    = $(SRCDIR)algorithm.c $(SRCDIR)individual.c $(SRCDIR)population.c $(SRCDIR)problem.c 
-OBJS	    = $(OBJDIR)algorithm.o $(OBJDIR)individual.o $(OBJDIR)population.o $(OBJDIR)problem.o
+SOURCE	    = $(SRCDIR)* 
+OBJS	    = $(OBJDIR)*
 PROGNAME    = $(BINDIR)GA.exe
 	
 #####################################################
@@ -45,11 +45,8 @@ compile : $(SOURCE)
 
 
 clean :
-	rm $(OBJS) $(PROGNAME)
-	
-	
+	rm $(OBJS) $(PROGNAME) *.stackdump
+
 	
 run: 
-	$(PROGNAME)
-
-#$(PROGNAME) datafilenamehere
+	$(PROGNAME) -ps=16 -mr=0.001 -cr=0.85

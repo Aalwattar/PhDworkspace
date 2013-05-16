@@ -1,7 +1,7 @@
 /*******************************************************************************
  * FILE NAME : algorithm.c
  * 
- * Genetic Algorithm practice for Ahmed Al-Watter
+ * Genetic Algorithm for Ahmed Al-Watter
  * 
  * PURPOSE : Contains main and executes the GA
  * 
@@ -9,17 +9,16 @@
  * Email  : jwiner@uoguelph.ca
  * 
  * DATE CREATED : May 7, 2013
- * LAST MODIFIED : May 13, 2013
+ * LAST MODIFIED : May 16, 2013
  ******************************************************************************/
 
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "population.h"
-
-// stopping conditions
-//#define STOP_CONDITION 500
-
+#include "fitness.h"
+#include "selection.h"
+#include "replacement.h"
 
 extern char * ARCH_FILENAME;
 extern char * DFG_FILENAME;
@@ -64,7 +63,7 @@ int main(int argc, char * argv[]){
     
     pop = genRandPopulation();
     
-    fprintf(stdout, "\n----------------------------------------------------------\n");
+    fprintf(stdout, "\n----------------------------------------------------------\n\n");
     fprintf(stdout, "Starting Population:\n");
     for(i=0; i<POP_SIZE; i++){
         for(j=0; j<template->num_genes; j++){
@@ -73,25 +72,37 @@ int main(int argc, char * argv[]){
         fprintf(stdout, "\n");
     }
     
-    //while(generation_num < STOP_CONDITION){
-    while(!populationConverged(pop)){
-        mating_pop = selectMatingPool(pop);
-        freePopulation(pop);
+    while(generation_num < STOP_CONDITION){
+    //swhile(!populationConverged(pop)){
+        for(i=0; i<POP_SIZE; i++){
+            pop->member[i].fitness = evaluateFitness(pop->member[i].encoding);
+        }
         
+        fprintf(stdout, "\n");
+        for(i=0; i<POP_SIZE; i++){
+            for(j=0; j<template->num_genes; j++){
+                fprintf(stdout, "%d", pop->member[i].encoding[j]);
+            }
+            fprintf(stdout, "\tfitness = %.5lf\n", pop->member[i].fitness);
+        }
+        
+        mating_pop = tournamentSelection(pop);
+        freePopulation(pop);
+
         generateNextGeneration(mating_pop);
         pop = mating_pop;
         
         generation_num++;
     }
     
-    fprintf(stdout, "\nGenerations to create best solution = %d\n", generation_num);
-//    fprintf(stdout, "\nFinal Population:\n");
-//    for(i=0; i<POP_SIZE; i++){
-//        for(j=0; j<template->num_genes; j++){
-//            fprintf(stdout, "%d", pop->member[i].encoding[j]);
-//        }
-//        fprintf(stdout, "\n");
-//    }
+    //fprintf(stdout, "\nGenerations to create best solution = %d\n", generation_num);
+    fprintf(stdout, "\nFinal Population:\n");
+    for(i=0; i<POP_SIZE; i++){
+        for(j=0; j<template->num_genes; j++){
+            fprintf(stdout, "%d", pop->member[i].encoding[j]);
+        }
+        fprintf(stdout, "\n");
+    }
     
     freePopulation(pop);
     freeProblem();
@@ -161,5 +172,5 @@ void initParameters(int num_tokens, char ** input_token){
 
 
 //    5. selection method
-//    6. crossover type
+
 //    7. mutation type

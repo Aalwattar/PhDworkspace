@@ -1,7 +1,7 @@
 /*******************************************************************************
  * FILE NAME : individual.h
  * 
- * Genetic Algorithm practice for Ahmed Al-Watter
+ * Genetic Algorithm for Ahmed Al-Watter
  * 
  * PURPOSE : a header for individual.c
  * 
@@ -9,7 +9,7 @@
  * Email  : jwiner@uoguelph.ca
  * 
  * DATE CREATED : May 7, 2013
- * LAST MODIFIED : May 13, 2013
+ * LAST MODIFIED : May 16, 2013
  ******************************************************************************/
 
 #include "problem.h"
@@ -17,9 +17,6 @@
 #ifndef INDIVIDUAL_H
 #define	INDIVIDUAL_H
 
-
-#define RUNTIME_WEIGHT 0.6
-#define POWER_WEIGHT 1 - RUNTIME_WEIGHT
 
 //#define CROSSOVER_RATE  0.85
 //#define MUTATION_RATE   0.001
@@ -83,18 +80,7 @@ void duplicateIndividual(Individual *, Individual *);
  *****************************************************************************/
 void freeIndividual(Individual *);
 
-/******************************************************************************
- * NAME : evaluateFitness
- * 
- * PURPOSE : Evaluate the fitness of one possible solution (an Individual) and
- *      store that value inside the Individual struct
- * ARGUMENTS : Individual * = the Individual that you wish to evaluate
- * 
- * PRECONDITIONS : the Individual passed in as a parameter must have been
- *      previously created either through initRandIndividual() or 
- *      duplicateIndividual().
- *****************************************************************************/
-void evaluateFitness(Individual *);
+
 
 /******************************************************************************
  * NAME : mutate

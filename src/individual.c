@@ -1,7 +1,7 @@
 /*******************************************************************************
  * FILE NAME : Individual.c
  * 
- * Genetic Algorithm practice for Ahmed Al-Watter
+ * Genetic Algorithm for Ahmed Al-Watter
  * 
  * PURPOSE : library for the representation and manipulation of a possible
  *      solution to the problem (an individual in the population)
@@ -10,7 +10,7 @@
  * Email  : jwiner@uoguelph.ca
  * 
  * DATE CREATED : May 7, 2013
- * LAST MODIFIED : May 12, 2013
+ * LAST MODIFIED : May 16, 2013
  ******************************************************************************/
 
 #include "individual.h"
@@ -46,34 +46,9 @@ void duplicateIndividual(Individual * copy, Individual * original){
         copy->encoding[i] = original->encoding[i];
     }
     
-    copy->fitness = 0;
-    copy->cfitness = 0;
-    copy->rfitness = 0; 
-}
-
-
-
-void evaluateFitness(Individual * individual){
-    double fitness;
-    double runtime;
-    double power;
-    
-    int oper;
-    int allele;
-    int i;
-    
-    fitness = 0;
-    for(i=0; i<template->num_genes; i++){
-        oper = template->oper[i];
-        allele = individual->encoding[i];
-        
-        runtime = arch_library[oper].impl[allele].runtime;
-        power = arch_library[oper].impl[allele].power;
-    
-        fitness = fitness + (RUNTIME_WEIGHT)*runtime + (POWER_WEIGHT)*power;
-    }
-    
-    individual->fitness = fitness;
+    copy->fitness = original->fitness;
+    copy->cfitness = original->cfitness;
+    copy->rfitness = original->rfitness; 
 }
 
 void mutate(Individual * ind){

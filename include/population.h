@@ -1,7 +1,7 @@
 /*******************************************************************************
  * FILE NAME : population.h
  * 
- * Genetic Algorithm practice for Ahmed Al-Watter
+ * Genetic Algorithm for Ahmed Al-Watter
  * 
  * PURPOSE : a header for population.c
  * 
@@ -9,10 +9,12 @@
  * Email  : jwiner@uoguelph.ca
  * 
  * DATE CREATED : May 7, 2013
- * LAST MODIFIED : May 13, 2013
+ * LAST MODIFIED : May 16, 2013
  ******************************************************************************/
 
 #include "individual.h"
+#include "selection.h"
+#include "replacement.h"
 
 #ifndef POPULATION_H
 #define	POPULATION_H
@@ -26,8 +28,6 @@ extern int POP_SIZE;
 typedef struct{
     Individual * member;
     double total_fitness;
-
-    int best_individual;
 }Population;
 
 
@@ -76,7 +76,26 @@ void freePopulation(Population *);
  *           the same Individual may appear more than once in the mating 
  *              population
  *****************************************************************************/
-Population * selectMatingPool(Population *);
+Population * tournamentSelection(Population *); //
+
+Population * rouletteWheelSelection(Population *); //
+
+Population * linearRankingSelection(Population *);
+
+//Population * linearScalingSelection(Population *); //
+
+Population * sigmaScalingSelection(Population *);
+
+Population * powerScalingSelection(Population *);
+
+Population * softTournamentSelection(Population *);
+
+// implement a form of elitism?
+        // this can mean only reproducing with 2 individuals at a time
+// Boltzmann selection
+// steady state algorithms
+        // replace worst instead of parents???
+
 
 /******************************************************************************
  * NAME : generateNextGeneration
