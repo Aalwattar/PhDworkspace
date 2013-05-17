@@ -9,12 +9,10 @@
  * Email  : jwiner@uoguelph.ca
  * 
  * DATE CREATED : May 7, 2013
- * LAST MODIFIED : May 16, 2013
+ * LAST MODIFIED : May 17, 2013
  ******************************************************************************/
 
 #include "individual.h"
-#include "selection.h"
-#include "replacement.h"
 
 #ifndef POPULATION_H
 #define	POPULATION_H

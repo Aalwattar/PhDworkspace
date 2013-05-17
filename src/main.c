@@ -1,5 +1,5 @@
 /*******************************************************************************
- * FILE NAME : algorithm.c
+ * FILE NAME : main.c
  * 
  * Genetic Algorithm for Ahmed Al-Watter
  * 
@@ -31,7 +31,7 @@ int STOP_CONDITION = 500;
 int generation_num;
 
 
-// IDEAL SOLUTION:
+// IDEAL SOLUTION FOR DUMMY DATA:
 //      - all 0's
 //      - fitness = 8379
 
@@ -78,13 +78,13 @@ int main(int argc, char * argv[]){
             pop->member[i].fitness = evaluateFitness(pop->member[i].encoding);
         }
         
-        fprintf(stdout, "\n");
-        for(i=0; i<POP_SIZE; i++){
-            for(j=0; j<template->num_genes; j++){
-                fprintf(stdout, "%d", pop->member[i].encoding[j]);
-            }
-            fprintf(stdout, "\tfitness = %.5lf\n", pop->member[i].fitness);
-        }
+//        fprintf(stdout, "\n");
+//        for(i=0; i<POP_SIZE; i++){
+//            for(j=0; j<template->num_genes; j++){
+//                fprintf(stdout, "%d", pop->member[i].encoding[j]);
+//            }
+//            fprintf(stdout, "\tfitness = %.5lf\n", pop->member[i].fitness);
+//        }
         
         mating_pop = tournamentSelection(pop);
         freePopulation(pop);
@@ -142,7 +142,7 @@ void initParameters(int num_tokens, char ** input_token){
         }
     }
     
-    fprintf(stdout, "Parameters:\n");
+    fprintf(stdout, "Parameters:\n\n");
     fprintf(stdout, "\tPopulation Size       = %d\n", POP_SIZE);
     fprintf(stdout, "\tNumber of Generations = %d\n\n", STOP_CONDITION);
     fprintf(stdout, "\tMutation Rate  = %.4lf\n", MUTATION_RATE);

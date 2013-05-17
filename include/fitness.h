@@ -23,18 +23,23 @@
 /******************************************************************************
  * NAME : evaluateFitness
  * 
- * PURPOSE : Evaluate the fitness of one possible solution (an Individual) and
- *      store that value inside the Individual struct
- * ARGUMENTS : Individual * = the Individual that you wish to evaluate
+ * PURPOSE : Evaluate the fitness of one possible solution (a chromosome)
+ * ARGUMENTS : int * = the chromosome to be evaluated
  * 
- * PRECONDITIONS : the Individual passed in as a parameter must have been
- *      previously created either through initRandIndividual() or 
- *      duplicateIndividual().
+ * RETURNS : the fitness of the chromosome argument
  *****************************************************************************/
 double evaluateFitness(int *);
 
+/******************************************************************************
+ * NAME : evaluateRanks
+ * 
+ * PURPOSE : Orders the individuals in a population in ascending order
+ *              based on fitness
+ * ARGUMENTS : Population * = the Population that you wish to evaluate
+ *****************************************************************************/
 void evaluateRanks(Population *);
 
+// FIX
 Population * linearScalingSelection(Population *);
 
 #endif	/* FITNESS_H */

@@ -7,7 +7,7 @@
 # Email  : jwiner@uoguelph.ca
 #
 # CREATED : May 7, 2013
-# LAST MODIFIED : May 16, 2013
+# LAST MODIFIED : May 17, 2013
 ###############################################################################
 
 
@@ -45,7 +45,7 @@ compile : $(SOURCE)
 
 
 clean :
-	rm $(OBJS) $(PROGNAME) *.stackdump
+	@rm $(OBJS) $(PROGNAME) *.stackdump
 
 	
 run: 

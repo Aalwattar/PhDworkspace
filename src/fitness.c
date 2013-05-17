@@ -37,6 +37,9 @@ double evaluateFitness(int * chromosome){
     return fitness;
 }
 
+
+
+// The compare function for qsort
 int compare(const void *, const void *);
 
 void evaluateRanks(Population * pop){
@@ -47,6 +50,8 @@ int compare(const void * p1, const void * p2){
     return ((Individual *)p1)->fitness - ((Individual *)p2)->fitness;
 }
 
+
+// a private helper function for linear scaling
 void deriveParameters(Population *, double *, double *);
 
 Population * linearScalingSelection(Population * original){
@@ -111,6 +116,8 @@ Population * linearScalingSelection(Population * original){
 
 void deriveParameters(Population * pop, double * alpha, double * beta){
     double max, min, avg;
+    // FIX - MAKE THIS A COMMAND LINE VARIABLE?
+    // increasing this increases the selection pressure
     int scaler = 2;
     int i;
     
@@ -144,6 +151,3 @@ void deriveParameters(Population * pop, double * alpha, double * beta){
     
 //    printf("alpha = %lf\tbeta = %lf\n\n", *alpha, *beta);
 }
-
-// FIX - MAKE THIS A COMMAND LINE VARIABLE?
-    // increasing this increases the selection pressure

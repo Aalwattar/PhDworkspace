@@ -12,6 +12,7 @@
  * LAST MODIFIED : May 16, 2013
  ******************************************************************************/
 
+#include "population.h"
 
 #ifndef SELECTION_H
 #define	SELECTION_H
