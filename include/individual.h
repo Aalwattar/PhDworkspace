@@ -18,12 +18,6 @@
 #define	INDIVIDUAL_H
 
 
-//#define CROSSOVER_RATE  0.85
-//#define MUTATION_RATE   0.001
-extern double CROSSOVER_RATE;
-extern double MUTATION_RATE;
-
-
 /******************************************************************************
  ******************         SOLUTION REPRESENTATION         *******************
  *****************************************************************************/

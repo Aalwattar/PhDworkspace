@@ -15,9 +15,6 @@
 
 #include "individual.h"
 
-double CROSSOVER_RATE = 0.85;
-double MUTATION_RATE = 0.001;
-
 void initRandIndividual(Individual * individual){
     int i;
     

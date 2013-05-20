@@ -17,7 +17,6 @@
 #ifndef POPULATION_H
 #define	POPULATION_H
 
-//#define POP_SIZE 50      // MUST BE AN EVEN NUMBER
 extern int POP_SIZE;
 
 /******************************************************************************
@@ -57,42 +56,6 @@ Population * genRandPopulation(void);
  *****************************************************************************/
 void freePopulation(Population *);
 
-
-
-/******************************************************************************
- * NAME : selectMatingPool
- * 
- * PURPOSE : Select the individuals that will undergo recombination and 
- *              mutation to create the next generation
- * ARGUMENTS : Population * = the population that we are selecting individuals
- *              from
- * 
- * PRECONDITIONS : the Population passed in as a parameter must have been
- *      previously created by genRandPopulation();
- * RETURNS : a new population that consists of individuals chosen to mate
- *              (in a random order)
- *           the same Individual may appear more than once in the mating 
- *              population
- *****************************************************************************/
-Population * tournamentSelection(Population *); //
-
-Population * rouletteWheelSelection(Population *); //
-
-Population * linearRankingSelection(Population *);
-
-//Population * linearScalingSelection(Population *); //
-
-Population * sigmaScalingSelection(Population *);
-
-Population * powerScalingSelection(Population *);
-
-Population * softTournamentSelection(Population *);
-
-// implement a form of elitism?
-        // this can mean only reproducing with 2 individuals at a time
-// Boltzmann selection
-// steady state algorithms
-        // replace worst instead of parents???
 
 
 /******************************************************************************

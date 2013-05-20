@@ -20,6 +20,9 @@
 #define RUNTIME_WEIGHT 0.6
 #define POWER_WEIGHT 1 - RUNTIME_WEIGHT
 
+extern double CROSSOVER_RATE;
+extern double MUTATION_RATE;
+
 /******************************************************************************
  * NAME : evaluateFitness
  * 

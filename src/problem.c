@@ -15,8 +15,10 @@
 
 #include "problem.h"
 
-char * ARCH_FILENAME = "architecture_library.txt";
-char * DFG_FILENAME = "DFG.txt";
+extern char * ARCH_FILENAME;
+extern char * DFG_FILENAME;
+
+static DFG * graph;
 
 bool initProblem(void){
     int i;

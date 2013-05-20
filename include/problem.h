@@ -23,13 +23,6 @@
 #define	PROBLEM_H
 
 
-//#define ARCH_FILENAME "architecture_library.txt"
-//#define DFG_FILENAME  "DFG.txt"
-
-extern char * ARCH_FILENAME;
-extern char * DFG_FILENAME;
-
-
 /******************************************************************************
  **************         PROBLEM DEFINITION DATA STORAGE         ***************
  *****************************************************************************/
@@ -60,12 +53,11 @@ typedef struct{
 }Representation;
 
 
+
 Operation * arch_library;
-enum ops { a=0, s, m, d };
-
-DFG * graph;
-
 Representation * template;
+
+enum ops { a=0, s, m, d };
 
 
 /******************************************************************************

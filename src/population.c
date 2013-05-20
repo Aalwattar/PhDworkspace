@@ -15,9 +15,6 @@
 
 #include "population.h"
 
-
-int POP_SIZE = 20;
-
 Population * genRandPopulation(){
     Population * pop;
     int i;

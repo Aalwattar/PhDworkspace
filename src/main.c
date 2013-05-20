@@ -20,12 +20,12 @@
 #include "selection.h"
 #include "replacement.h"
 
-extern char * ARCH_FILENAME;
-extern char * DFG_FILENAME;
+char * ARCH_FILENAME = "architecture_library.txt";
+char * DFG_FILENAME = "DFG.txt";
 
-extern double CROSSOVER_RATE;
-extern double MUTATION_RATE;
-extern int POP_SIZE;
+double CROSSOVER_RATE = 0.85;
+double MUTATION_RATE  = 0.001;
+int POP_SIZE = 16;      // MUST BE AN EVEN NUMBER
 
 int STOP_CONDITION = 500;
 int generation_num;
