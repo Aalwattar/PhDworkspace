@@ -15,7 +15,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "population.h"
 #include "fitness.h"
 #include "selection.h"
 #include "replacement.h"

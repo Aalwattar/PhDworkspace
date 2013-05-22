@@ -14,7 +14,6 @@
 
 #include "fitness.h"
 
-extern int POP_SIZE;
 
 double evaluateFitness(int * chromosome){
     double fitness;

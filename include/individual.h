@@ -17,6 +17,8 @@
 #ifndef INDIVIDUAL_H
 #define	INDIVIDUAL_H
 
+extern double CROSSOVER_RATE;
+extern double MUTATION_RATE;
 
 /******************************************************************************
  ******************         SOLUTION REPRESENTATION         *******************
