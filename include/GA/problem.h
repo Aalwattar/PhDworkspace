@@ -1,16 +1,21 @@
 /*******************************************************************************
- * FILE NAME : problem.h
+ * Author   : Jennifer Winer
  * 
- * Genetic Algorithm for Ahmed Al-Watter
+ * Project  : A DFG Off-Line Task Scheduler for FPGA
+ *              - The Genetic Algorithm for determining the ideal implementation
+ *                  for each task's operation
  * 
- * PURPOSE : a header for problem.c
- * 
- * AUTHOR : Jennifer Winer
- * Email  : jwiner@uoguelph.ca
- * 
- * DATE CREATED : May 7, 2013
- * LAST MODIFIED : May 16, 2013
+ * Created  : May 7, 2013
+ * Modified : May 22, 2013
  ******************************************************************************/
+
+/*******************************************************************************
+ * Filename : problem.h
+ * 
+ * Purpose  : a header for problem.c
+ ******************************************************************************/
+
+
 
 #include <stdio.h>
 #include <stdlib.h>

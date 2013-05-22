@@ -1,16 +1,19 @@
 /*******************************************************************************
- * FILE NAME : Individual.c
+ * Author   : Jennifer Winer
  * 
- * Genetic Algorithm for Ahmed Al-Watter
+ * Project  : A DFG Off-Line Task Scheduler for FPGA
+ *              - The Genetic Algorithm for determining the ideal implementation
+ *                  for each task's operation
  * 
- * PURPOSE : library for the representation and manipulation of a possible
- *      solution to the problem (an individual in the population)
+ * Created  : May 7, 2013
+ * Modified : May 22, 2013
+ ******************************************************************************/
+
+/*******************************************************************************
+ * Filename : Individual.c
  * 
- * AUTHOR : Jennifer Winer
- * Email  : jwiner@uoguelph.ca
- * 
- * DATE CREATED : May 7, 2013
- * LAST MODIFIED : May 16, 2013
+ * Purpose  : All methods for the creation and manipulation of a possible
+ *              solution to the problem (an individual in the population)
  ******************************************************************************/
 
 #include "individual.h"

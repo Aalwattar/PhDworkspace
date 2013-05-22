@@ -1,15 +1,21 @@
-/*************************************************************************/
-// Author  : Ziad Abuowaimer
-// Version : 0.1
-// Project : A DFG Off-Line Task Scheduler for FPGA
-// Team    : Ziad Abuowaimer
-/*************************************************************************/
+/*************************************************************************
+ * Author   : Ziad Abuowaimer
+ * Modifier : Jennifer Winer
+ * 
+ * Project  : A DFG Off-Line Task Scheduler for FPGA
+ * 
+ * Created  : May 22, 2013
+ * Modified : May 22, 2013
+ *************************************************************************/
 
-/*************************************************************************/
-// Filename: ecodes.h
-// Description:
-// Header file which defines the error codes
-/*************************************************************************/
+/*************************************************************************
+ * Filename    : ecodes.h
+ * 
+ * Description : Header file which defines the error codes
+ *************************************************************************/
+
+#ifndef ECODES_H
+#define ECODES_H
 
 #define __LESSARGS 	1
 #define __AIF_FILE 	2
@@ -24,3 +30,4 @@
 #define __RESFILE2 	25
 #define __RESFILE3 	26
 
+#endif /* ECODES_H */

@@ -1,15 +1,18 @@
 /*******************************************************************************
- * FILE NAME : fitness.h
+ * Author   : Jennifer Winer
  * 
- * Genetic Algorithm for Ahmed Al-Watter
+ * Project  : A DFG Off-Line Task Scheduler for FPGA
+ *              - The Genetic Algorithm for determining the ideal implementation
+ *                  for each task's operation
  * 
- * PURPOSE : a header for fitness.c
+ * Created  : May 16, 2013
+ * Modified : May 22, 2013
+ ******************************************************************************/
+
+/*******************************************************************************
+ * Filename : fitness.h
  * 
- * AUTHOR : Jennifer Winer
- * Email  : jwiner@uoguelph.ca
- * 
- * DATE CREATED : May 16, 2013
- * LAST MODIFIED : May 16, 2013
+ * Purpose  : a header for fitness.c
  ******************************************************************************/
 
 #include "population.h"

@@ -1,15 +1,18 @@
 /*******************************************************************************
- * FILE NAME : population.h
+ * Author   : Jennifer Winer
  * 
- * Genetic Algorithm for Ahmed Al-Watter
+ * Project  : A DFG Off-Line Task Scheduler for FPGA
+ *              - The Genetic Algorithm for determining the ideal implementation
+ *                  for each task's operation
  * 
- * PURPOSE : a header for population.c
+ * Created  : May 7, 2013
+ * Modified : May 22, 2013
+ ******************************************************************************/
+
+/*******************************************************************************
+ * Filename : population.h
  * 
- * AUTHOR : Jennifer Winer
- * Email  : jwiner@uoguelph.ca
- * 
- * DATE CREATED : May 7, 2013
- * LAST MODIFIED : May 17, 2013
+ * Purpose  : a header for population.c
  ******************************************************************************/
 
 #include "individual.h"

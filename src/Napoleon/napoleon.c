@@ -1,9 +1,12 @@
-/********************************************************************
- Author  : Ziad Abuowaimer
- Version : 0.1
- Project : A DFG Off-Line Task Scheduler for FPGA
- Team    : Ziad Abuowaimer
- ********************************************************************/
+/*************************************************************************
+ * Author   : Ziad Abuowaimer
+ * Modifier : Jennifer Winer
+ * 
+ * Project  : A DFG Off-Line Task Scheduler for FPGA
+ * 
+ * Created  : May 22, 2013
+ * Modified : May 22, 2013
+ *************************************************************************/
 
 //global header files
 #include <stdio.h>

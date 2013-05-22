@@ -1,15 +1,22 @@
 /*******************************************************************************
- * FILE NAME : fitness.c
+ * Author   : Jennifer Winer
  * 
- * Genetic Algorithm for Ahmed Al-Watter
+ * Project  : A DFG Off-Line Task Scheduler for FPGA
+ *              - The Genetic Algorithm for determining the ideal implementation
+ *                  for each task's operation
  * 
- * PURPOSE : library for fitness evaluation
+ * Created  : May 16, 2013
+ * Modified : May 22, 2013
+ ******************************************************************************/
+
+/*******************************************************************************
+ * Filename : fitness.c
  * 
- * AUTHOR : Jennifer Winer
- * Email  : jwiner@uoguelph.ca
+ * Purpose  : A library for integration with Ziad's Napoleon
  * 
- * DATE CREATED : May 16, 2013
- * LAST MODIFIED : May 16, 2013
+ *            Napoleon will act as our fitness function, taking a mapping of 
+ *              architectures to each task as input, and returning the runtime
+ *              and power required for that schedule as a fitness function
  ******************************************************************************/
 
 #include "fitness.h"

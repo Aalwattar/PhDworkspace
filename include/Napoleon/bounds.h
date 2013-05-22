@@ -1,15 +1,21 @@
-/*************************************************************************/
-// Author  : Ziad Abuowaimer
-// Version : 0.1
-// Project : A DFG Off-Line Task Scheduler for FPGA
-// Team    : Ziad Abuowaimer
-/*************************************************************************/
+/*************************************************************************
+ * Author   : Ziad Abuowaimer
+ * Modifier : Jennifer Winer
+ * 
+ * Project  : A DFG Off-Line Task Scheduler for FPGA
+ * 
+ * Created  : May 22, 2013
+ * Modified : May 22, 2013
+ *************************************************************************/
 
-/*************************************************************************/
-// Filename: bounds.h
-// Description:
-// Header file which defines the data structure sizes
-/*************************************************************************/
+/*************************************************************************
+ * Filename    : bounds.h
+ * 
+ * Description : Header file which defines the data structure sizes
+ *************************************************************************/
+
+#ifndef BOUNDS_H
+#define BOUNDS_H
 
 #define __SIZE_FILENAME 		500
 #define __SIZE_TASKNAME 		500
@@ -23,3 +29,4 @@
 #define __NUM_FPGA_RECONFIGARATOR 	1
 #define __SIZE_Q 			1000
 
+#endif /* BOUNDS_H */
