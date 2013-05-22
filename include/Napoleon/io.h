@@ -18,6 +18,9 @@
 #ifndef IO_H
 #define IO_H
 
+#include <stdio.h>
+#include <types.h>
+
 extern void print_error(int);
 extern int parse_aif(FILE *, t_task *, t_task_interface *);
 extern int parse_res(FILE *, t_task_type *);

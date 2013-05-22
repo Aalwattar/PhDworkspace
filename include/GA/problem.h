@@ -16,16 +16,10 @@
  ******************************************************************************/
 
 
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
-#include <time.h>
-#include <stdbool.h>
-
 #ifndef PROBLEM_H
 #define	PROBLEM_H
+
+#include <stdbool.h>
 
 
 /******************************************************************************
@@ -45,11 +39,7 @@ typedef struct{
     Implementation * impl;      // the Implementation properties of each architecture
 }Operation;
 
-// encapsulates relevant aspects of the DFG we are trying to schedule
-typedef struct{
-    int num_nodes;      // The number of nodes (tasks) in the DFG
-    int * oper;         // The operation of each task
-}DFG;
+
 
 // contains information for representing the problem as a chromosome
 typedef struct{
@@ -58,11 +48,8 @@ typedef struct{
 }Representation;
 
 
-
 Operation * arch_library;
 Representation * template;
-
-enum ops { a=0, s, m, d };
 
 
 /******************************************************************************
@@ -139,37 +126,13 @@ void freeArchLibrary(void);
 void printArchLibrary(void);
 
 
-
 /******************************************************************************
  ***********************           DFG FILE I/O         ***********************
  *****************************************************************************/
 
-/******************************************************************************
- * NAME : initDFG
- * 
- * PURPOSE : Imports a DFG from a template file
- * ARGUMENTS : char * = the name of the file that contains the DFG
- * 
- * RETURNS : false if the filename could not be found or opened or the file did 
- *              not follow the specified format
- *           true otherwise (successful completion)
- * 
- * NOTE : please see the README file for more information about the format
- *              and contents of the DFG file
- *****************************************************************************/
 bool initDFG(char *);
 
-/******************************************************************************
- * NAME : freeDFG
- * 
- * PURPOSE : Frees all static dynamically allocated memory for the 
-                representation of the DFG
- * 
- * PRECONDITIONS : the DFG struct MUST have been previously initialized 
- *                      by initProblem
- *****************************************************************************/
 void freeDFG(void);
-
 
 
 /******************************************************************************

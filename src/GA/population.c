@@ -18,6 +18,8 @@
 
 #include "population.h"
 
+#include <stdlib.h>
+
 Population * genRandPopulation(){
     Population * pop;
     int i;

@@ -15,12 +15,14 @@
  * Purpose  : Contains main and executes the GA
  ******************************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "fitness.h"
 #include "selection.h"
 #include "replacement.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 
 char * ARCH_FILENAME = "input/architecture_library.txt";
 char * DFG_FILENAME = "input/DFG.txt";
@@ -55,59 +57,59 @@ bool populationConverged(Population * pop){
 }
 
 int mainFunction(int argc, char * argv[]){
-    Population * pop;
-    Population * mating_pop;
-    int i, j;
-    
-    
-    initParameters(argc, argv);
-    initProblem();
-      
-    pop = genRandPopulation();
-    
-    fprintf(stdout, "\n----------------------------------------------------------\n\n");
-    fprintf(stdout, "Starting Population:\n");
-    for(i=0; i<POP_SIZE; i++){
-        for(j=0; j<template->num_genes; j++){
-            fprintf(stdout, "%d", pop->member[i].encoding[j]);
-        }
-        fprintf(stdout, "\n");
-    }
-    
-    while(generation_num < STOP_CONDITION){
-    //swhile(!populationConverged(pop)){
-        for(i=0; i<POP_SIZE; i++){
-            pop->member[i].fitness = evaluateFitness(pop->member[i].encoding);
-        }
-        
-//        fprintf(stdout, "\n");
-//        for(i=0; i<POP_SIZE; i++){
-//            for(j=0; j<template->num_genes; j++){
-//                fprintf(stdout, "%d", pop->member[i].encoding[j]);
-//            }
-//            fprintf(stdout, "\tfitness = %.5lf\n", pop->member[i].fitness);
+//    Population * pop;
+//    Population * mating_pop;
+//    int i, j;
+//    
+//    
+//    initParameters(argc, argv);
+//    initProblem();
+//      
+//    pop = genRandPopulation();
+//    
+//    fprintf(stdout, "\n----------------------------------------------------------\n\n");
+//    fprintf(stdout, "Starting Population:\n");
+//    for(i=0; i<POP_SIZE; i++){
+//        for(j=0; j<template->num_genes; j++){
+//            fprintf(stdout, "%d", pop->member[i].encoding[j]);
 //        }
-        
-        mating_pop = tournamentSelection(pop);
-        freePopulation(pop);
-
-        generateNextGeneration(mating_pop);
-        pop = mating_pop;
-        
-        generation_num++;
-    }
-    
-    //fprintf(stdout, "\nGenerations to create best solution = %d\n", generation_num);
-    fprintf(stdout, "\nFinal Population:\n");
-    for(i=0; i<POP_SIZE; i++){
-        for(j=0; j<template->num_genes; j++){
-            fprintf(stdout, "%d", pop->member[i].encoding[j]);
-        }
-        fprintf(stdout, "\n");
-    }
-    
-    freePopulation(pop);
-    freeProblem();
+//        fprintf(stdout, "\n");
+//    }
+//    
+//    while(generation_num < STOP_CONDITION){
+//    //swhile(!populationConverged(pop)){
+//        for(i=0; i<POP_SIZE; i++){
+//            pop->member[i].fitness = evaluateFitness(pop->member[i].encoding);
+//        }
+//        
+////        fprintf(stdout, "\n");
+////        for(i=0; i<POP_SIZE; i++){
+////            for(j=0; j<template->num_genes; j++){
+////                fprintf(stdout, "%d", pop->member[i].encoding[j]);
+////            }
+////            fprintf(stdout, "\tfitness = %.5lf\n", pop->member[i].fitness);
+////        }
+//        
+//        mating_pop = tournamentSelection(pop);
+//        freePopulation(pop);
+//
+//        generateNextGeneration(mating_pop);
+//        pop = mating_pop;
+//        
+//        generation_num++;
+//    }
+//    
+//    //fprintf(stdout, "\nGenerations to create best solution = %d\n", generation_num);
+//    fprintf(stdout, "\nFinal Population:\n");
+//    for(i=0; i<POP_SIZE; i++){
+//        for(j=0; j<template->num_genes; j++){
+//            fprintf(stdout, "%d", pop->member[i].encoding[j]);
+//        }
+//        fprintf(stdout, "\n");
+//    }
+//    
+//    freePopulation(pop);
+//    freeProblem();
     return 0;
 }
 
@@ -176,3 +178,7 @@ void initParameters(int num_tokens, char ** input_token){
 //    5. selection method
 
 //    7. mutation type
+
+
+
+// calling napoleon:

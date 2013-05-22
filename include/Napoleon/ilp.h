@@ -18,6 +18,10 @@
 #ifndef ILP_H
 #define ILP_H
 
+#include <stdio.h>
+
+#include "types.h"
+
 extern void ilp_equations(FILE *, t_task *, short int, short int *, short int *);
 short int calc_T(t_task*, short int*);
 

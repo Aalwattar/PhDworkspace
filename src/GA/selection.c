@@ -17,6 +17,8 @@
 
 #include "selection.h"
 
+#include <stdlib.h>
+
 // tournament selection of size 2
 Population * tournamentSelection(Population * original){
     Population * mating_pool;

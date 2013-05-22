@@ -17,6 +17,9 @@
  ******************************************************************************/
 
 #include "individual.h"
+#include "problem.h"
+
+#include <stdlib.h>
 
 void initRandIndividual(Individual * individual){
     int i;
