@@ -73,3 +73,7 @@ clean :
 	rm -f $(GA_DIR)/$(OBJ_DIR)/*
 	rm -f $(NAPOLEON_DIR)/$(OBJ_DIR)/*
 
+run: 
+	./$(PROG_NAME) -aif $(NAPOLEON_DIR)/input/B1_25_10.aif -res_file $(NAPOLEON_DIR)/input/res.dat
+			
+
