@@ -1,0 +1,6 @@
+inputs x1 8 x2 8 x3 8  
+outputs yout 8
+regs r0 8  
+T1 TASK2 8 x1 x2 r0
+T2 TASK2 8 r0 x3 yout 
+end 

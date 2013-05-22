@@ -1,58 +1,75 @@
-##############################################################################
+###############################################################################
 # 	Makefile
 #
-# Genetic Algorithm for Ahmed Al-Watter
+# An off-line Task Scheduler for FPGA
 # 
-# AUTHOR : Jennifer Winer
-# Email  : jwiner@uoguelph.ca
+# AUTHOR : Ziad Abuowaimer & Jennifer Winer
 #
-# CREATED : May 7, 2013
-# LAST MODIFIED : May 17, 2013
+# CREATED : May 21, 2013
+# LAST MODIFIED : May 21, 2013
+###############################################################################
+
+###############################################################################
+##
+## Description:
+## This makefile builds the Off-Line Scheduler
+##
+## targets:
+##	1. <default>    : compile incrementally and link
+##	2. rebuild	: compile all and link
+##
+##	Set DEBUG="-g -D__DEBUG" to compile the source files for debugging
+##	and enable the test jigs in the code.
+##
+###############################################################################
+
+#compiler options
+DEBUG			= 
+CC 			= gcc
+C_FLAGS 		= -Wall -std=c99 -pedantic -g -O0 $(DEBUG)
+C_INCLUDES   		= -I$(INC_DIR)
+L_INCLUDES		= -lm
+
+#debugger options
+DBGR 			= gdb
+DBG_OPTS 		= 
+
+#directory names
+SRC_DIR			= src
+INC_DIR			= include
+OBJ_DIR			= obj
+BIN_DIR			= .
+
+GA_DIR       		= GA
+NAPOLEON_DIR 		= Napoleon
+
+OBJS			=  $(GA_DIR)/$(OBJ_DIR)/* \
+			   $(NAPOLEON_DIR)/$(OBJ_DIR)/*
+
+PROG_NAME		= OfflineScheduler$(BIN_EXTN)
+
+###############################################################################
+#      compilation, linking and debugging targets
 ###############################################################################
 
 
-CC	    = gcc
-CFLAGS	    = -Wall -std=c99 -pedantic -g -O0
-
-CINCLUDES   = -Iinclude
-#CINCLUDES  = -I/usr/include/python2.6 -I/usr/include/libxml2
-LINCLUDES  = -lm
-
-SRCDIR	    = src/
-OBJDIR	    = obj/
-BINDIR	    = bin/
-
-SOURCE	    = $(SRCDIR)* 
-OBJS	    = $(OBJDIR)*
-PROGNAME    = $(BINDIR)GA.exe
+all : $(PROG_NAME)
+	@ echo "Build updated"
 	
-#####################################################
-
-all : prog
-
-prog : link
-
-link : compile
-	$(CC) $(OBJS) $(LINCLUDES) -o $(PROGNAME)
-
-compile : $(SOURCE)
-	$(CC) $(CINCLUDES) $(CFLAGS) -c $(SOURCE)
-	mv *.o $(OBJDIR)
-
-
-clean :
-	rm -f $(OBJS) $(PROGNAME) *.stackdump
 	
-run: 
-	$(PROGNAME) -ps=16 -mr=0.001 -cr=0.85
+.PHONY : $(PROG_NAME) 
 
-###############################################################################
-################          Jenn's Custom build (FIX)            ################
-###############################################################################
+# FIX -  make the following targets more descriptive
+$(PROG_NAME) : 
+	cd $(GA_DIR); make build 
+	cd $(NAPOLEON_DIR); make build
+	$(CC) $(OBJS) $(L_INCLUDES) -o $(PROG_NAME)
 
-build : compile
-	@echo
-	@echo --------------------------------------
-	@echo -- Genetic Algorithm Build Complete --
-	@echo --------------------------------------
-	@echo
+debug :
+	$(DBGR) $(DBG_OPTS) $(PROG_NAME)
+
+clean : 
+	rm -f $(BIN_DIR)/$(PROG_NAME)
+	rm -f $(GA_DIR)/$(OBJ_DIR)/*
+	rm -f $(NAPOLEON_DIR)/$(OBJ_DIR)/*
+
