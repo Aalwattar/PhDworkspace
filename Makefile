@@ -6,7 +6,7 @@
 # AUTHOR : Ziad Abuowaimer & Jennifer Winer
 #
 # CREATED : May 21, 2013
-# LAST MODIFIED : May 21, 2013
+# LAST MODIFIED : May 22, 2013
 ###############################################################################
 
 ###############################################################################
@@ -27,7 +27,7 @@
 DEBUG			= 
 CC 			= gcc
 C_FLAGS 		= -Wall -std=c99 -pedantic -g -O0 $(DEBUG)
-C_INCLUDES   		= -I$(INC_DIR)
+C_INCLUDES   		= -Iinclude/Napoleon -Iinclude/GA
 L_INCLUDES		= -lm
 
 #debugger options
@@ -36,17 +36,29 @@ DBG_OPTS 		=
 
 #directory names
 SRC_DIR			= src
-INC_DIR			= include
 OBJ_DIR			= obj
 BIN_DIR			= .
 
-GA_DIR       		= GA
-NAPOLEON_DIR 		= Napoleon
+NAPOLEON_DIR		= Napoleon
+GA_DIR			= GA
 
-OBJS			=  $(GA_DIR)/$(OBJ_DIR)/* \
-			   $(NAPOLEON_DIR)/$(OBJ_DIR)/*
+OBJS			= $(addprefix $(OBJ_DIR)/, \
+                          $(NAPOLEON_DIR)/functions.o \
+                          $(NAPOLEON_DIR)/io.o \
+                          $(NAPOLEON_DIR)/ilp.o \
+                          $(NAPOLEON_DIR)/napoleon.o \
+                          $(NAPOLEON_DIR)/main.o \
+                          \
+                          $(GA_DIR)/fitness.o \
+                          $(GA_DIR)/individual.o \
+                          $(GA_DIR)/main.o \
+                          $(GA_DIR)/population.o \
+                          $(GA_DIR)/problem.o \
+                          $(GA_DIR)/replacement.o \
+                          $(GA_DIR)/selection.o )
 
-PROG_NAME		= OfflineScheduler$(BIN_EXTN)
+
+PROG_NAME		= OfflineScheduler.exe
 
 ###############################################################################
 #      compilation, linking and debugging targets
@@ -60,20 +72,27 @@ all : $(PROG_NAME)
 .PHONY : $(PROG_NAME) 
 
 # FIX -  make the following targets more descriptive
-$(PROG_NAME) : 
-	cd $(GA_DIR); make build 
-	cd $(NAPOLEON_DIR); make build
+$(PROG_NAME) : $(OBJS)
 	$(CC) $(OBJS) $(L_INCLUDES) -o $(PROG_NAME)
 
-debug :
-	$(DBGR) $(DBG_OPTS) $(PROG_NAME)
+
+$(OBJ_DIR)/$(NAPOLEON_DIR)/%.o: $(SRC_DIR)/$(NAPOLEON_DIR)/%.c
+	$(CC) $(C_INCLUDES) $(C_FLAGS) -c $^ -o $@
+	
+$(OBJ_DIR)/$(GA_DIR)/%.o: $(SRC_DIR)/$(GA_DIR)/%.c
+	$(CC) $(C_INCLUDES) $(C_FLAGS) -c $^ -o $@
+    
+
 
 clean : 
 	rm -f $(BIN_DIR)/$(PROG_NAME)
-	rm -f $(GA_DIR)/$(OBJ_DIR)/*
-	rm -f $(NAPOLEON_DIR)/$(OBJ_DIR)/*
+	rm -f $(OBJ_DIR)/$(NAPOLEON_DIR)/*
+	rm -f $(OBJ_DIR)/$(GA_DIR)/*
+
+
 
 run: 
-	./$(PROG_NAME) -aif $(NAPOLEON_DIR)/input/B1_25_10.aif -res_file $(NAPOLEON_DIR)/input/res.dat
+	./$(PROG_NAME) -aif input/B1_25_10.aif -res_file input/res.dat
 			
-
+debug :
+	$(DBGR) $(DBG_OPTS) $(PROG_NAME)

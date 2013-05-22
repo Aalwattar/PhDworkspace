@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <assert.h>
 #include <math.h>
 #include <stdbool.h>
@@ -28,6 +29,7 @@
 #include <ilp.h>
 #include <functions.h>
 #include <main.h>
+
 
 FILE *log_strm;
 void print_help(void);
@@ -43,7 +45,6 @@ int main(int argc, char *argv[]) {
     short int *succ_adj_mat;
     short int *reuse_mat; //aij
     short int T = 99; //upper_bound_total_exec_time
-    char *fname;
     int i = 0;
 
     if (argc > 1) {
@@ -90,7 +91,7 @@ int main(int argc, char *argv[]) {
         //and exit on unsuccessful execution of the parse_aif function
         if ((err = parse_aif(aif_strm, task, task_interface)))
             print_error(err);
-        fname = strtok(config.aif_fname, ".");
+        //fname = strtok(config.aif_fname, ".");
         fclose(aif_strm);
     }
     //assert(aif_strm);
@@ -186,21 +187,21 @@ int parse_cmd_line_opts(int argc, char *argv[], t_config *config) {
             count++;
         } else if (!strcasecmp(*(argv + count), "-log_file")) {
             char *log_fname;
-            if (log_fname = *(argv + count + 1))
+            if ((log_fname = *(argv + count + 1)))
                 strcpy(config->log_fname, log_fname);
             else
                 err = __LOG_FILE;
             count++;
-        } else if (!strcasecmp(*(argv + count), "-res_file")) {
+        } else if ((!strcasecmp(*(argv + count), "-res_file"))) {
             char * res_fname;
-            if (res_fname = *(argv + count + 1))
+            if ((res_fname = *(argv + count + 1)))
                 strcpy(config->res_fname, res_fname);
             else
                 err = __RES_FILE;
             count++;
-        } else if (!strcasecmp(*(argv + count), "-options_file")) {
+        } else if ((!strcasecmp(*(argv + count), "-options_file"))) {
             char *opt_fname;
-            if (opt_fname = *(argv + count + 1))
+            if ((opt_fname = *(argv + count + 1)))
                 strcpy(config->opt_fname, opt_fname);
             else
                 err = __OPT_FILE;

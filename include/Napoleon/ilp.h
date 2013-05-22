@@ -14,4 +14,5 @@
  *************************************************************************/
 
 extern void ilp_equations(FILE *, t_task *, short int, short int *, short int *);
+short int calc_T(t_task*, short int*);
 

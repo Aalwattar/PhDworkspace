@@ -19,6 +19,7 @@
 #include <ecodes.h>
 #include <napoleon.h>
 #include <main.h>
+#include <io.h>
 
 
 int evaluate_ASAP(short int, short int *, short int *, t_task *);
@@ -494,12 +495,12 @@ short int Napoleon(FILE *grid_strm, short int *succ_adj_mat, short int num_nodes
 
     //create memory for ASAP and schedule the tasks based-on ASAP
     val_ASAP_u = (short int *) malloc(sizeof (short int)*(num_nodes + 2));
-    if (err = evaluate_ASAP(num_nodes, succ_adj_mat, val_ASAP_u, task))
+    if ((err = evaluate_ASAP(num_nodes, succ_adj_mat, val_ASAP_u, task)))
         print_error(err);
 
     //create memory for ALAP and schedule the tasks based-on ALAP
     val_ALAP_u = (short int *) malloc(sizeof (short int)*(task->width + 2));
-    if (err = evaluate_ALAP(num_nodes, succ_adj_mat, val_ALAP_u, *(val_ASAP_u + (num_nodes + 1)), task))
+    if ((err = evaluate_ALAP(num_nodes, succ_adj_mat, val_ALAP_u, *(val_ASAP_u + (num_nodes + 1)), task)))
         print_error(err);
 
     short int dim_size[1];

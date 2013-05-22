@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <assert.h>
 #include <math.h>
 #include <stdbool.h>
@@ -104,25 +105,25 @@ int parse_res(FILE *in_strm, t_task_type *task_type) {
         if (count_task_type < index)
             count_task_type = index;
 
-        if (token = strtok(NULL, " ")) {
+        if ((token = strtok(NULL, " "))) {
             (task_type + index)->columns = atoi(token);
         } else {
             err = __RESFILE1;
             break;
         }
-        if (token = strtok(NULL, " ")) {
+        if ((token = strtok(NULL, " "))) {
             (task_type + index)->rows = atoi(token);
         } else {
             err = __RESFILE1;
             break;
         }
-        if (token = strtok(NULL, " ")) {
+        if ((token = strtok(NULL, " "))) {
             (task_type + index)->latency = atoi(token);
         } else {
             err = __RESFILE2;
             break;
         }
-        if (token = strtok(NULL, " \n")) {
+        if ((token = strtok(NULL, " \n"))) {
             (task_type + index)->reconfig_time = atoi(token);
         } else {
             err = __RESFILE3;
@@ -157,10 +158,10 @@ int parse_aif(FILE *in_strm, t_task *task, t_task_interface *task_interface) {
                 || !strcasecmp(token, "outputs")
                 || !strcasecmp(token, "regs")) {
             short int mode = intfc_mode(token);
-            while (token = strtok(NULL, " \n")) {
+            while ((token = strtok(NULL, " \n"))) {
                 strcpy(task_interface_curr->name, token);
                 task_interface_curr->mode = mode;
-                if (token = strtok(NULL, " \n"))
+                if ((token = strtok(NULL, " \n")))
                     task_interface_curr->width = atoi(token);
                 count_intfc++;
                 task_interface_curr = task_interface + count_intfc;
@@ -196,7 +197,7 @@ int parse_aif(FILE *in_strm, t_task *task, t_task_interface *task_interface) {
                         break;
                 }
                 task_attrib++;
-            } while (token = strtok(NULL, " \n"));
+            } while ((token = strtok(NULL, " \n")));
             count_task++;
             task_curr = task + count_task;
         }
