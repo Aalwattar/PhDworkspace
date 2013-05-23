@@ -76,13 +76,16 @@ $(PROG_NAME) : $(OBJS)
 	$(CC) $(OBJS) $(L_INCLUDES) -o $(PROG_NAME)
 
 
-$(OBJ_DIR)/$(NAPOLEON_DIR)/%.o: $(SRC_DIR)/$(NAPOLEON_DIR)/%.c
+$(OBJ_DIR)/$(NAPOLEON_DIR)/%.o: $(OBJ_DIR) $(SRC_DIR)/$(NAPOLEON_DIR)/%.c
 	$(CC) $(C_INCLUDES) $(C_FLAGS) -c $^ -o $@
 	
-$(OBJ_DIR)/$(GA_DIR)/%.o: $(SRC_DIR)/$(GA_DIR)/%.c
+$(OBJ_DIR)/$(GA_DIR)/%.o: $(OBJ_DIR) $(SRC_DIR)/$(GA_DIR)/%.c
 	$(CC) $(C_INCLUDES) $(C_FLAGS) -c $^ -o $@
     
-
+$(OBJ_DIR) : 
+	mkdir -p $(OBJ_DIR)
+	mkdir -p $(OBJ_DIR)/GA
+	mkdir -p $(OBJ_DIR)/Napoleon
 
 clean : 
 	rm -f $(BIN_DIR)/$(PROG_NAME)
