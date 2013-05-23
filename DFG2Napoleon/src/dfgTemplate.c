@@ -32,8 +32,8 @@ struct  DFG DFGArray[NO_OF_DFGS] = {
 //
 //		#include "templates/B3/B3_20_10_2.txt_20_10_2.txt"
 //		#include "templates/B3/B3_20_20_2.txt_20_20_2.txt"
-//		#include "templates/B3/B3_20_25_2.txt_20_25_2.txt"
-		#include "templates/B3/B3_20_30_2.txt_20_30_2.txt"
+		#include "templates/B3/B3_20_25_2.txt_20_25_2.txt"
+	//	#include "templates/B3/B3_20_30_2.txt_20_30_2.txt"
 
 
 

@@ -14,7 +14,10 @@
 #include "data.h"
 
 enum DepType {REG='r',OUT='o',INP='c'};
-
+/*
+ * TODO to be completely cleaned up.
+ *
+ */
 struct output
 	{
 		int node;
