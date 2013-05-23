@@ -1,5 +1,6 @@
-#Impl    Colums   Rows  Conf_t    Exec_t   Conf_PWR   Exec_PWR 
+Num_Tasks= 4
 
+#Impl    Colums   Rows  Conf_t    Exec_t   Conf_PWR   Exec_PWR
 
 TASK1    1         1       5        20       5          5
 TASK1    1         2       10       10       10         15 

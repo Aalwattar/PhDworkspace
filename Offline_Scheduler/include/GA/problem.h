@@ -28,24 +28,25 @@
 
 // represents one architecture's implementation
 typedef struct {
-    double columns;
-    double rows;
+    short int columns;
+    short int rows;
     
-    double latency;
-    double runtime;
-    double power;
+    short int conf_t;
+    short int exec_t;
+    short int conf_p;
+    short int exec_p;
 } Implementation; 
 
 // contains all of the architectures of an operation
 typedef struct{
-    int num_impl;               // the number of architectures for that operation
+    short int num_impl;         // the number of architectures for that operation
     Implementation * impl;      // the Implementation properties of each architecture
 }Operation;
 
 
 // contains information for representing the problem as a chromosome
 typedef struct{
-    int num_genes;      // the number of tasks (the number of genes on a chromosome)
+    short int num_genes;// the number of tasks (the number of genes on a chromosome)
     int * oper;         // the type of operation of each task
 }Representation;
 

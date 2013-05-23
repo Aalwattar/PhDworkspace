@@ -70,7 +70,8 @@ extern char * DFG_FILENAME;
  *****************            ARCHITECTURE FILE I/O           *****************
  *****************************************************************************/
 
-bool parseArchLibrary(FILE * fp);
+bool parseArchLibrary(FILE *);
+bool parseArch(char *);
 
 bool initArchLibrary(char * filename) {
     FILE * fp;
@@ -93,10 +94,101 @@ bool initArchLibrary(char * filename) {
     return status;
 }
 
-bool parseArchLibrary(FILE * fp){
+// FIX - add error checking
+bool parseArchLibrary(FILE * fp) {
+    char buffer[BUFF_SIZE];
+    int num_ops;
+    int i;
+
+    fscanf(fp, "%*s %d", &num_ops);
     
+    arch_library = malloc(sizeof (Operation) * (num_ops + 1));
+    for (i = 0; i < num_ops + 1; i++) {
+        (arch_library[i]).impl = NULL;
+        (arch_library[i]).num_impl = 0;
+    }
+
+    while (fgets(buffer, BUFF_SIZE, fp) != NULL) {
+        if (strlen(buffer) < 2) // a blank line
+            continue;
+
+        // FIX - implement some form of file validation???
+        if (buffer[0] == '#')   // a comment
+            continue;
+
+        if (strncmp(buffer, "TASK", 4) == 0) {
+            parseArch(buffer);
+        }
+        else{
+            fprintf(stderr, "GA parseArchLibrary Failed!\n");
+            fprintf(stderr, "Unable to understand the line :\n\t%s", buffer);
+            return false;
+        }
+    }
+    return true;
 }
 
+// FIX - add error checking
+bool parseArch(char * raw){
+    char * token;
+    int arch_num;
+    int op_type;
+    
+    op_type = raw[4] - '1';
+    
+    arch_num = (arch_library[op_type]).num_impl++;
+    (arch_library[op_type]).impl = realloc((arch_library[op_type]).impl, 
+            sizeof (Implementation) * (arch_library[op_type]).num_impl);
+    
+    token = strtok(raw, " ");
+    token = strtok(NULL, "\n");
+    
+    if(sscanf(token, "%hd%*[ ]%hd%*[ ]%hd%*[ ]%hd%*[ ]%hd%*[ ]%hd",
+            &(((arch_library[op_type]).impl[arch_num]).columns),
+            &(((arch_library[op_type]).impl[arch_num]).rows),
+            &(((arch_library[op_type]).impl[arch_num]).conf_t),
+            &(((arch_library[op_type]).impl[arch_num]).exec_t),
+            &(((arch_library[op_type]).impl[arch_num]).conf_p),
+            &(((arch_library[op_type]).impl[arch_num]).exec_p)) < 6){
+        
+        printf("Could not parse %s\n", token);
+        return false;
+    }
+    
+    return true;
+}
+
+
+
+void freeArchLibrary(void) {
+    int i;
+
+    for (i = 0; (arch_library[i]).impl != NULL; i++) {
+        free((arch_library[i]).impl);
+    }
+
+    free(arch_library);
+}
+
+
+void printArchLibrary(void){
+    char * names[] = {"TASK1", "TASK2", "TASK3", "TASK4"};
+    int i, j;
+
+    for (i = 0; (arch_library[i]).impl; i++) {
+        fprintf(stdout, "%s has %d impls\n", names[i], 
+                (arch_library[i]).num_impl);
+        for (j = 0; j < (arch_library[i]).num_impl; j++) {
+            fprintf(stdout, "%d\t%d\t%d\t%d\t%d\t%d\n",
+                    ((arch_library[i]).impl[j]).columns,
+                    ((arch_library[i]).impl[j]).rows,
+                    ((arch_library[i]).impl[j]).conf_t,
+                    ((arch_library[i]).impl[j]).exec_t,
+                    ((arch_library[i]).impl[j]).conf_p,
+                    ((arch_library[i]).impl[j]).exec_p);
+        }
+    }
+}
 
 /******************************************************************************
  ***********************           DFG FILE I/O         ***********************

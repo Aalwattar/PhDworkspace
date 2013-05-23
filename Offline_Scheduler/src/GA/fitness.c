@@ -38,8 +38,8 @@ double evaluateFitness(int * chromosome){
        oper = template->oper[i];
        allele = chromosome[i];
        
-       runtime = arch_library[oper].impl[allele].runtime;
-       power = arch_library[oper].impl[allele].power;
+       runtime = arch_library[oper].impl[allele].exec_t;
+       power = arch_library[oper].impl[allele].exec_p;
    
        fitness = fitness + (RUNTIME_WEIGHT)*runtime + (POWER_WEIGHT)*power;
    }

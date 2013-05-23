@@ -35,10 +35,6 @@ int STOP_CONDITION = 500;
 int generation_num;
 
 
-// IDEAL SOLUTION FOR DUMMY DATA:
-//      - all 0's
-//      - fitness = 8379
-
 void initParameters(int num_tokens, char ** input_token);
 
 bool populationConverged(Population * pop) {
@@ -59,7 +55,9 @@ bool populationConverged(Population * pop) {
 
 
 int main(int argc, char * argv[]){
-    
+    initArchLibrary(ARCH_FILENAME);
+    printArchLibrary();
+    freeArchLibrary();
     
     return EXIT_SUCCESS;
 }
