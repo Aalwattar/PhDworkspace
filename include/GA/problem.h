@@ -39,10 +39,7 @@ typedef struct{
     Implementation * impl;      // the Implementation properties of each architecture
 }Operation;
 
-typedef struct{
-    int num_nodes;      // The number of nodes (tasks) in the DFG
-    int * oper;         // The operation of each task
-}DFG;
+
 
 // contains information for representing the problem as a chromosome
 typedef struct{
@@ -133,30 +130,8 @@ void printArchLibrary(void);
  ***********************           DFG FILE I/O         ***********************
  *****************************************************************************/
 
-/******************************************************************************
- * NAME : initDFG
- * 
- * PURPOSE : Imports a DFG from a template file
- * ARGUMENTS : char * = the name of the file that contains the DFG
- * 
- * RETURNS : false if the filename could not be found or opened or the file did 
- *              not follow the specified format
- *           true otherwise (successful completion)
- * 
- * NOTE : please see the README file for more information about the format
- *              and contents of the DFG file
- *****************************************************************************/
 bool initDFG(char *);
 
-/******************************************************************************
- * NAME : freeDFG
- * 
- * PURPOSE : Frees all static dynamically allocated memory for the 
-                representation of the DFG
- * 
- * PRECONDITIONS : the DFG struct MUST have been previously initialized 
- *                      by initProblem
- *****************************************************************************/
 void freeDFG(void);
 
 
