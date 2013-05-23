@@ -21,15 +21,6 @@
 
 #include "problem.h"
 
-#include "bounds.h"
-#include "ecodes.h"
-#include "ilp.h"
-#include "io.h"
-#include "functions.h"
-#include "napoleon.h"
-#include "types.h"
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -102,6 +93,9 @@ bool initArchLibrary(char * filename) {
     return status;
 }
 
+bool parseArchLibrary(FILE * fp){
+    
+}
 
 
 /******************************************************************************
