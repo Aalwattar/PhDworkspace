@@ -1,0 +1,9 @@
+Exception: STATUS_ACCESS_VIOLATION at eip=004011CB
+eax=31C992F4 ebx=00000000 ecx=61187720 edx=61083265 esi=80063400 edi=611A1E9F
+ebp=0028AC08 esp=0028ABE0 program=C:\Users\aalwatta.CFS\workspace\DFG2Naplion\Debug\DFG2Naplion.exe, pid 13456, thread main
+cs=0023 ds=002B es=002B fs=0053 gs=002B ss=002B
+Stack trace:
+Frame     Function  Args
+0028AC08  004011CB  (00000001, 0028AC30, 80028758, 8006346B)
+0028ACF8  6100763A  (00000000, 0028CD78, 61006C50, 00000000)
+End of stack trace
