@@ -15,10 +15,11 @@
  * Purpose  : a header for individual.c
  ******************************************************************************/
 
-#include "problem.h"
 
 #ifndef INDIVIDUAL_H
 #define	INDIVIDUAL_H
+
+#include "problem.h"
 
 extern double CROSSOVER_RATE;
 extern double MUTATION_RATE;

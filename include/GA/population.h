@@ -15,10 +15,13 @@
  * Purpose  : a header for population.c
  ******************************************************************************/
 
-#include "individual.h"
+
 
 #ifndef POPULATION_H
 #define	POPULATION_H
+
+#include "individual.h"
+
 
 extern int POP_SIZE;
 

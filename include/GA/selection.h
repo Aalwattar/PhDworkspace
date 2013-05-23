@@ -16,11 +16,10 @@
  ******************************************************************************/
 
 
-#include "population.h"
-
 #ifndef SELECTION_H
 #define	SELECTION_H
 
+#include "population.h"
 
 Population * tournamentSelection(Population * original);
 

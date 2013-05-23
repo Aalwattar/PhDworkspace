@@ -15,10 +15,12 @@
  * Purpose  : a header for fitness.c
  ******************************************************************************/
 
-#include "population.h"
 
 #ifndef FITNESS_H
 #define	FITNESS_H
+
+#include "population.h"
+
 
 #define RUNTIME_WEIGHT 0.6
 #define POWER_WEIGHT 1 - RUNTIME_WEIGHT
