@@ -45,7 +45,7 @@ double evaluateFitness(int * chromosome){
    }
     
     //return Napoleon(grid_strm, succ_adj_mat, task->width, task);
-    return 0;
+    return fitness;
 }
 
 
