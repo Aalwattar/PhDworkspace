@@ -1,0 +1,30 @@
+inputs c0 8 c1 8 c2 8 c3 8 c4 8 c5 8 c6 8 c7 8 c8 8 c9 8 
+outputs o0 8 o1 8 o2 8 o3 8 o4 8 o5 8 o6 8 o7 8 o8 8 
+regs r0 8 r1 8 r2 8 r3 8 r4 8 r5 8 r6 8 r7 8 r8 8 r9 8 r10 8 r11 8 r12 8 r13 8 r14 8 r15 8 
+T0 TASK7 8 c0 c1 o0
+T1 TASK3 8 c2 c3 r1
+T2 TASK6 8 c4 c5 r0
+T3 TASK5 8 r0 c6 r2
+T4 TASK4 8 c7 r0 r4
+T5 TASK6 8 r0 r1 r3
+T6 TASK3 8 r1 r2 r5
+T7 TASK6 8 r1 r3 r14
+T8 TASK8 8 r4 r2 r6
+T9 TASK2 8 c8 r5 r7
+T10 TASK2 8 r3 r0 r13
+T11 TASK1 8 r2 r4 r15
+T12 TASK4 8 r4 r2 r8
+T13 TASK6 8 r6 r2 r11
+T14 TASK8 8 r7 r8 r10
+T15 TASK6 8 r1 r7 r9
+T16 TASK8 8 r9 r10 r12
+T17 TASK4 8 r11 r12 o1
+T18 TASK8 8 r12 r2 o2
+T19 TASK2 8 r13 r0 o3
+T20 TASK4 8 r14 r1 o4
+T21 TASK3 8 r6 c9 o5
+T22 TASK7 8 r10 r14 o6
+T23 TASK1 8 r15 r4 o7
+T24 TASK1 8 r13 r9 o8
+end
+

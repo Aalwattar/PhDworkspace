@@ -1,0 +1,24 @@
+inputs x1 8 x2 8 x3 8 x4 8 x5 8 x6 8 x7 8 x8 8 x9 8 x10 8 x11 8 x12 8 x13 8 x14 8 x15 8 x16 8
+outputs yout1 8 yout2 8 
+regs r0 8 r1 8 r2 8 r3 8 r4 8 r5 8 r6 8 r7 8 r8 8 r9 8 r10 8 r11 8 r12 8 r13 8 r14 8 r15 8 r16 8 
+T1 TASK2 8 x1 x2 r0
+T2 TASK1 8 r0 x16 r1
+T3 TASK1 8 r0 x3 r2 
+T4 TASK1 8 r0 x4 r3
+T5 TASK1 8 x7 r1 r5 
+T6 TASK1 8 r1 x8 r6
+T7 TASK2 8 r2 r3 r7
+T8 TASK2 8 x5 x6 r4
+T9 TASK2 8 r5 x9 r8 
+T10 TASK1 8 r6 r7 r9
+T11 TASK1 8 r7 r4 r10 
+T12 TASK1 8 x10 r8 r11
+T13 TASK1 8 r8 x11 r12
+T14 TASK2 8 r9 r10 r13
+T15 TASK1 8 r11 r13 yout1 
+T16 TASK2 8 x12 x13 r14
+T17 TASK2 8 x14 x15 r15 
+T18 TASK2 8 r14 r15 r16
+T19 TASK2 8 r12 r16 yout2
+end
+

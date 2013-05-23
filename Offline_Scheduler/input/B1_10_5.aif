@@ -1,0 +1,14 @@
+inputs c0 8 c1 8 c2 8 c3 8 c4 8 c5 8 c6 8 c7 8 c8 8 c9 8 c10 8 c11 8 c12 8 c13 8 c14 8 
+outputs o0 8 o1 8 o2 8 o3 8 o4 8 o5 8 o6 8 
+regs r0 8 r1 8 r2 8 
+T0 TASK3 8 c0 c1 r0
+T1 TASK4 8 c2 r0 o0
+T2 TASK2 8 c3 r0 r2
+T3 TASK3 8 c4 c5 o1
+T4 TASK2 8 c6 c7 r1
+T5 TASK1 8 c8 r1 o2
+T6 TASK3 8 c9 c10 o3
+T7 TASK2 8 r1 c11 o4
+T8 TASK1 8 r2 c12 o5
+T9 TASK2 8 c13 c14 o6
+end
