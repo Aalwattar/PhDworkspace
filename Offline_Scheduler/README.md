@@ -21,7 +21,8 @@ bin/GA.exe [arguments]
     - more options are currently in development
 
 
-DEFAULT VALUES
+Default Values
+
     -ps=20
     -mr=0.001
     -cr=0.85
@@ -31,7 +32,8 @@ DEFAULT VALUES
                  // information from Napolion
 
 
-PROGRAM OUTPUT
+Program Output
+
     - Error messages are currently being printed to stderr
     - All other program output is printed to stdout
 
@@ -39,37 +41,16 @@ PROGRAM OUTPUT
 
 FORMATS:
 --------------------------------------------------------------------------------
-TRIVIAL ARCHITECTURE DEFINITION
-    - uses the arbitrarily created table of architectures and their performances
-        instead of real data from the scheduler
+Archetecture File Format
+    - The very first line in the file MUST be as follows:
+        Num_Tasks= #
+            # = the number different tasks that this file contains
+    - The properties of each task must be entered in the following order:
+        <NAME> <COLUMNS> <ROWS> <CONFIGURATION_TIME> <EXECUTION_TIME> <CONFIGURATION_POWER> <EXECUTION_POWER>
+    - each property must be an integer separated by one or more whitespaces
 
-TRIVIAL ARCHITECTURE FILE FORMAT
-    - ALL FOUR OPERATIONS ARE ASSUMED TO BE PRESENT IN THE FOLLOWING ORDER
-    - {a, s, m, d} <number of architectures of that operation type>
-        eg. a 6
-        eg. d 4
-
-    - this is immediately followed by each architecture in the following format
-        <speed in ns>    <power consumption in milli Watts>    <Area mm^2>
-
-    - There should be a newline between each operation
-    - ALL WHITESPACE MUST BE EXACTLY ONE SPACE!!!
-
-    - my dummy file multiplies each operation's runtime by the following
-        operator, but keeps the ratio of the runtime to area, and the runtime
-        to the power consumption constant
-            a = 1x
-            s = 1.5x
-            m = 4x
-            d = 5x
-
-TRIVIAL DFG FILE FORMAT
-    - The first line of the file must contain how many nodes follow
-
-    - it must contain only the operation that each node will take
-    - each line is one operation
-
-
+    - Lines beginning with # are ignored by the parser
+    - all implementations of the same task MUST have the exact same name 
 
 FUTURE IMPLEMENTATION IDEAS
 --------------------------------------------------------------------------------
