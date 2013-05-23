@@ -1,0 +1,167 @@
+ 
+/** DFG automatically generated file, 
+* Created by a tasksgenerated written by
+* 			Ahmed Al-Wattar 
+* 		 	aalwatta@uoguelph.ca 
+*/ 
+
+ 	 /*  Do NOT forget to add #include "templates/dfgTemplate_25_40_2.txt"   
+ 	 and copy the generated .txt file to the template directory */ 
+
+	{
+	 .size=25, 
+
+	 .dfg  = {
+
+		{
+			  .id=   0 , .operation= OpSub, .mode =HybHW , .next=  1 ,.initPrio=0,  .TypeID=7,.CanRun=0x0F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_7_HW_DELAY, .SWdelay=TASK_7_SW_DELAY}
+		},
+
+		{
+			  .id=   1 , .operation= OPMult, .mode =HWOnly , .next=  2 ,.initPrio=0,  .TypeID=3,.CanRun=0x0F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+			  .id=   2 , .operation= OpAdd, .mode =HybHW , .next=  3 ,.initPrio=0,  .TypeID=6,.CanRun=0x01,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_6_HW_DELAY, .SWdelay=TASK_6_SW_DELAY}
+		},
+
+		{
+			  .id=   3 , .operation= OpAdd, .mode =HybHW , .next=  4 ,.initPrio=0,  .TypeID=5,.CanRun=0x07,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1=YES, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_5_HW_DELAY, .SWdelay=TASK_5_SW_DELAY}
+		},
+
+		{
+			  .id=   4 , .operation= OpAdd, .mode =HybHW , .next=  5 ,.initPrio=0,  .TypeID=4,.CanRun=0x03,
+			  .D={.op1=  2 ,.op2=  2 , .isAdd_op1= NO, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id=   5 , .operation= OpAdd, .mode =HybHW , .next=  6 ,.initPrio=0,  .TypeID=6,.CanRun=0x01,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1=YES, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_6_HW_DELAY, .SWdelay=TASK_6_SW_DELAY}
+		},
+
+		{
+			  .id=   6 , .operation= OPMult, .mode =HWOnly , .next=  7 ,.initPrio=0,  .TypeID=3,.CanRun=0x0F,
+			  .D={.op1=  1 ,.op2=  3 , .isAdd_op1=YES, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+			  .id=   7 , .operation= OpAdd, .mode =HybHW , .next=  8 ,.initPrio=0,  .TypeID=6,.CanRun=0x01,
+			  .D={.op1=  1 ,.op2=  5 , .isAdd_op1=YES, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_6_HW_DELAY, .SWdelay=TASK_6_SW_DELAY}
+		},
+
+		{
+			  .id=   8 , .operation= OPMult, .mode =HybHW , .next=  9 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=  4 ,.op2=  3 , .isAdd_op1=YES, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id=   9 , .operation= OpSub, .mode =SWOnly , .next= 10 ,.initPrio=0,  .TypeID=2,.CanRun=0x00,
+			  .D={.op1=  2 ,.op2=  6 , .isAdd_op1= NO, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+		{
+			  .id=  10 , .operation= OpSub, .mode =SWOnly , .next= 11 ,.initPrio=0,  .TypeID=2,.CanRun=0x00,
+			  .D={.op1=  5 ,.op2=  2 , .isAdd_op1=YES, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+		{
+			  .id=  11 , .operation= OpAdd, .mode =HybHW , .next= 12 ,.initPrio=0,  .TypeID=1,.CanRun=0x1F,
+			  .D={.op1=  3 ,.op2=  4 , .isAdd_op1=YES, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+
+		{
+			  .id=  12 , .operation= OpAdd, .mode =HybHW , .next= 13 ,.initPrio=0,  .TypeID=4,.CanRun=0x03,
+			  .D={.op1=  4 ,.op2=  3 , .isAdd_op1=YES, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id=  13 , .operation= OpAdd, .mode =HybHW , .next= 14 ,.initPrio=0,  .TypeID=6,.CanRun=0x01,
+			  .D={.op1=  8 ,.op2=  3 , .isAdd_op1=YES, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_6_HW_DELAY, .SWdelay=TASK_6_SW_DELAY}
+		},
+
+		{
+			  .id=  14 , .operation= OPMult, .mode =HybHW , .next= 15 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=  9 ,.op2= 12 , .isAdd_op1=YES, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id=  15 , .operation= OpAdd, .mode =HybHW , .next= 16 ,.initPrio=0,  .TypeID=6,.CanRun=0x01,
+			  .D={.op1=  1 ,.op2=  9 , .isAdd_op1=YES, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_6_HW_DELAY, .SWdelay=TASK_6_SW_DELAY}
+		},
+
+		{
+			  .id=  16 , .operation= OPMult, .mode =HybHW , .next= 17 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1= 15 ,.op2= 14 , .isAdd_op1=YES, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id=  17 , .operation= OpAdd, .mode =HybHW , .next= 18 ,.initPrio=0,  .TypeID=4,.CanRun=0x03,
+			  .D={.op1= 13 ,.op2= 16 , .isAdd_op1=YES, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id=  18 , .operation= OPMult, .mode =HybHW , .next= 19 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1= 16 ,.op2=  3 , .isAdd_op1=YES, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id=  19 , .operation= OpSub, .mode =SWOnly , .next= 20 ,.initPrio=0,  .TypeID=2,.CanRun=0x00,
+			  .D={.op1= 10 ,.op2=  2 , .isAdd_op1=YES, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+		{
+			  .id=  20 , .operation= OpAdd, .mode =HybHW , .next= 21 ,.initPrio=0,  .TypeID=4,.CanRun=0x03,
+			  .D={.op1=  7 ,.op2=  1 , .isAdd_op1=YES, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id=  21 , .operation= OPMult, .mode =HWOnly , .next= 22 ,.initPrio=0,  .TypeID=3,.CanRun=0x0F,
+			  .D={.op1=  8 ,.op2=  1 , .isAdd_op1=YES, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+			  .id=  22 , .operation= OpSub, .mode =HybHW , .next= 23 ,.initPrio=0,  .TypeID=7,.CanRun=0x0F,
+			  .D={.op1= 14 ,.op2=  7 , .isAdd_op1=YES, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_7_HW_DELAY, .SWdelay=TASK_7_SW_DELAY}
+		},
+
+		{
+			  .id=  23 , .operation= OpAdd, .mode =HybHW , .next= 24 ,.initPrio=0,  .TypeID=1,.CanRun=0x1F,
+			  .D={.op1= 11 ,.op2=  4 , .isAdd_op1=YES, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+
+		{
+			  .id=  24 , .operation= OpAdd, .mode =HybHW , .next=  0 ,.initPrio=0,  .TypeID=1,.CanRun=0x1F,
+			  .D={.op1= 10 ,.op2= 15 , .isAdd_op1=YES, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+
+		},
+	},
