@@ -28,7 +28,10 @@
 
 // represents one architecture's implementation
 typedef struct {
-    double area;
+    double columns;
+    double rows;
+    
+    double latency;
     double runtime;
     double power;
 } Implementation; 
@@ -39,10 +42,6 @@ typedef struct{
     Implementation * impl;      // the Implementation properties of each architecture
 }Operation;
 
-typedef struct{
-    int num_nodes;      // The number of nodes (tasks) in the DFG
-    int * oper;         // The operation of each task
-}DFG;
 
 // contains information for representing the problem as a chromosome
 typedef struct{
@@ -52,6 +51,7 @@ typedef struct{
 
 
 Operation * arch_library;
+
 Representation * template;
 
 
