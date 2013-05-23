@@ -57,4 +57,8 @@ void generateNextGeneration(Population * pop){
                 crossover(&(pop->member[i]), &(pop->member[i+1]));
         }
     }
+    
+    for(i=0; i<POP_SIZE; i++){
+        mutate(&(pop->member[i]));
+    }
 }
