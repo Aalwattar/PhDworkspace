@@ -1,0 +1,11 @@
+##TYPE     COLUMNS	  ROWS	     LATENCY      RECONFIGURATION
+
+   TASK1       1            5        20             20	
+   TASK2       1            5        20             20
+   TASK3       1            5        80             20		
+   TASK4       1            5        20             20
+   TASK5       1            5        15             20	
+   TASK6       1            5        10             20
+   TASK7       1            5        30             20		
+   TASK8       1            5        15             20
+
