@@ -122,6 +122,56 @@ int initNapoleon(Individual * ind) {
 //    
 //    return EXIT_SUCCESS;
 
+void bruteForce(void){
+    Individual ind;
+    long solution[10];
+    int bestFitness = 100000;
+    int fitness;
+    
+    ind.encoding = &solution;
+    
+    for(int a=0; a<5; a++){
+        solution[0] = a;
+        for(int b=0; b<2; b++){
+            solution[1] = b;
+            for(int c=0; c<4; c++){
+                solution[2] = c;
+                for(int d=0; d<5; d++){
+                    solution[3] = d;
+                    for(int e=0; e<4; e++){
+                        solution[4] = e;
+                        for(int f=0; f<3; f++){
+                            solution[5] = f;
+                            for(int g=0; g<5; g++){
+                                solution[6] = g;
+                                for(int h=0; h<4; h++){
+                                    solution[7] = h;
+                                    for(int i=0; i<3; i++){
+                                        solution[8] = i;
+                                        for(int j=0; j<4; j++){
+                                            solution[9] = j;
+                                            
+                                            fitness = initNapoleon(&ind);
+                                            
+                                            if(fitness < bestFitness){
+                                                printf("%d%d%d%d%d%d%d%d%d%d", a, b, c, d, e, f, g, h, i, j);
+                                                printf("\t Fitness = %d\n", fitness);
+                                                
+                                                bestFitness = fitness;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+// one ideal = 2010100000, fitness = 175
+
 int main(int argc, char * argv[]) {
     Population * pop, * mating_pop;
     FILE *aif_strm;
@@ -173,7 +223,8 @@ int main(int argc, char * argv[]) {
     initArchLibrary(ARCH_FILENAME);
     randSeed();
 
-
+//    bruteForce();
+    
     pop = genRandPopulation();
 
     fprintf(stdout, "\n----------------------------------------------------------\n\n");
