@@ -63,7 +63,7 @@ t_task_type *task_type;
 // must be called AFTER initArchLibrary
 
 int initNapoleon(Individual * ind) {
-    FILE * grid_strm, *ilp_strm;
+    FILE * grid_strm;
     short int T = 99; //upper_bound_total_exec_time
     int err = 0;
     int fitness;
@@ -95,7 +95,7 @@ int initNapoleon(Individual * ind) {
     if ((err = create_reuse_mat(task, reuse_mat)))
         print_error(err);
 
-    fprintf(stderr, "T = %d\n", calc_T(task, &T));
+//    fprintf(stderr, "T = %d\n", calc_T(task, &T));
     //T = 20;
 
     if (!(grid_strm = fopen("output/outScheduler.txt", "w")))
@@ -103,13 +103,12 @@ int initNapoleon(Individual * ind) {
 
     //call the napoleon scheduler
     fitness = Napoleon(grid_strm, succ_adj_mat, task->width, task);
-    if (!(ilp_strm = fopen("output/ilp_equations.lp", "w")))
-        print_error(__LOG_FILE);
+//    if (!(ilp_strm = fopen("output/ilp_equations.lp", "w")))
+//        print_error(__LOG_FILE);
 
     //uncomment the next line to generate the ILP equations file.
     //ilp_equations(ilp_strm, task, T, succ_adj_mat, reuse_mat);
 
-    fclose(ilp_strm);
     fclose(grid_strm);
     free(reuse_mat);
     free(succ_adj_mat);
@@ -160,7 +159,7 @@ int main(int argc, char * argv[]) {
 
     // FIX
     //open the aif input file for reading
-    if ((aif_strm = fopen("input/B1_25_10.aif", "r"))) {
+    if ((aif_strm = fopen("input/B1_10_5.aif", "r"))) {
         //parse the aif file
         //and exit on unsuccessful execution of the parse_aif function
         if ((err = parse_aif(aif_strm, task, task_interface)))
@@ -172,7 +171,7 @@ int main(int argc, char * argv[]) {
 
 
     initArchLibrary(ARCH_FILENAME);
-
+    randSeed();
 
 
     pop = genRandPopulation();
@@ -196,13 +195,13 @@ int main(int argc, char * argv[]) {
             pop->member[i].fitness = initNapoleon(&(pop->member[i]));
         }
 
-        fprintf(stdout, "\n");
-        for (i = 0; i < POP_SIZE; i++) {
-            for (j = 0; j < task->width; j++) {
-                fprintf(stdout, "%d", pop->member[i].encoding[j]);
-            }
-            fprintf(stdout, "\tfitness = %.5lf\n", pop->member[i].fitness);
-        }
+//        fprintf(stdout, "\n");
+//        for (i = 0; i < POP_SIZE; i++) {
+//            for (j = 0; j < task->width; j++) {
+//                fprintf(stdout, "%d", pop->member[i].encoding[j]);
+//            }
+//            fprintf(stdout, "\tfitness = %.5lf\n", pop->member[i].fitness);
+//        }
 
         mating_pop = tournamentSelection(pop);
         freePopulation(pop);
@@ -219,7 +218,7 @@ int main(int argc, char * argv[]) {
         for (j = 0; j < task->width; j++) {
             fprintf(stdout, "%d", pop->member[i].encoding[j]);
         }
-        fprintf(stdout, "\n");
+        fprintf(stdout, "\tfitness = %d\n", initNapoleon(&(pop->member[i])));
     }
 
     freePopulation(pop);
