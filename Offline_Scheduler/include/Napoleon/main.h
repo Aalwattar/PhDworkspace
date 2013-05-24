@@ -20,4 +20,7 @@
 
 extern FILE *log_strm;
 
+ int initNapoleon(int argc, char *argv[]);
+ void freeNapoleon(void);
+
 #endif /* MAIN_H */

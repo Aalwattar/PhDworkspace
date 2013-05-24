@@ -53,7 +53,6 @@ typedef struct s_task {
     short int leftmost_column;
     short int bottommost_row;
     short int latency;
-    short int power;
     short int columns;
     short int rows;
     short int reconfig_time;
@@ -62,6 +61,9 @@ typedef struct s_task {
     short int input2;
     short int output;
     
+    // Jenn's additions
+    short int conf_power;
+    short int exec_power;
     short int impl;
 } t_task;
 
