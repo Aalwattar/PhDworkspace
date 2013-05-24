@@ -18,6 +18,8 @@
 #ifndef TYPES_H
 #define TYPES_H
 
+#include "bounds.h"
+
 #define __INVALID 0
 
 #define __INPUT    1

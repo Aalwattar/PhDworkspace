@@ -135,7 +135,7 @@ bool parseArch(char * raw){
     int op_type;
     
     op_type = raw[4] - '1';
-    
+
     arch_num = (arch_library[op_type]).num_impl++;
     (arch_library[op_type]).impl = realloc((arch_library[op_type]).impl, 
             sizeof (Implementation) * (arch_library[op_type]).num_impl);

@@ -715,7 +715,8 @@ short int Napoleon(FILE *grid_strm, short int *succ_adj_mat, short int num_nodes
     free(val_ASAP_u);
     free(N_sched);
 
-    return err;
+    //return err;
+    return (task + num_nodes + 1)->exec_sched - 1;
 }
 
 

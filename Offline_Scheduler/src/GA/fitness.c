@@ -22,7 +22,9 @@
 #include "fitness.h"
 
 #include <stdlib.h>
+#include "types.h"
 
+extern t_task * task;
 
 double evaluateFitness(int * chromosome){
    double fitness;

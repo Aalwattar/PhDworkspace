@@ -49,148 +49,189 @@ int generation_num;
 void initParameters(int num_tokens, char ** input_token);
 bool populationConverged(Population * pop);
 
-
-FILE *log_strm;
+//FILE *log_strm;
 void print_help(void);
 int parse_cmd_line_opts(int, char**, t_config*);
 
+short int *succ_adj_mat;
+short int *reuse_mat; //aij
+t_task_interface *task_interface;
+t_task *task;
+t_task_type *task_type;
 
-int main(int argc, char * argv[]){
+
+// must be called AFTER initArchLibrary
+
+int initNapoleon(Individual * ind) {
+    FILE * grid_strm, *ilp_strm;
+    short int T = 99; //upper_bound_total_exec_time
+    int err = 0;
+    int fitness;
+    int i;
+
+    for (i = 1; i <= task->width; i++) {
+        (task + i)->impl = ind->encoding[i - 1];
+
+        (task + i)->columns       = ((arch_library[(task + i)->type - 1]).impl[(task + i)->impl]).columns;
+        (task + i)->rows          = ((arch_library[(task + i)->type - 1]).impl[(task + i)->impl]).rows;
+        (task + i)->conf_power    = ((arch_library[(task + i)->type - 1]).impl[(task + i)->impl]).conf_p;
+        (task + i)->exec_power    = ((arch_library[(task + i)->type - 1]).impl[(task + i)->impl]).exec_p;
+        (task + i)->latency       = ((arch_library[(task + i)->type - 1]).impl[(task + i)->impl]).exec_t;
+        (task + i)->reconfig_time = ((arch_library[(task + i)->type - 1]).impl[(task + i)->impl]).conf_t;
+    }
+
+    //allocate memory for the successor graph adjacency matrix
+    succ_adj_mat = (short int*) malloc(sizeof (short int)*(task->width + 2)*(task->width + 2));
+
+    //create the successor matrix
+    //and exit on unsuccessful execution of the parse_aif function
+    if ((err = create_graph(task, task_interface, succ_adj_mat)))
+        print_error(err);
+
+    //allocate memory for the reuse matrix
+    reuse_mat = (short int*) malloc(sizeof (short int)*(task->width + 2)*(task->width + 2));
+
+    //create the reuse matrix
+    if ((err = create_reuse_mat(task, reuse_mat)))
+        print_error(err);
+
+    fprintf(stderr, "T = %d\n", calc_T(task, &T));
+    //T = 20;
+
+    if (!(grid_strm = fopen("output/outScheduler.txt", "w")))
+        print_error(__LOG_FILE);
+
+    //call the napoleon scheduler
+    fitness = Napoleon(grid_strm, succ_adj_mat, task->width, task);
+    if (!(ilp_strm = fopen("output/ilp_equations.lp", "w")))
+        print_error(__LOG_FILE);
+
+    //uncomment the next line to generate the ILP equations file.
+    //ilp_equations(ilp_strm, task, T, succ_adj_mat, reuse_mat);
+
+    fclose(ilp_strm);
+    fclose(grid_strm);
+    free(reuse_mat);
+    free(succ_adj_mat);
+
+    return fitness;
+}
+
 //    initArchLibrary(ARCH_FILENAME);
 //    printArchLibrary();
 //    freeArchLibrary();
 //    
 //    return EXIT_SUCCESS;
-    FILE *aif_strm, *res_strm, *ilp_strm, *grid_strm;
-    t_task_interface *task_interface;
-    t_task *task;
-    t_task_type *task_type;
-    t_config config;
+
+int main(int argc, char * argv[]) {
+    Population * pop, * mating_pop;
+    FILE *aif_strm;
     int err = 0;
-    short int *succ_adj_mat;
-    short int *reuse_mat; //aij
-    short int T = 99; //upper_bound_total_exec_time
-    int i;
-    
-    if (argc > 1) {
-         if ((err = parse_cmd_line_opts(argc, argv, &config))) {
-             print_help();
-             fprintf(stderr, "Error Code: %d\n", err);
-             exit(err);
-         }
-     } else {
-         print_help();
-         fprintf(stderr, "Error Code: %d\n", __LESSARGS);
-         exit(__LESSARGS);
-     }
- 
-     //allocate memory for the tasks and the task interfaces
-     task = (t_task*) malloc(sizeof (t_task) * __NUM_MAX_TASKS);
-     for (i = 0; i < __NUM_MAX_TASKS; i++) {
-         (task + i)->type = 0;
-         (task + i)->exec_sched = 0;
-         (task + i)->reconfig_sched = 0;
-         (task + i)->leftmost_column = 0;
-         (task + i)->bottommost_row = 0;
-         (task + i)->latency = 0;
-         (task + i)->columns = 0;
-         (task + i)->rows = 0;
-         (task + i)->reconfig_time = 0;
-         (task + i)->width = 0;
-         (task + i)->input1 = 0;
-         (task + i)->input2 = 0;
-         (task + i)->output = 0;
-         
-         (task + i)->conf_power = 0;
-         (task + i)->exec_power = 0;
-         (task + i)->impl = 0;
-     }
- 
-     task_interface = (t_task_interface*) malloc(sizeof (t_task_interface) * __NUM_MAX_TASK_INTFC);
-     for (i = 0; i < __NUM_MAX_TASK_INTFC; i++) {
-         (task_interface + i)->mode = 0;
-         (task_interface + i)->width = 0;
-         (task_interface + i)->reg_out = 0;
-     }
- 
-     //open the aif input file for reading
-     if ((aif_strm = fopen(config.aif_fname, "r"))) {
-         //parse the aif file
-         //and exit on unsuccessful execution of the parse_aif function
-         if ((err = parse_aif(aif_strm, task, task_interface)))
-             print_error(err);
-         //fname = strtok(config.aif_fname, ".");
-         fclose(aif_strm);
-     }
-     //assert(aif_strm);
- 
-     //allocate memory for resources
-     task_type = (t_task_type*) malloc(sizeof (t_task_type) * __NUM_MAX_TASK_TYPES);
-     for (i = 0; i < __NUM_MAX_TASK_TYPES; i++) {
-         (task_type + i)->latency = 0;
-         (task_type + i)->reconfig_time = 0;
-         (task_type + i)->columns = 0;
-         (task_type + i)->rows = 0;
-     }
-     
- 
-     //open the resource file for reading
-     if ((res_strm = fopen(config.res_fname, "r"))) {
-         //parse the resource file
-         //and exit on unsuccessful execution of the parse_res function
-         if ((err = parse_res(res_strm, task_type)))
-             print_error(err);
-         fclose(res_strm);
-     }
-     //assert(res_strm);
- 
- #ifdef __DEBUG
-     //display the task types info
-     display_task_type(task_type);
- #endif
- 
-     set_task_parameter(task, task_type);
- 
-     //allocate memory for the successor graph adjacency matrix
-     succ_adj_mat = (short int*) malloc(sizeof (short int)*(task->width + 2)*(task->width + 2));
- 
-     //create the successor matrix
-     //and exit on unsuccessful execution of the parse_aif function
-     if ((err = create_graph(task, task_interface, succ_adj_mat)))
-         print_error(err);
- 
-     //allocate memory for the reuse matrix
-     reuse_mat = (short int*) malloc(sizeof (short int)*(task->width + 2)*(task->width + 2));
- 
-     //create the reuse matrix
-     if ((err = create_reuse_mat(task, reuse_mat)))
-         print_error(err);
- 
-     fprintf(stderr, "T = %d\n", calc_T(task, &T));
-     //T = 20;
- 
-     if (!(grid_strm = fopen("output/outScheduler.txt", "w")))
-         print_error(__LOG_FILE);
- 
-     //call the napoleon scheduler
-     Napoleon(grid_strm, succ_adj_mat, task->width, task);
-     if (!(ilp_strm = fopen("output/ilp_equations.lp", "w")))
-         print_error(__LOG_FILE);
- 
-     //uncomment the next line to generate the ILP equations file.
-     //ilp_equations(ilp_strm, task, T, succ_adj_mat, reuse_mat);
- 
-     fclose(ilp_strm);
-     fclose(grid_strm);
- 
-     free(reuse_mat);
-     free(succ_adj_mat);
-     free(task_type);    
-     free(task_interface);
-     free(task);
- 
-     exit(0);
+    int i, j;
+
+    //allocate memory for the tasks and the task interfaces
+    task = (t_task*) malloc(sizeof (t_task) * __NUM_MAX_TASKS);
+    for (i = 0; i < __NUM_MAX_TASKS; i++) {
+        (task + i)->type = 0;
+        (task + i)->exec_sched = 0;
+        (task + i)->reconfig_sched = 0;
+        (task + i)->leftmost_column = 0;
+        (task + i)->bottommost_row = 0;
+        (task + i)->latency = 0;
+        (task + i)->columns = 0;
+        (task + i)->rows = 0;
+        (task + i)->reconfig_time = 0;
+        (task + i)->width = 0;
+        (task + i)->input1 = 0;
+        (task + i)->input2 = 0;
+        (task + i)->output = 0;
+
+        (task + i)->conf_power = 0;
+        (task + i)->exec_power = 0;
+        (task + i)->impl = 0;
+    }
+
+    task_interface = (t_task_interface*) malloc(sizeof (t_task_interface) * __NUM_MAX_TASK_INTFC);
+    for (i = 0; i < __NUM_MAX_TASK_INTFC; i++) {
+        (task_interface + i)->mode = 0;
+        (task_interface + i)->width = 0;
+        (task_interface + i)->reg_out = 0;
+    }
+
+    // FIX
+    //open the aif input file for reading
+    if ((aif_strm = fopen("input/B1_25_10.aif", "r"))) {
+        //parse the aif file
+        //and exit on unsuccessful execution of the parse_aif function
+        if ((err = parse_aif(aif_strm, task, task_interface)))
+            print_error(err);
+        //fname = strtok(config.aif_fname, ".");
+        fclose(aif_strm);
+    }
+    //assert(aif_strm);
+
+
+    initArchLibrary(ARCH_FILENAME);
+
+
+
+    pop = genRandPopulation();
+
+    fprintf(stdout, "\n----------------------------------------------------------\n\n");
+    fprintf(stdout, "Starting Population:\n");
+    for (i = 0; i < POP_SIZE; i++) {
+        for (j = 0; j < task->width; j++) {
+            fprintf(stdout, "%d", pop->member[i].encoding[j]);
+        }
+        fprintf(stdout, "\n");
+    }
+
+    while (generation_num < STOP_CONDITION) {
+        //swhile(!populationConverged(pop)){
+        //        for (i = 0; i < POP_SIZE; i++) {
+        //            pop->member[i].fitness = evaluateFitness(pop->member[i].encoding);
+        //        }
+
+        for (i = 0; i < POP_SIZE; i++) {
+            pop->member[i].fitness = initNapoleon(&(pop->member[i]));
+        }
+
+        fprintf(stdout, "\n");
+        for (i = 0; i < POP_SIZE; i++) {
+            for (j = 0; j < task->width; j++) {
+                fprintf(stdout, "%d", pop->member[i].encoding[j]);
+            }
+            fprintf(stdout, "\tfitness = %.5lf\n", pop->member[i].fitness);
+        }
+
+        mating_pop = tournamentSelection(pop);
+        freePopulation(pop);
+
+        generateNextGeneration(mating_pop);
+        pop = mating_pop;
+
+        generation_num++;
+    }
+
+    //fprintf(stdout, "\nGenerations to create best solution = %d\n", generation_num);
+    fprintf(stdout, "\nFinal Population:\n");
+    for (i = 0; i < POP_SIZE; i++) {
+        for (j = 0; j < task->width; j++) {
+            fprintf(stdout, "%d", pop->member[i].encoding[j]);
+        }
+        fprintf(stdout, "\n");
+    }
+
+    freePopulation(pop);
+
+
+
+    freeArchLibrary();
+    free(task_type);
+    free(task_interface);
+    free(task);
 }
+
 
 //int main(int argc, char * argv[]) {
 //    Population * pop;
@@ -249,9 +290,6 @@ int main(int argc, char * argv[]){
 //    return 0;
 //}
 
-
-
-
 void initParameters(int num_tokens, char ** input_token) {
     int i;
 
@@ -291,7 +329,6 @@ void initParameters(int num_tokens, char ** input_token) {
     fprintf(stdout, "\tMutation Rate  = %.4lf\n", MUTATION_RATE);
     fprintf(stdout, "\tCrossover Rate = %.4lf\n\n\t", CROSSOVER_RATE);
 }
-
 
 bool populationConverged(Population * pop) {
     int i, j;

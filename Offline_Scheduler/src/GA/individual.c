@@ -20,14 +20,17 @@
 
 #include <stdlib.h>
 #include "problem.h"
+#include "types.h"
+
+extern t_task * task;
 
 void initRandIndividual(Individual * individual){
     int i;
     
-    individual->encoding = malloc(sizeof(int) * (template->num_genes));
+    individual->encoding = malloc(sizeof(int) * task->width);
     
-    for(i=0; i<template->num_genes; i++){
-        individual->encoding[i] = arch_library[template->oper[i]].num_impl
+    for(i=0; i<task->width; i++){
+        individual->encoding[i] = arch_library[(task + i + 1)->type].num_impl
                 * randomNumber();
     }
     
@@ -43,9 +46,9 @@ void freeIndividual(Individual * i){
 void duplicateIndividual(Individual * copy, Individual * original){
     int i;
     
-    copy->encoding = malloc(sizeof(int) * (template->num_genes));
+    copy->encoding = malloc(sizeof(int) * (task->width));
     
-    for(i=0; i<template->num_genes; i++){
+    for(i=0; i<task->width; i++){
         copy->encoding[i] = original->encoding[i];
     }
     
@@ -57,9 +60,9 @@ void duplicateIndividual(Individual * copy, Individual * original){
 void mutate(Individual * ind){
     int i;
     
-    for(i=0; i<template->num_genes; i++){
+    for(i=0; i<task->width; i++){
         if(randomNumber() < MUTATION_RATE){
-            ind->encoding[i] = arch_library[template->oper[i]].num_impl
+            ind->encoding[i] = arch_library[(task + i + 1)->type].num_impl
                 * randomNumber();
         }
     }
@@ -70,11 +73,11 @@ void crossover(Individual * p1, Individual * p2){
     int temp;
     int i;
     
-    cross1 = template->num_genes * randomNumber();
-    cross2 = template->num_genes * randomNumber();
+    cross1 = task->width * randomNumber();
+    cross2 = task->width * randomNumber();
     
     while(cross1 == cross2){
-        cross2 = template->num_genes * randomNumber();
+        cross2 = task->width * randomNumber();
     }
     if(cross1 > cross2){
         // Unnecessary, but fun!

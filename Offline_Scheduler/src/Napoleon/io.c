@@ -37,7 +37,7 @@
 #include <ecodes.h>
 #include <main.h>
 
-short int task_type(char *);
+short int parse_task_type(char *);
 short int intfc_mode(char *);
 short int get_index(char *, t_task_interface *, short int);
 void print_error(int);
@@ -181,7 +181,7 @@ int parse_aif(FILE *in_strm, t_task *task, t_task_interface *task_interface) {
                         strcpy(task_curr->name, token);
                         break;
                     case 1: //Task type
-                        task_curr->type = task_type(token);
+                        task_curr->type = parse_task_type(token);
                         break;
                     case 2: //Task width
                         task_curr->width = atoi(token);
@@ -214,7 +214,7 @@ int parse_aif(FILE *in_strm, t_task *task, t_task_interface *task_interface) {
     return err;
 }
 
-short int task_type(char *token) {
+short int parse_task_type(char *token) {
     short int type = 0;
 
     if (!strcasecmp(token, "TASK1")) type = __ADD;
