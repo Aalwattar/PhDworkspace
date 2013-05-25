@@ -124,11 +124,11 @@ int initNapoleon(Individual * ind) {
 
 void bruteForce(void){
     Individual ind;
-    long solution[10];
+    int solution[10];
     int bestFitness = 100000;
     int fitness;
     
-    ind.encoding = &solution;
+    ind.encoding = solution;
     
     for(int a=0; a<5; a++){
         solution[0] = a;
@@ -153,7 +153,7 @@ void bruteForce(void){
                                             
                                             fitness = initNapoleon(&ind);
                                             
-                                            if(fitness < bestFitness){
+                                            if(true){   //fitness <= bestFitness){
                                                 printf("%d%d%d%d%d%d%d%d%d%d", a, b, c, d, e, f, g, h, i, j);
                                                 printf("\t Fitness = %d\n", fitness);
                                                 
@@ -170,7 +170,6 @@ void bruteForce(void){
         }
     }
 }
-// one ideal = 2010100000, fitness = 175
 
 int main(int argc, char * argv[]) {
     Population * pop, * mating_pop;
@@ -222,58 +221,57 @@ int main(int argc, char * argv[]) {
 
     initArchLibrary(ARCH_FILENAME);
     randSeed();
-
-//    bruteForce();
     
-    pop = genRandPopulation();
-
-    fprintf(stdout, "\n----------------------------------------------------------\n\n");
-    fprintf(stdout, "Starting Population:\n");
-    for (i = 0; i < POP_SIZE; i++) {
-        for (j = 0; j < task->width; j++) {
-            fprintf(stdout, "%d", pop->member[i].encoding[j]);
-        }
-        fprintf(stdout, "\n");
-    }
-
-    while (generation_num < STOP_CONDITION) {
-        //swhile(!populationConverged(pop)){
-        //        for (i = 0; i < POP_SIZE; i++) {
-        //            pop->member[i].fitness = evaluateFitness(pop->member[i].encoding);
-        //        }
-
-        for (i = 0; i < POP_SIZE; i++) {
-            pop->member[i].fitness = initNapoleon(&(pop->member[i]));
-        }
-
-//        fprintf(stdout, "\n");
-//        for (i = 0; i < POP_SIZE; i++) {
-//            for (j = 0; j < task->width; j++) {
-//                fprintf(stdout, "%d", pop->member[i].encoding[j]);
-//            }
-//            fprintf(stdout, "\tfitness = %.5lf\n", pop->member[i].fitness);
+    bruteForce();
+    
+//    pop = genRandPopulation();
+//
+//    fprintf(stdout, "\n----------------------------------------------------------\n\n");
+//    fprintf(stdout, "Starting Population:\n");
+//    for (i = 0; i < POP_SIZE; i++) {
+//        for (j = 0; j < task->width; j++) {
+//            fprintf(stdout, "%d", pop->member[i].encoding[j]);
 //        }
-
-        mating_pop = tournamentSelection(pop);
-        freePopulation(pop);
-
-        generateNextGeneration(mating_pop);
-        pop = mating_pop;
-
-        generation_num++;
-    }
-
-    //fprintf(stdout, "\nGenerations to create best solution = %d\n", generation_num);
-    fprintf(stdout, "\nFinal Population:\n");
-    for (i = 0; i < POP_SIZE; i++) {
-        for (j = 0; j < task->width; j++) {
-            fprintf(stdout, "%d", pop->member[i].encoding[j]);
-        }
-        fprintf(stdout, "\tfitness = %d\n", initNapoleon(&(pop->member[i])));
-    }
-
-    freePopulation(pop);
-
+//        fprintf(stdout, "\n");
+//    }
+//
+//    while (generation_num < STOP_CONDITION) {
+//        //swhile(!populationConverged(pop)){
+//        //        for (i = 0; i < POP_SIZE; i++) {
+//        //            pop->member[i].fitness = evaluateFitness(pop->member[i].encoding);
+//        //        }
+//
+//        for (i = 0; i < POP_SIZE; i++) {
+//            pop->member[i].fitness = initNapoleon(&(pop->member[i]));
+//        }
+//
+////        fprintf(stdout, "\n");
+////        for (i = 0; i < POP_SIZE; i++) {
+////            for (j = 0; j < task->width; j++) {
+////                fprintf(stdout, "%d", pop->member[i].encoding[j]);
+////            }
+////            fprintf(stdout, "\tfitness = %.5lf\n", pop->member[i].fitness);
+////        }
+//
+//        mating_pop = tournamentSelection(pop);
+//        freePopulation(pop);
+//
+//        generateNextGeneration(mating_pop);
+//        pop = mating_pop;
+//
+//        generation_num++;
+//    }
+//
+//    //fprintf(stdout, "\nGenerations to create best solution = %d\n", generation_num);
+//    fprintf(stdout, "\nFinal Population:\n");
+//    for (i = 0; i < POP_SIZE; i++) {
+//        for (j = 0; j < task->width; j++) {
+//            fprintf(stdout, "%d", pop->member[i].encoding[j]);
+//        }
+//        fprintf(stdout, "\tfitness = %d\n", initNapoleon(&(pop->member[i])));
+//    }
+//
+//    freePopulation(pop);
 
 
     freeArchLibrary();

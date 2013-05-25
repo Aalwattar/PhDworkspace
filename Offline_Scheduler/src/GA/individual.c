@@ -30,7 +30,7 @@ void initRandIndividual(Individual * individual){
     individual->encoding = malloc(sizeof(int) * task->width);
     
     for(i=0; i<task->width; i++){
-        individual->encoding[i] = arch_library[(task + i + 1)->type].num_impl
+        individual->encoding[i] = arch_library[(task + i + 1)->type - 1].num_impl
                 * randomNumber();
     }
     
@@ -62,7 +62,7 @@ void mutate(Individual * ind){
     
     for(i=0; i<task->width; i++){
         if(randomNumber() < MUTATION_RATE){
-            ind->encoding[i] = arch_library[(task + i + 1)->type].num_impl
+            ind->encoding[i] = arch_library[(task + i + 1)->type - 1].num_impl
                 * randomNumber();
         }
     }

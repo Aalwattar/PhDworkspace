@@ -20,6 +20,7 @@
  ******************************************************************************/
 
 #include "problem.h"
+#include "types.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,6 +34,7 @@
 
 extern char * ARCH_FILENAME;
 extern char * DFG_FILENAME;
+extern t_task * task;
 
 //bool initProblem(void) {
 //    int i;
@@ -172,11 +174,10 @@ void freeArchLibrary(void) {
 
 
 void printArchLibrary(void){
-    char * names[] = {"TASK1", "TASK2", "TASK3", "TASK4"};
     int i, j;
 
     for (i = 0; (arch_library[i]).impl; i++) {
-        fprintf(stdout, "%s has %d impls\n", names[i], 
+        fprintf(stdout, "TASK%d has %d impls\n", i+1, 
                 (arch_library[i]).num_impl);
         for (j = 0; j < (arch_library[i]).num_impl; j++) {
             fprintf(stdout, "%d\t%d\t%d\t%d\t%d\t%d\n",
