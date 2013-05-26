@@ -20,6 +20,14 @@
 
 #include <stdlib.h>
 
+static double CROSSOVER_RATE = 0.85;
+static double MUTATION_RATE  = 0.001;
+
+typedef struct{
+    Individual * member;
+    double total_fitness;
+}Population;
+
 Population * genRandPopulation(){
     Population * pop;
     int i;
@@ -28,9 +36,8 @@ Population * genRandPopulation(){
     pop->member = malloc(sizeof(Individual) * POP_SIZE);
     pop->total_fitness = 0;
 
-    for(i=0; i<POP_SIZE; i++){
+    for(i=0; i<POP_SIZE; i++)
         initRandIndividual(&(pop->member[i]));
-    }
     
     return pop;
 }
@@ -38,9 +45,8 @@ Population * genRandPopulation(){
 void freePopulation(Population * pop){
     int i;
     
-    for(i=0; i<POP_SIZE; i++){
+    for(i=0; i<POP_SIZE; i++)
         freeIndividual(&(pop->member[i]));
-    }
     
     free(pop->member);
     free(pop);
@@ -52,13 +58,23 @@ void freePopulation(Population * pop){
 void generateNextGeneration(Population * pop){
     int i;
     
-    for(i=0; i<POP_SIZE; i = i + 2){
-        if(randomNumber() < CROSSOVER_RATE){
+    for(i=0; i<POP_SIZE; i = i + 2)
+        if(randomNumber() < CROSSOVER_RATE)
                 crossover(&(pop->member[i]), &(pop->member[i+1]));
-        }
-    }
     
-    for(i=0; i<POP_SIZE; i++){
+    for(i=0; i<POP_SIZE; i++)
         mutate(&(pop->member[i]));
-    }
+}
+
+
+void setCrossoverRate(char * raw_rate){
+    CROSSOVER_RATE = atof(raw_rate);
+}
+
+void setMutationRate(char * raw_rate){
+    MUTATION_RATE = atof(raw_rate);
+}
+
+double getMutationRate(void){
+    return MUTATION_RATE;
 }

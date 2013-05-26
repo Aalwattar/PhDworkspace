@@ -24,8 +24,8 @@
 #define __NUM_MAX_TASK_INTFC 		1000
 #define __NUM_MAX_TASKS 		1000
 #define __NUM_MAX_TASK_TYPES 		9
-#define __NUM_FPGA_COLUMNS 		10
-#define __NUM_FPGA_ROWS 		10
+#define __NUM_FPGA_COLUMNS 		5
+#define __NUM_FPGA_ROWS 		5
 #define __NUM_FPGA_RECONFIGARATOR 	1
 #define __SIZE_Q 			1000
 

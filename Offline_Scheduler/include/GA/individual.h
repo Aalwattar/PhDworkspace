@@ -19,24 +19,9 @@
 #ifndef INDIVIDUAL_H
 #define	INDIVIDUAL_H
 
-#include "problem.h"
+#include "util.h"
 
-extern double CROSSOVER_RATE;
-extern double MUTATION_RATE;
-
-/******************************************************************************
- ******************         SOLUTION REPRESENTATION         *******************
- *****************************************************************************/
-
-typedef struct{
-    int * encoding;     // their genotype
-    
-    double fitness;     // true fitness value
-    double rfitness;    // fitness relative to population
-    double cfitness;    // cumulative fitness
-} Individual;
-
-
+typedef struct Individual Individual;
 
 /******************************************************************************
  ******************         INDIVIDUAL MANIPULATION         *******************

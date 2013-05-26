@@ -6,7 +6,7 @@
  *                  for each task's operation
  * 
  * Created  : May 7, 2013
- * Modified : May 22, 2013
+ * Modified : May 24, 2013
  ******************************************************************************/
 
 /*******************************************************************************
@@ -17,26 +17,33 @@
  ******************************************************************************/
 
 #include "individual.h"
+#include "population.h"
+#include "util.h"
 
 #include <stdlib.h>
-#include "problem.h"
-#include "types.h"
 
-extern t_task * task;
 
-void initRandIndividual(Individual * individual){
+typedef struct{
+    int * encoding;     // their genotype
+    
+    double fitness;     // true fitness value
+    double rfitness;    // fitness relative to population
+    double cfitness;    // cumulative fitness
+} Individual;
+
+
+void initRandIndividual(Individual * ind){
     int i;
     
-    individual->encoding = malloc(sizeof(int) * task->width);
+    ind->encoding = malloc(sizeof(int) * getNumGenes());
     
-    for(i=0; i<task->width; i++){
-        individual->encoding[i] = arch_library[(task + i + 1)->type - 1].num_impl
-                * randomNumber();
-    }
+    for(i=0; i<getNumGenes(); i++)
+        ind->encoding[i] = getNumArch(getTaskType(i) * randomNumber());
+                // (task + i + 1)->type
     
-    individual->fitness = 0;
-    individual->cfitness = 0;
-    individual->rfitness = 0;
+    ind->fitness = 0;
+    ind->cfitness = 0;
+    ind->rfitness = 0;
 }
 
 void freeIndividual(Individual * i){
@@ -46,11 +53,10 @@ void freeIndividual(Individual * i){
 void duplicateIndividual(Individual * copy, Individual * original){
     int i;
     
-    copy->encoding = malloc(sizeof(int) * (task->width));
+    copy->encoding = malloc(sizeof(int) * getNumGenes());
     
-    for(i=0; i<task->width; i++){
+    for(i=0; i<getNumGenes(); i++)
         copy->encoding[i] = original->encoding[i];
-    }
     
     copy->fitness = original->fitness;
     copy->cfitness = original->cfitness;
@@ -60,25 +66,22 @@ void duplicateIndividual(Individual * copy, Individual * original){
 void mutate(Individual * ind){
     int i;
     
-    for(i=0; i<task->width; i++){
-        if(randomNumber() < MUTATION_RATE){
-            ind->encoding[i] = arch_library[(task + i + 1)->type - 1].num_impl
-                * randomNumber();
-        }
-    }
-}
+    for(i=0; i<getNumGenes(); i++)
+        if(randomNumber() < getMutationRate())
+            ind->encoding[i] = getNumArch(getTaskType(i) * randomNumber());
+}                               // (task + i + 1)->type
 
 void crossover(Individual * p1, Individual * p2){
     int cross1, cross2;
     int temp;
     int i;
     
-    cross1 = task->width * randomNumber();
-    cross2 = task->width * randomNumber();
+    cross1 = getNumGenes() * randomNumber();
+    cross2 = getNumGenes() * randomNumber();
     
-    while(cross1 == cross2){
-        cross2 = task->width * randomNumber();
-    }
+    while(cross1 == cross2)
+        cross2 = getNumGenes() * randomNumber();
+
     if(cross1 > cross2){
         // Unnecessary, but fun!
 //        Individual * swap;

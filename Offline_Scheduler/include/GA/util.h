@@ -15,76 +15,10 @@
  * Purpose  : a header for problem.c
  ******************************************************************************/
 
-
 #ifndef PROBLEM_H
 #define	PROBLEM_H
 
 #include <stdbool.h>
-
-
-/******************************************************************************
- **************         PROBLEM DEFINITION DATA STORAGE         ***************
- *****************************************************************************/
-
-// represents one architecture's implementation
-typedef struct {
-    short int columns;
-    short int rows;
-    
-    short int conf_t;
-    short int exec_t;
-    short int conf_p;
-    short int exec_p;
-} Implementation; 
-
-// contains all of the architectures of an operation
-typedef struct{
-    short int num_impl;         // the number of architectures for that operation
-    Implementation * impl;      // the Implementation properties of each architecture
-}Operation;
-
-
-// contains information for representing the problem as a chromosome
-typedef struct{
-    short int num_genes;// the number of tasks (the number of genes on a chromosome)
-    int * oper;         // the type of operation of each task
-}Representation;
-
-
-Operation * arch_library;
-
-Representation * template;
-
-
-/******************************************************************************
- * NAME : initProblem
- * 
- * PURPOSE : Initializes problem information (available architectures and 
-                task graph) from textfiles
- * ARGUMENTS : char * = name of the file containing architectre information
- *             char * = name of the file containing the DFG of tasks
- * 
- * RETURNS : false either of the filenames could not be found or opened or 
- *              either file did not follow the specified format
- *           true otherwise (static variables were successfuly initialized)
- * 
- * NOTE : please see the README file for more information about the format
- *              and contents of both required files
- *****************************************************************************/
-bool initProblem(void);
-
-
-/******************************************************************************
- * NAME : freeProblem
- * 
- * PURPOSE : Frees all dynamically allocated memory initialized for the 
- *              problem definition
- * 
- * PRECONDITIONS : this function should only be called if initProblem() 
- *                  returned true
- *****************************************************************************/
-void freeProblem(void);
-
 
 
 /******************************************************************************
@@ -129,37 +63,20 @@ void freeArchLibrary(void);
  *****************************************************************************/
 void printArchLibrary(void);
 
-
 /******************************************************************************
- ***********************           DFG FILE I/O         ***********************
- *****************************************************************************/
-
-/******************************************************************************
- * NAME : initDFG
+ * NAME : getNumArch
  * 
- * PURPOSE : Imports a DFG from a template file
- * ARGUMENTS : char * = the name of the file that contains the DFG
+ * PURPOSE : return the number of architectures that exist for that task
+ * ARGUMENTS : int = which task that we are implementing
  * 
  * RETURNS : false if the filename could not be found or opened or the file did 
  *              not follow the specified format
  *           true otherwise (successful completion)
  * 
  * NOTE : please see the README file for more information about the format
- *              and contents of the DFG file
+ *              and contents of the architecture information file
  *****************************************************************************/
-bool initDFG(char *);
-
-/******************************************************************************
- * NAME : freeDFG
- * 
- * PURPOSE : Frees all static dynamically allocated memory for the 
-                representation of the DFG
- * 
- * PRECONDITIONS : the DFG struct MUST have been previously initialized 
- *                      by initProblem
- *****************************************************************************/
-void freeDFG(void);
-
+short int getNumArch(int);
 
 /******************************************************************************
  *****************          RANDOM NUMBER GENERATION          *****************

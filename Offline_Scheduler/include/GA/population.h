@@ -22,18 +22,7 @@
 
 #include "individual.h"
 
-
-extern int POP_SIZE;
-
-/******************************************************************************
- *****************         POPULATION REPRESENTATION         ******************
- *****************************************************************************/
-typedef struct{
-    Individual * member;
-    double total_fitness;
-}Population;
-
-
+typedef struct Population Population;
 
 /******************************************************************************
  ******************         POPULATION MANIPULATION         *******************
@@ -78,6 +67,13 @@ void freePopulation(Population *);
  *              population
  *****************************************************************************/
 void generateNextGeneration(Population *);
+
+
+void setCrossoverRate(char *);
+
+void setMutationRate(char *);
+double getMutationRate(void);
+
 
 // REPLACEMENT ALGORITHM - generational, steady state?, replace worst?
         // FIX - I AM ASSUMING THAT THE ENTIRE GENERATION IS REPLACED FOR NOW
