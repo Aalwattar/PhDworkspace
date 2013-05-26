@@ -74,6 +74,7 @@ void setCrossoverRate(char *);
 void setMutationRate(char *);
 double getMutationRate(void);
 
+int getPopSize(void);
 
 // REPLACEMENT ALGORITHM - generational, steady state?, replace worst?
         // FIX - I AM ASSUMING THAT THE ENTIRE GENERATION IS REPLACED FOR NOW

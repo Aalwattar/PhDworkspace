@@ -17,6 +17,7 @@
 #ifndef ECODES_H
 #define ECODES_H
 
+#define __NO_ERROR       0
 #define __LESSARGS 	1
 #define __AIF_FILE 	2
 #define __LOG_FILE 	3

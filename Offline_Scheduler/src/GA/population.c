@@ -17,11 +17,14 @@
  ******************************************************************************/
 
 #include "population.h"
+#include "fitness.h"
 
 #include <stdlib.h>
 
 static double CROSSOVER_RATE = 0.85;
 static double MUTATION_RATE  = 0.001;
+
+static int POP_SIZE = 16; // MUST BE AN EVEN NUMBER
 
 typedef struct{
     Individual * member;
@@ -77,4 +80,8 @@ void setMutationRate(char * raw_rate){
 
 double getMutationRate(void){
     return MUTATION_RATE;
+}
+
+int getPopSize(void){
+    return POP_SIZE;
 }

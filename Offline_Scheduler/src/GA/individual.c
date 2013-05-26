@@ -17,7 +17,7 @@
  ******************************************************************************/
 
 #include "individual.h"
-#include "population.h"
+#include "fitness.h"
 #include "util.h"
 
 #include <stdlib.h>
@@ -38,7 +38,7 @@ void initRandIndividual(Individual * ind){
     ind->encoding = malloc(sizeof(int) * getNumGenes());
     
     for(i=0; i<getNumGenes(); i++)
-        ind->encoding[i] = getNumArch(getTaskType(i) * randomNumber());
+        ind->encoding[i] = getNumArch(getTaskType(i)) * randomNumber();
                 // (task + i + 1)->type
     
     ind->fitness = 0;
@@ -68,7 +68,7 @@ void mutate(Individual * ind){
     
     for(i=0; i<getNumGenes(); i++)
         if(randomNumber() < getMutationRate())
-            ind->encoding[i] = getNumArch(getTaskType(i) * randomNumber());
+            ind->encoding[i] = getNumArch(getTaskType(i)) * randomNumber();
 }                               // (task + i + 1)->type
 
 void crossover(Individual * p1, Individual * p2){

@@ -6,7 +6,7 @@
  *                  for each task's operation
  * 
  * Created  : May 16, 2013
- * Modified : May 22, 2013
+ * Modified : May 26, 2013
  ******************************************************************************/
 
 /*******************************************************************************
@@ -16,6 +16,7 @@
  ******************************************************************************/
 
 #include "selection.h"
+#include "population.h"
 
 #include <stdlib.h>
 
@@ -26,12 +27,12 @@ Population * tournamentSelection(Population * original){
     int i;
     
     mating_pool = malloc(sizeof(Population));
-    mating_pool->member = malloc(sizeof(Individual) * POP_SIZE);
+    mating_pool->member = malloc(sizeof(Individual) * getPopSize());
     
     // FIX - do I need to ensure that the two chosen for comparison are different?
-    for(i=0; i<POP_SIZE; i++){
-        p1 = randomNumber() * POP_SIZE;
-        p2 = randomNumber() * POP_SIZE;
+    for(i=0; i<getPopSize(); i++){
+        p1 = randomNumber() * getPopSize();
+        p2 = randomNumber() * getPopSize();
         
         if(original->member[p1].fitness <= original->member[p2].fitness){
             duplicateIndividual(&(mating_pool->member[i]), &(original->member[p1]));
@@ -215,3 +216,15 @@ Population * powerScalingSelection(Population *);
 Population * linearRankingSelection(Population *);
 
 Population * softTournamentSelection(Population *);
+
+
+//// The compare function for qsort
+//int compare(const void *, const void *);
+//
+//void evaluateRanks(Population * pop){
+//    qsort(pop->member, POP_SIZE, sizeof(Individual), compare);
+//}
+//
+//int compare(const void * p1, const void * p2){
+//    return ((Individual *)p1)->fitness - ((Individual *)p2)->fitness;
+//}

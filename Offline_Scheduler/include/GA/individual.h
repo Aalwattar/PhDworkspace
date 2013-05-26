@@ -95,5 +95,6 @@ void mutate(Individual *);
  *****************************************************************************/
 void crossover(Individual *, Individual *);
 
+
 #endif	/* INDIVIDUAL_H */
 

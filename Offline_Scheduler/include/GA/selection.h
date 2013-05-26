@@ -6,7 +6,7 @@
  *                  for each task's operation
  * 
  * Created  : May 16, 2013
- * Modified : May 22, 2013
+ * Modified : May 26, 2013
  ******************************************************************************/
 
 /*******************************************************************************
@@ -42,6 +42,16 @@ Population * softTournamentSelection(Population *);
 // Boltzmann selection
 // steady state algorithms
         // replace worst instead of parents???
+
+
+///******************************************************************************
+// * NAME : evaluateRanks
+// * 
+// * PURPOSE : Orders the individuals in a population in ascending order
+// *              based on fitness
+// * ARGUMENTS : Population * = the Population that you wish to evaluate
+// *****************************************************************************/
+//void evaluateRanks(Population *);
 
 
 #endif	/* SELECTION_H */
