@@ -19,6 +19,8 @@
 #ifndef FITNESS_H
 #define	FITNESS_H
 
+#include <stdbool.h>
+
 /******************************************************************************
  *****************           ARCHITECTURE FILE I/O            *****************
  *****************************************************************************/
@@ -82,6 +84,9 @@ short int getNumArch(int);
  *****************                       *****************
  *****************************************************************************/
 
+bool initNapoleon(char *);
+void freeNapoleon(void);
+
 /******************************************************************************
  * NAME : evaluateFitness
  * 
@@ -92,7 +97,18 @@ short int getNumArch(int);
  *****************************************************************************/
 int evaluateFitness(int *);
 
+
 int getNumGenes(void);
+int getTaskType(int task_num);
+
+
+int getTaskImpl(int);
+int getColumns(int);
+int getRows(int);
+int getConfigTime(int);
+int getExecTime(int);
+int getConfigPower(int);
+int getExecPower(int);
 
 #endif	/* FITNESS_H */
 

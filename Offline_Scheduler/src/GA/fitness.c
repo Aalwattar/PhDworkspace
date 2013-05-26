@@ -21,10 +21,13 @@
 
 #include "fitness.h"
 #include "ecodes.h"
+#include "functions.h"
+#include "napoleon.h"
+#include "io.h"
 #include "types.h"
 
 #include <stdlib.h>
-#include <stdbool.h>
+#include <stdio.h>
 #include <string.h>
 #include <strings.h>
 
@@ -249,7 +252,7 @@ bool initNapoleon(char * aif_filename){
 }
 
 
-void freeNapoleon(){
+void freeNapoleon(void){
     free(task_interface);
     free(task);
 }
@@ -257,22 +260,22 @@ void freeNapoleon(){
 
 
 
-void evaluateFitness(Individual * chromosome){
+int evaluateFitness(int * chromosome){
     short int * succ_adj_mat;
     int err = __NO_ERROR;
     int fitness;
     int i;
 
     // FIX - make into initialize archInfo function from util.c
-    for (i = 1; i <= getNumGenes(); i++) {
-        (task + i)->impl = chromosome[i - 1];
+    for (i = 0; i < getNumGenes(); i++) {
+        task[i+1].impl = chromosome[i];
 
-        (task + i)->columns       = ((arch_library[(task + i)->type - 1]).impl[(task + i)->impl]).columns;
-        (task + i)->rows          = ((arch_library[(task + i)->type - 1]).impl[(task + i)->impl]).rows;
-        (task + i)->conf_power    = ((arch_library[(task + i)->type - 1]).impl[(task + i)->impl]).conf_p;
-        (task + i)->exec_power    = ((arch_library[(task + i)->type - 1]).impl[(task + i)->impl]).exec_p;
-        (task + i)->latency       = ((arch_library[(task + i)->type - 1]).impl[(task + i)->impl]).exec_t;
-        (task + i)->reconfig_time = ((arch_library[(task + i)->type - 1]).impl[(task + i)->impl]).conf_t;
+        task[i+1].columns       = getColumns(i);
+        task[i+1].rows          = getRows(i);
+        task[i+1].conf_power    = getConfigPower(i);
+        task[i+1].exec_power    = getExecPower(i);
+        task[i+1].latency       = getExecTime(i);
+        task[i+1].reconfig_time = getConfigTime(i);
     }
 
     succ_adj_mat = (short int*) malloc(sizeof (short int)*(task->width + 2)*(task->width + 2));
@@ -298,5 +301,33 @@ int getNumGenes(void){
 int getTaskType(int task_num){
     // each task is offset by 1 in Napoleon to accomodate a source + sink
     // the types start at 1, not 0. I convert them to indicies.
-    return task[i+1]->type - 1;
+    return task[task_num + 1].type - 1;
+}
+
+int getTaskImpl(int task_num){
+    return task[task_num + 1].impl;
+}
+
+int getColumns(int impl){
+    return ((arch_library[getTaskType(impl)]).impl[getTaskImpl(impl)]).columns;
+}
+
+int getRows(int impl){
+    return ((arch_library[getTaskType(impl)]).impl[getTaskImpl(impl)]).rows;
+}
+
+int getConfigTime(int impl){
+    return ((arch_library[getTaskType(impl)]).impl[getTaskImpl(impl)]).conf_t;
+}
+
+int getExecTime(int impl){
+    return ((arch_library[getTaskType(impl)]).impl[getTaskImpl(impl)]).exec_t;
+}
+
+int getConfigPower(int impl){
+    return ((arch_library[getTaskType(impl)]).impl[getTaskImpl(impl)]).conf_p;
+}
+
+int getExecPower(int impl){
+    return ((arch_library[getTaskType(impl)]).impl[getTaskImpl(impl)]).exec_p;
 }

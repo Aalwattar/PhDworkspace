@@ -18,6 +18,8 @@
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
 
+#include "types.h"
+
 extern int create_graph(t_task *, t_task_interface *, short int *);
 extern int create_reuse_mat(t_task *, short int *);
 

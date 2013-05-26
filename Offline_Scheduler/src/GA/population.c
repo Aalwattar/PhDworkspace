@@ -26,10 +26,6 @@ static double MUTATION_RATE  = 0.001;
 
 static int POP_SIZE = 16; // MUST BE AN EVEN NUMBER
 
-typedef struct{
-    Individual * member;
-    double total_fitness;
-}Population;
 
 Population * genRandPopulation(){
     Population * pop;
@@ -74,12 +70,20 @@ void setCrossoverRate(char * raw_rate){
     CROSSOVER_RATE = atof(raw_rate);
 }
 
+double getCrossoverRate(void){
+    return CROSSOVER_RATE;
+}
+
 void setMutationRate(char * raw_rate){
     MUTATION_RATE = atof(raw_rate);
 }
 
 double getMutationRate(void){
     return MUTATION_RATE;
+}
+
+void setPopSize(char * raw_size){
+    POP_SIZE = atoi(raw_size);
 }
 
 int getPopSize(void){

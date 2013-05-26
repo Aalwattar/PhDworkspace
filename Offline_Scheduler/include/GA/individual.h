@@ -21,7 +21,13 @@
 
 #include "util.h"
 
-typedef struct Individual Individual;
+typedef struct{
+    int * encoding;     // their genotype
+    
+    double fitness;     // true fitness value
+    double rfitness;    // fitness relative to population
+    double cfitness;    // cumulative fitness
+} Individual;
 
 /******************************************************************************
  ******************         INDIVIDUAL MANIPULATION         *******************

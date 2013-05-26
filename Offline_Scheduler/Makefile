@@ -53,9 +53,9 @@ OBJS			= $(addprefix $(OBJ_DIR)/, \
                           $(GA_DIR)/individual.o \
                           $(GA_DIR)/main.o \
                           $(GA_DIR)/population.o \
-                          $(GA_DIR)/problem.o \
                           $(GA_DIR)/replacement.o \
-                          $(GA_DIR)/selection.o )
+                          $(GA_DIR)/selection.o \
+			  $(GA_DIR)/util.o)
 
 
 PROG_NAME		= OfflineScheduler.exe
@@ -94,8 +94,8 @@ clean :
 
 
 
-run: 
-	./$(PROG_NAME) -aif input/B1_25_10.aif -res_file input/res.dat
+#run: 
+#	./$(PROG_NAME) -aif input/B1__10.aif -res_file input/res.dat
 			
 debug :
 	$(DBGR) $(DBG_OPTS) $(PROG_NAME)

@@ -18,18 +18,10 @@
 
 #include "individual.h"
 #include "fitness.h"
+#include "population.h"
 #include "util.h"
 
 #include <stdlib.h>
-
-
-typedef struct{
-    int * encoding;     // their genotype
-    
-    double fitness;     // true fitness value
-    double rfitness;    // fitness relative to population
-    double cfitness;    // cumulative fitness
-} Individual;
 
 
 void initRandIndividual(Individual * ind){

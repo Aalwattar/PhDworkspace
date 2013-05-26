@@ -37,7 +37,7 @@
 static char * ARCH_FILENAME = "input/architecture_library.txt";
 static char * DFG_FILENAME = "input/DFG.txt";
 
-static char * AIF_FILENAME = "input/B1_25_10.aif";
+static char * AIF_FILENAME = "input/B1_10_5.aif";
 
 int STOP_CONDITION = 500;
 int generation_num;
@@ -49,22 +49,22 @@ bool populationConverged(Population * pop);
 
 int main(int argc, char * argv[]) {
     Population * pop, * mating_pop;
-    FILE *aif_strm;
-    int err = 0;
     int i, j;
 
-
-    initArchLibrary(ARCH_FILENAME);
     // FIX - make option to enter your own seed
     randSeed();
     //seedRandGenerator(1368463890);
+    
+    initParameters(argc, argv);
+    initArchLibrary(ARCH_FILENAME);
+    initNapoleon(AIF_FILENAME);
     
     pop = genRandPopulation();
 
     fprintf(stdout, "\n----------------------------------------------------------\n\n");
     fprintf(stdout, "Starting Population:\n");
     for (i = 0; i < getPopSize(); i++) {
-        for (j = 0; j < task->width; j++) {
+        for (j = 0; j < getNumGenes(); j++) {
             fprintf(stdout, "%d", pop->member[i].encoding[j]);
         }
         fprintf(stdout, "\n");
@@ -77,7 +77,7 @@ int main(int argc, char * argv[]) {
         //        }
 
         for (i = 0; i < getPopSize(); i++) {
-            pop->member[i].fitness = initNapoleon(&(pop->member[i]));
+            pop->member[i].fitness = evaluateFitness(pop->member[i].encoding);
         }
 
 //        fprintf(stdout, "\n");
@@ -100,14 +100,15 @@ int main(int argc, char * argv[]) {
     //fprintf(stdout, "\nGenerations to create best solution = %d\n", generation_num);
     fprintf(stdout, "\nFinal Population:\n");
     for (i = 0; i < getPopSize(); i++) {
-        for (j = 0; j < task->width; j++) {
+        for (j = 0; j < getNumGenes(); j++) {
             fprintf(stdout, "%d", pop->member[i].encoding[j]);
         }
-        fprintf(stdout, "\tfitness = %d\n", initNapoleon(&(pop->member[i])));
+        fprintf(stdout, "\tfitness = %d\n", evaluateFitness(pop->member[i].encoding));
     }
 
     freePopulation(pop);
     freeArchLibrary();
+    freeNapoleon();
     
     return EXIT_SUCCESS;
 }
@@ -124,13 +125,13 @@ void initParameters(int num_tokens, char ** input_token) {
     // FIX - make more robust
     for (i = 0; i < num_tokens; i++) {
         if (strncmp(input_token[i], "-ps=", 4) == 0) {
-            POP_SIZE = atoi(&(input_token[i][4]));
+            setPopSize(&(input_token[i][4]));
         }
         if (strncmp(input_token[i], "-mr=", 4) == 0) {
-            MUTATION_RATE = atof(&(input_token[i][4]));
+            setMutationRate(&(input_token[i][4]));
         }
         if (strncmp(input_token[i], "-cr=", 4) == 0) {
-            CROSSOVER_RATE = atof(&(input_token[i][4]));
+            setCrossoverRate(&(input_token[i][4]));
         }
         if (strncmp(input_token[i], "-g=", 3) == 0) {
             STOP_CONDITION = atoi(&(input_token[i][3]));
@@ -148,26 +149,10 @@ void initParameters(int num_tokens, char ** input_token) {
     }
 
     fprintf(stdout, "Parameters:\n\n");
-    fprintf(stdout, "\tPopulation Size       = %d\n", POP_SIZE);
+    fprintf(stdout, "\tPopulation Size       = %d\n", getPopSize());
     fprintf(stdout, "\tNumber of Generations = %d\n\n", STOP_CONDITION);
-    fprintf(stdout, "\tMutation Rate  = %.4lf\n", MUTATION_RATE);
-    fprintf(stdout, "\tCrossover Rate = %.4lf\n\n\t", CROSSOVER_RATE);
-}
-
-bool populationConverged(Population * pop) {
-    int i, j;
-
-    for (i = 0; i < getPopSize(); i++) {
-        for (j = 0; j < template->num_genes; j++) {
-            if (pop->member[i].encoding[j] != 0) {
-                break;
-            }
-        }
-        if (j == template->num_genes) {
-            return true;
-        }
-    }
-    return false;
+    fprintf(stdout, "\tMutation Rate  = %.4lf\n", getMutationRate());
+    fprintf(stdout, "\tCrossover Rate = %.4lf\n\n\t", getCrossoverRate());
 }
 
 

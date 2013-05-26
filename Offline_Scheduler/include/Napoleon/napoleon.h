@@ -18,6 +18,8 @@
 #ifndef NAPOLEON_H
 #define NAPOLEON_H
 
+#include <stdio.h>
+
 extern short int Napoleon(FILE *, short int *, short int, t_task *);
 
 #endif /* NAPOLEON_H */

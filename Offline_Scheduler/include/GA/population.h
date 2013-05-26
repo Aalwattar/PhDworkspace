@@ -22,7 +22,10 @@
 
 #include "individual.h"
 
-typedef struct Population Population;
+typedef struct{
+    Individual * member;
+    double total_fitness;
+}Population;
 
 /******************************************************************************
  ******************         POPULATION MANIPULATION         *******************
@@ -70,10 +73,12 @@ void generateNextGeneration(Population *);
 
 
 void setCrossoverRate(char *);
+double getCrossoverRate(void);
 
 void setMutationRate(char *);
 double getMutationRate(void);
 
+void setPopSize(char *);
 int getPopSize(void);
 
 // REPLACEMENT ALGORITHM - generational, steady state?, replace worst?
