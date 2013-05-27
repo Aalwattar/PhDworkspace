@@ -282,6 +282,10 @@ int evaluateFitness(int * chromosome){
     if ((err = create_graph(task, task_interface, succ_adj_mat)))
         print_error(err);
 
+//    fprintf(stdout, "------------------------------\n");
+//    display_task(task, task_interface);
+    
+    
     //call the scheduler (Napoleon)
     fitness = Napoleon(NULL, succ_adj_mat, getNumGenes(), task);
 

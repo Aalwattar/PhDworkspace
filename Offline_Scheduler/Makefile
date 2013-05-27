@@ -94,8 +94,8 @@ clean :
 
 
 
-#run: 
-#	./$(PROG_NAME) -aif input/B1__10.aif -res_file input/res.dat
+run: 
+	./$(PROG_NAME) -aif input/B1_25_10.aif
 			
 debug :
 	$(DBGR) $(DBG_OPTS) $(PROG_NAME)

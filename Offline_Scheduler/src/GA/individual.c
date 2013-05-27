@@ -31,7 +31,17 @@ void initRandIndividual(Individual * ind){
     
     for(i=0; i<getNumGenes(); i++)
         ind->encoding[i] = getNumArch(getTaskType(i)) * randomNumber();
-                // (task + i + 1)->type
+//    ind->encoding[0] = 1;
+//    ind->encoding[1] = 1;
+//    ind->encoding[2] = 2;
+//    ind->encoding[3] = 1;
+//    ind->encoding[4] = 0;
+//    ind->encoding[5] = 1;
+//    ind->encoding[6] = 1;
+//    ind->encoding[7] = 2;
+//    ind->encoding[8] = 1;
+//    ind->encoding[9] = 3;
+    
     
     ind->fitness = 0;
     ind->cfitness = 0;
@@ -61,7 +71,7 @@ void mutate(Individual * ind){
     for(i=0; i<getNumGenes(); i++)
         if(randomNumber() < getMutationRate())
             ind->encoding[i] = getNumArch(getTaskType(i)) * randomNumber();
-}                               // (task + i + 1)->type
+}                              
 
 void crossover(Individual * p1, Individual * p2){
     int cross1, cross2;

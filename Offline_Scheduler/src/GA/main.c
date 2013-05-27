@@ -37,7 +37,7 @@
 static char * ARCH_FILENAME = "input/architecture_library.txt";
 static char * DFG_FILENAME = "input/DFG.txt";
 
-static char * AIF_FILENAME = "input/B1_10_5.aif";
+static char * AIF_FILENAME = "input/B1_25_5.aif";
 
 int STOP_CONDITION = 500;
 int generation_num;
@@ -47,13 +47,14 @@ void initParameters(int num_tokens, char ** input_token);
 bool populationConverged(Population * pop);
 
 
+
 int main(int argc, char * argv[]) {
     Population * pop, * mating_pop;
     int i, j;
 
     // FIX - make option to enter your own seed
     randSeed();
-    //seedRandGenerator(1368463890);
+    //seedRandGenerator(1369671822);
     
     initParameters(argc, argv);
     initArchLibrary(ARCH_FILENAME);
@@ -71,21 +72,17 @@ int main(int argc, char * argv[]) {
     }
 
     while (generation_num < STOP_CONDITION) {
-        //swhile(!populationConverged(pop)){
-        //        for (i = 0; i < POP_SIZE; i++) {
-        //            pop->member[i].fitness = evaluateFitness(pop->member[i].encoding);
-        //        }
-
         for (i = 0; i < getPopSize(); i++) {
+//            fprintf(stdout, "\n%2d)\n", i+1);
             pop->member[i].fitness = evaluateFitness(pop->member[i].encoding);
         }
 
-//        fprintf(stdout, "\n");
-//        for (i = 0; i < POP_SIZE; i++) {
-//            for (j = 0; j < task->width; j++) {
+//        fprintf(stdout, "----------GENERATION %d-----------------\n\n", generation_num);
+//        for (i = 0; i < getPopSize(); i++) {
+//            for (j = 0; j < getNumGenes(); j++) {
 //                fprintf(stdout, "%d", pop->member[i].encoding[j]);
 //            }
-//            fprintf(stdout, "\tfitness = %.5lf\n", pop->member[i].fitness);
+//            fprintf(stdout, "\tfitness = %d\n", pop->member[i].fitness);
 //        }
 
         mating_pop = tournamentSelection(pop);
@@ -142,9 +139,12 @@ void initParameters(int num_tokens, char ** input_token) {
         if (strncmp(input_token[i], "-dfg=", 5) == 0) {
             DFG_FILENAME = &(input_token[i][5]);
         }
+        if (strncmp(input_token[i], "-aif=", 5) == 0) {
+            AIF_FILENAME = &(input_token[i][5]);
+        }
 
         if (strncmp(input_token[i], "-seed=", 6) == 0) {
-            DFG_FILENAME = &(input_token[i][6]);
+            seedRandGenerator(atoi(&(input_token[i][6])));
         }
     }
 
@@ -176,3 +176,53 @@ void initParameters(int num_tokens, char ** input_token) {
 //        exit(1);
 //    }
 
+
+
+//void bruteForce(void){
+//    int solution[10];
+//    int bestFitness = 100000;
+//    int fitness;
+//    
+//    for(int a=0; a<5; a++){
+//        solution[0] = a;
+//        for(int b=0; b<2; b++){
+//            solution[1] = b;
+//            for(int c=0; c<4; c++){
+//                solution[2] = c;
+//                for(int d=0; d<5; d++){
+//                    solution[3] = d;
+//                    for(int e=0; e<4; e++){
+//                        solution[4] = e;
+//                        for(int f=0; f<3; f++){
+//                            solution[5] = f;
+//                            for(int g=0; g<5; g++){
+//                                solution[6] = g;
+//                                for(int h=0; h<4; h++){
+//                                    solution[7] = h;
+//                                    for(int i=0; i<3; i++){
+//                                        solution[8] = i;
+//                                        for(int j=0; j<4; j++){
+//                                            solution[9] = j;
+//                                            
+//                                            fitness = evaluateFitness(solution);
+//                                            
+//                                            if(fitness <= bestFitness){
+//                                                for(int ind=0; ind<10; ind++){
+//                                                    printf("%d", solution[ind]);
+//                                                }
+////                                                printf("%d%d%d%d%d%d%d%d%d%d", a, b, c, d, e, f, g, h, i, j);
+//                                                printf("\t Fitness = %d\n", fitness);
+//                                                
+//                                                bestFitness = fitness;
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}

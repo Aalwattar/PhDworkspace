@@ -284,8 +284,15 @@ void display_task(t_task *task, t_task_interface *task_interface) {
     int i = 0;
     short int num_nodes = task->width;
 
+    printf("name type width latency reconfig_time columns rows input1 input2 output mode exec_sched" \
+                 "reconfig_sched leftmost_column bottommost_row conf_power exec_power impl\n");
+    
     for (i = 1; i <= num_nodes; i++) {
-        printf("%s %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n", (task + i)->name, (task + i)->type, (task + i)->width, (task + i)->latency, (task + i)->reconfig_time, (task + i)->columns, (task + i)->rows, (task + i)->input1, (task + i)->input2, (task + i)->output, (task_interface + (task + i)->output)->mode, (task + i)->exec_sched, (task + i)->reconfig_sched, (task + i)->leftmost_column, (task + i)->bottommost_row);
+        printf("%s %3d %3d %3d %3d %3d %3d %3d %3d %3d %3d %3d %3d %3d %3d %3d %3d %3d\n", (task + i)->name, (task + i)->type, (task + i)->width, 
+                (task + i)->latency, (task + i)->reconfig_time, (task + i)->columns, (task + i)->rows, (task + i)->input1, 
+                (task + i)->input2, (task + i)->output, (task_interface + (task + i)->output)->mode, (task + i)->exec_sched, 
+                (task + i)->reconfig_sched, (task + i)->leftmost_column, (task + i)->bottommost_row, (task + i)->conf_power,
+                (task + i)->exec_power, (task + i)->impl + 1);
     }
 
 }
