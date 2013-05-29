@@ -31,17 +31,18 @@ void initRandIndividual(Individual * ind){
     
     for(i=0; i<getNumGenes(); i++)
         ind->encoding[i] = getNumArch(getTaskType(i)) * randomNumber();
+    
+    // FIX - remove AFTER testing the patch to the Napoleon 2D bug
 //    ind->encoding[0] = 1;
 //    ind->encoding[1] = 1;
 //    ind->encoding[2] = 2;
 //    ind->encoding[3] = 1;
 //    ind->encoding[4] = 0;
 //    ind->encoding[5] = 1;
-//    ind->encoding[6] = 1;
+//    ind->encoding[6] = 0;
 //    ind->encoding[7] = 2;
 //    ind->encoding[8] = 1;
 //    ind->encoding[9] = 3;
-    
     
     ind->fitness = 0;
     ind->cfitness = 0;

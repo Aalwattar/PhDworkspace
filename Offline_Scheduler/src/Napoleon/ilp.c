@@ -55,7 +55,7 @@ short int calc_T(t_task *task, short int *T) {
     return *T;
 }
 
-void fF(FILE *ilp_strm, t_task *task, short int T, short int *succ_adj_mat, short int *reuse_mat) {
+void ilp_equations(FILE *ilp_strm, t_task *task, short int T, short int *succ_adj_mat, short int *reuse_mat) {
     print_first_constraint(ilp_strm, task, T);
     print_second_constraint(ilp_strm, task, T);
     print_third_constraint(ilp_strm, task, T);
@@ -405,5 +405,3 @@ void print_sixteenth_constraint(FILE *ilp_strm, t_task *task, short int T) {
     fprintf(ilp_strm, "end\n");
     fprintf(ilp_strm, "\n");
 }
-
-

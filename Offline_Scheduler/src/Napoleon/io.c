@@ -35,6 +35,7 @@
 #include <bounds.h>
 #include <types.h>
 #include <ecodes.h>
+#include <io.h>
 #include <main.h>
 
 short int parse_task_type(char *);
@@ -68,6 +69,113 @@ void print_error(int ecode) {
     fprintf(stderr, "Error: %s\n", err_mesg);
     //fclose(log_strm);
     exit(ecode);
+}
+
+int parse_impl(FILE *in_strm, t_task_impl *task_impl) {
+    int err = 0;
+    short int index = 0;
+    char buff[__SIZE_MAX_BUFF], *token;
+    short int add_impl_num = 0;
+    short int mul_impl_num = 0;
+    short int sub_impl_num = 0;
+    short int div_impl_num = 0;
+    short int lt_impl_num = 0;
+    short int gt_impl_num = 0;
+    short int lte_impl_num = 0;
+    short int gte_impl_num = 0;
+
+    //read through the lines of the arch file
+    //fprintf(log_strm, "Reading the arch file...\n");
+
+    while (fgets(buff, __SIZE_MAX_BUFF, in_strm)) {
+        //fprintf(log_strm, "%s\n", buff);
+        token = strtok(buff, " ");
+
+        if (!(*token) || *token == '#' || *token == '\n')
+            continue;
+        else if (!strcasecmp(token, "TASK1")) {
+            add_impl_num++;
+            index++;
+            (task_impl + index)->impl = add_impl_num;
+            (task_impl + index)->type = __ADD;
+        } else if (!strcasecmp(token, "TASK2")) {
+            mul_impl_num++;
+            index++;
+            (task_impl + index)->impl = mul_impl_num;
+            (task_impl + index)->type = __MULT;
+        } else if (!strcasecmp(token, "TASK3")) {
+            sub_impl_num++;
+            index++;
+            (task_impl + index)->impl = sub_impl_num;
+            (task_impl + index)->type = __SUB;
+        } else if (!strcasecmp(token, "TASK4")) {
+            div_impl_num++;
+            index++;
+            (task_impl + index)->impl = div_impl_num;
+            (task_impl + index)->type = __DIV;
+        } else if (!strcasecmp(token, "TASK5")) {
+            lt_impl_num++;
+            index++;
+            (task_impl + index)->impl = lt_impl_num;
+            (task_impl + index)->type = __LT;
+        } else if (!strcasecmp(token, "TASK6")) {
+            gt_impl_num++;
+            index++;
+            (task_impl + index)->impl = gt_impl_num;
+            (task_impl + index)->type = __GT;
+        } else if (!strcasecmp(token, "TASK7")) {
+            lte_impl_num++;
+            index++;
+            (task_impl + index)->impl = lte_impl_num;
+            (task_impl + index)->type = __LTE;
+        } else if (!strcasecmp(token, "TASK8")) {
+            gte_impl_num++;
+            index++;
+            (task_impl + index)->impl = gte_impl_num;
+            (task_impl + index)->type = __GTE;
+        } else
+            err = __RESFILE0;
+
+
+        if ((token = strtok(NULL, " "))) {
+            (task_impl + index)->id = index;
+            (task_impl + index)->columns = atoi(token);
+        } else {
+            err = __RESFILE1;
+            break;
+        }
+        if ((token = strtok(NULL, " "))) {
+            (task_impl + index)->rows = atoi(token);
+        } else {
+            err = __RESFILE1;
+            break;
+        }
+        if ((token = strtok(NULL, " \n"))) {
+            (task_impl + index)->reconfig_time = atoi(token);
+        }
+        if ((token = strtok(NULL, " "))) {
+            (task_impl + index)->latency = atoi(token);
+        } else {
+            err = __RESFILE2;
+            break;
+        }
+        if ((token = strtok(NULL, " \n"))) {
+            (task_impl + index)->reconfig_pwr = atoi(token);
+        }
+        if ((token = strtok(NULL, " \n"))) {
+            (task_impl + index)->exec_pwr = atoi(token);
+        } else {
+            err = __RESFILE3;
+            break;
+        }
+    }
+
+    // the first element is reserved for storing the number of elements
+    // in the list.
+
+    task_impl->columns = index;
+
+    return (err);
 }
 
 int parse_res(FILE *in_strm, t_task_type *task_type) {
@@ -284,15 +392,15 @@ void display_task(t_task *task, t_task_interface *task_interface) {
     int i = 0;
     short int num_nodes = task->width;
 
-    printf("name type width latency reconfig_time columns rows input1 input2 output mode exec_sched" \
-                 "reconfig_sched leftmost_column bottommost_row conf_power exec_power impl\n");
+    fprintf(stdout, "name type width latency reconfig_time columns rows input1 input2 output exec_sched " \
+                 "reconfig_sched leftmost_column bottommost_row conf_power exec_power impl + 1\n");
     
     for (i = 1; i <= num_nodes; i++) {
-        printf("%s %3d %3d %3d %3d %3d %3d %3d %3d %3d %3d %3d %3d %3d %3d %3d %3d %3d\n", (task + i)->name, (task + i)->type, (task + i)->width, 
+        fprintf(stdout, "%s %3d %3d %3d %3d %3d %3d %3d %3d %3d %3d %3d %3d %3d %3d %3d %3d\n", (task + i)->name, (task + i)->type, (task + i)->width, 
                 (task + i)->latency, (task + i)->reconfig_time, (task + i)->columns, (task + i)->rows, (task + i)->input1, 
-                (task + i)->input2, (task + i)->output, (task_interface + (task + i)->output)->mode, (task + i)->exec_sched, 
-                (task + i)->reconfig_sched, (task + i)->leftmost_column, (task + i)->bottommost_row, (task + i)->conf_power,
-                (task + i)->exec_power, (task + i)->impl + 1);
+                (task + i)->input2, (task + i)->output, (task + i)->exec_sched, 
+                (task + i)->reconfig_sched, (task + i)->leftmost_column, (task + i)->bottommost_row, (task + i)->reconfig_pwr,
+                (task + i)->exec_pwr, (task + i)->impl + 1);
     }
 
 }
@@ -307,6 +415,16 @@ void display_task_type(t_task_type *task_type) {
 
 }
 
+void display_task_impl(t_task_impl *task_impl) {
+    int i = 0;
+    short int num_task_impls = task_impl->columns;
+
+    printf("%d\n", num_task_impls);
+    for (i = 1; i <= num_task_impls; i++) {
+        printf("%d %d %d %d %d %d %d %d %d\n", i, (task_impl + i)->type, (task_impl + i)->impl, (task_impl + i)->columns, (task_impl + i)->rows, (task_impl + i)->latency, (task_impl + i)->reconfig_time, (task_impl + i)->reconfig_pwr, (task_impl + i)->exec_pwr);
+    }
+}
+
 void set_task_parameter(t_task *task, t_task_type *task_type) {
     int i = 0;
     short int num_nodes = task->width;
@@ -319,4 +437,3 @@ void set_task_parameter(t_task *task, t_task_type *task_type) {
     }
 
 }
-

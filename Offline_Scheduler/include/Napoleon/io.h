@@ -28,5 +28,7 @@ extern void display_array(short int *, short int, short int *);
 extern void display_task(t_task *, t_task_interface *);
 extern void display_task_type(t_task_type *);
 extern void set_task_parameter(t_task *, t_task_type *);
+extern int parse_impl(FILE *, t_task_impl *);
+extern void display_task_impl(t_task_impl *);
 
 #endif /* IO_H */
