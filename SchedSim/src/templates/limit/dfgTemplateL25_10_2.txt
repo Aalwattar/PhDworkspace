@@ -1,0 +1,160 @@
+
+	{
+	 .size=25, 
+
+	 .dfg  = {
+
+		{
+			  .id=   0 , .operation= OPMult, .mode =HWOnly , .next=  1 ,.initPrio=0,  .TypeID=3,.CanRun=0x0F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+			  .id=   1 , .operation= OpAdd, .mode =HybHW , .next=  2 ,.initPrio=0,  .TypeID=4,.CanRun=0x03,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id=   2 , .operation= OPMult, .mode =HWOnly , .next=  3 ,.initPrio=0,  .TypeID=3,.CanRun=0x0F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+			  .id=   3 , .operation= OPMult, .mode =HWOnly , .next=  4 ,.initPrio=0,  .TypeID=3,.CanRun=0x0F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+			  .id=   4 , .operation= OpAdd, .mode =HybHW , .next=  5 ,.initPrio=0,  .TypeID=4,.CanRun=0x03,
+			  .D={.op1=  2 ,.op2=  0 , .isAdd_op1=YES, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id=   5 , .operation= OpSub, .mode =SWOnly , .next=  6 ,.initPrio=0,  .TypeID=2,.CanRun=0x00,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+		{
+			  .id=   6 , .operation= OpAdd, .mode =HybHW , .next=  7 ,.initPrio=0,  .TypeID=1,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+
+		{
+			  .id=   7 , .operation= OPMult, .mode =HWOnly , .next=  8 ,.initPrio=0,  .TypeID=3,.CanRun=0x0F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+			  .id=   8 , .operation= OPMult, .mode =HWOnly , .next=  9 ,.initPrio=0,  .TypeID=3,.CanRun=0x0F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+			  .id=   9 , .operation= OPMult, .mode =HWOnly , .next= 10 ,.initPrio=0,  .TypeID=3,.CanRun=0x0F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+			  .id=  10 , .operation= OpAdd, .mode =HybHW , .next= 11 ,.initPrio=0,  .TypeID=1,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+
+		{
+			  .id=  11 , .operation= OpSub, .mode =SWOnly , .next= 12 ,.initPrio=0,  .TypeID=2,.CanRun=0x00,
+			  .D={.op1= 10 ,.op2=  1 , .isAdd_op1=YES, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+		{
+			  .id=  12 , .operation= OPMult, .mode =HWOnly , .next= 13 ,.initPrio=0,  .TypeID=3,.CanRun=0x0F,
+			  .D={.op1=  2 ,.op2= 11 , .isAdd_op1= NO, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+			  .id=  13 , .operation= OpAdd, .mode =HybHW , .next= 14 ,.initPrio=0,  .TypeID=4,.CanRun=0x03,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id=  14 , .operation= OPMult, .mode =HWOnly , .next= 15 ,.initPrio=0,  .TypeID=3,.CanRun=0x0F,
+			  .D={.op1=  2 ,.op2= 11 , .isAdd_op1= NO, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+			  .id=  15 , .operation= OPMult, .mode =HWOnly , .next= 16 ,.initPrio=0,  .TypeID=3,.CanRun=0x0F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+			  .id=  16 , .operation= OPMult, .mode =HWOnly , .next= 17 ,.initPrio=0,  .TypeID=3,.CanRun=0x0F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+			  .id=  17 , .operation= OPMult, .mode =HWOnly , .next= 18 ,.initPrio=0,  .TypeID=3,.CanRun=0x0F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+			  .id=  18 , .operation= OpAdd, .mode =HybHW , .next= 19 ,.initPrio=0,  .TypeID=1,.CanRun=0x1F,
+			  .D={.op1= 12 ,.op2=  6 , .isAdd_op1=YES, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+
+		{
+			  .id=  19 , .operation= OpAdd, .mode =HybHW , .next= 20 ,.initPrio=0,  .TypeID=1,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+
+		{
+			  .id=  20 , .operation= OPMult, .mode =HWOnly , .next= 21 ,.initPrio=0,  .TypeID=3,.CanRun=0x0F,
+			  .D={.op1= 14 ,.op2=  1 , .isAdd_op1=YES, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+			  .id=  21 , .operation= OPMult, .mode =HWOnly , .next= 22 ,.initPrio=0,  .TypeID=3,.CanRun=0x0F,
+			  .D={.op1=  5 ,.op2=  1 , .isAdd_op1=YES, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+			  .id=  22 , .operation= OpAdd, .mode =HybHW , .next= 23 ,.initPrio=0,  .TypeID=4,.CanRun=0x03,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id=  23 , .operation= OpAdd, .mode =HybHW , .next= 24 ,.initPrio=0,  .TypeID=4,.CanRun=0x03,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id=  24 , .operation= OpSub, .mode =SWOnly , .next=  0 ,.initPrio=0,  .TypeID=2,.CanRun=0x00,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+
+	},
+},
+

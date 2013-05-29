@@ -1,0 +1,1217 @@
+ 
+/** DFG automatically generated file, 
+* Created by a tasksgenerated written by
+* 			Ahmed Al-Wattar 
+* 		 	aalwatta@uoguelph.ca 
+*/ 
+
+ 	 /*  Do NOT forget to add #include "templates/dfgTemplate_200_60_2.txt"   
+ 	 and copy the generated .txt file to the template directory */ 
+
+	{
+	 .size=200, 
+
+	 .dfg  = {
+
+		{
+			  .id=   0 , .operation= OpAdd, .mode =HybHW , .next=  1 ,.initPrio=0,  .TypeID=1,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+
+		{
+			  .id=   1 , .operation= OPMult, .mode =HybHW , .next=  2 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id=   2 , .operation= OpAdd, .mode =HybHW , .next=  3 ,.initPrio=0,  .TypeID=1,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+
+		{
+			  .id=   3 , .operation= OPMult, .mode =HybHW , .next=  4 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id=   4 , .operation= OpAdd, .mode =HybHW , .next=  5 ,.initPrio=0,  .TypeID=4,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id=   5 , .operation= OpAdd, .mode =HybHW , .next=  6 ,.initPrio=0,  .TypeID=4,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id=   6 , .operation= OpAdd, .mode =HybHW , .next=  7 ,.initPrio=0,  .TypeID=4,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id=   7 , .operation= OPMult, .mode =HybHW , .next=  8 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id=   8 , .operation= OpAdd, .mode =HybHW , .next=  9 ,.initPrio=0,  .TypeID=6,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_6_HW_DELAY, .SWdelay=TASK_6_SW_DELAY}
+		},
+
+		{
+			  .id=   9 , .operation= OpSub, .mode =HybHW , .next= 10 ,.initPrio=0,  .TypeID=7,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_7_HW_DELAY, .SWdelay=TASK_7_SW_DELAY}
+		},
+
+		{
+			  .id=  10 , .operation= OPMult, .mode =HybHW , .next= 11 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id=  11 , .operation= OpSub, .mode =HybHW , .next= 12 ,.initPrio=0,  .TypeID=7,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_7_HW_DELAY, .SWdelay=TASK_7_SW_DELAY}
+		},
+
+		{
+			  .id=  12 , .operation= OpSub, .mode =HybHW , .next= 13 ,.initPrio=0,  .TypeID=7,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_7_HW_DELAY, .SWdelay=TASK_7_SW_DELAY}
+		},
+
+		{
+			  .id=  13 , .operation= OpAdd, .mode =HybHW , .next= 14 ,.initPrio=0,  .TypeID=1,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+
+		{
+			  .id=  14 , .operation= OPMult, .mode =HybHW , .next= 15 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id=  15 , .operation= OpAdd, .mode =HybHW , .next= 16 ,.initPrio=0,  .TypeID=4,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id=  16 , .operation= OpAdd, .mode =HybHW , .next= 17 ,.initPrio=0,  .TypeID=6,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_6_HW_DELAY, .SWdelay=TASK_6_SW_DELAY}
+		},
+
+		{
+			  .id=  17 , .operation= OpAdd, .mode =HybHW , .next= 18 ,.initPrio=0,  .TypeID=5,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_5_HW_DELAY, .SWdelay=TASK_5_SW_DELAY}
+		},
+
+		{
+			  .id=  18 , .operation= OPMult, .mode =HybHW , .next= 19 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id=  19 , .operation= OpAdd, .mode =HybHW , .next= 20 ,.initPrio=0,  .TypeID=1,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+
+		{
+			  .id=  20 , .operation= OpSub, .mode =HybHW , .next= 21 ,.initPrio=0,  .TypeID=7,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_7_HW_DELAY, .SWdelay=TASK_7_SW_DELAY}
+		},
+
+		{
+			  .id=  21 , .operation= OpAdd, .mode =HybHW , .next= 22 ,.initPrio=0,  .TypeID=4,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id=  22 , .operation= OpAdd, .mode =HybHW , .next= 23 ,.initPrio=0,  .TypeID=1,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+
+		{
+			  .id=  23 , .operation= OPMult, .mode =HybHW , .next= 24 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id=  24 , .operation= OpSub, .mode =HybHW , .next= 25 ,.initPrio=0,  .TypeID=7,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_7_HW_DELAY, .SWdelay=TASK_7_SW_DELAY}
+		},
+
+		{
+			  .id=  25 , .operation= OpAdd, .mode =HybHW , .next= 26 ,.initPrio=0,  .TypeID=4,.CanRun=0x1F,
+			  .D={.op1= 21 ,.op2=  1 , .isAdd_op1=YES, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id=  26 , .operation= OPMult, .mode =HybHW , .next= 27 ,.initPrio=0,  .TypeID=3,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+			  .id=  27 , .operation= OpSub, .mode =HybHW , .next= 28 ,.initPrio=0,  .TypeID=2,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+		{
+			  .id=  28 , .operation= OpAdd, .mode =HybHW , .next= 29 ,.initPrio=0,  .TypeID=1,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+
+		{
+			  .id=  29 , .operation= OpAdd, .mode =HybHW , .next= 30 ,.initPrio=0,  .TypeID=6,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_6_HW_DELAY, .SWdelay=TASK_6_SW_DELAY}
+		},
+
+		{
+			  .id=  30 , .operation= OpAdd, .mode =HybHW , .next= 31 ,.initPrio=0,  .TypeID=5,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_5_HW_DELAY, .SWdelay=TASK_5_SW_DELAY}
+		},
+
+		{
+			  .id=  31 , .operation= OpAdd, .mode =HybHW , .next= 32 ,.initPrio=0,  .TypeID=1,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+
+		{
+			  .id=  32 , .operation= OpSub, .mode =HybHW , .next= 33 ,.initPrio=0,  .TypeID=7,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_7_HW_DELAY, .SWdelay=TASK_7_SW_DELAY}
+		},
+
+		{
+			  .id=  33 , .operation= OpAdd, .mode =HybHW , .next= 34 ,.initPrio=0,  .TypeID=4,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id=  34 , .operation= OPMult, .mode =HybHW , .next= 35 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id=  35 , .operation= OpAdd, .mode =HybHW , .next= 36 ,.initPrio=0,  .TypeID=1,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+
+		{
+			  .id=  36 , .operation= OPMult, .mode =HybHW , .next= 37 ,.initPrio=0,  .TypeID=3,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+			  .id=  37 , .operation= OpAdd, .mode =HybHW , .next= 38 ,.initPrio=0,  .TypeID=5,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_5_HW_DELAY, .SWdelay=TASK_5_SW_DELAY}
+		},
+
+		{
+			  .id=  38 , .operation= OPMult, .mode =HybHW , .next= 39 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id=  39 , .operation= OpAdd, .mode =HybHW , .next= 40 ,.initPrio=0,  .TypeID=6,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_6_HW_DELAY, .SWdelay=TASK_6_SW_DELAY}
+		},
+
+		{
+			  .id=  40 , .operation= OpAdd, .mode =HybHW , .next= 41 ,.initPrio=0,  .TypeID=4,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id=  41 , .operation= OpSub, .mode =HybHW , .next= 42 ,.initPrio=0,  .TypeID=7,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_7_HW_DELAY, .SWdelay=TASK_7_SW_DELAY}
+		},
+
+		{
+			  .id=  42 , .operation= OpSub, .mode =HybHW , .next= 43 ,.initPrio=0,  .TypeID=2,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+		{
+			  .id=  43 , .operation= OPMult, .mode =HybHW , .next= 44 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id=  44 , .operation= OPMult, .mode =HybHW , .next= 45 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id=  45 , .operation= OpAdd, .mode =HybHW , .next= 46 ,.initPrio=0,  .TypeID=6,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_6_HW_DELAY, .SWdelay=TASK_6_SW_DELAY}
+		},
+
+		{
+			  .id=  46 , .operation= OpAdd, .mode =HybHW , .next= 47 ,.initPrio=0,  .TypeID=4,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id=  47 , .operation= OPMult, .mode =HybHW , .next= 48 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id=  48 , .operation= OpAdd, .mode =HybHW , .next= 49 ,.initPrio=0,  .TypeID=5,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_5_HW_DELAY, .SWdelay=TASK_5_SW_DELAY}
+		},
+
+		{
+			  .id=  49 , .operation= OpSub, .mode =HybHW , .next= 50 ,.initPrio=0,  .TypeID=7,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_7_HW_DELAY, .SWdelay=TASK_7_SW_DELAY}
+		},
+
+		{
+			  .id=  50 , .operation= OpAdd, .mode =HybHW , .next= 51 ,.initPrio=0,  .TypeID=6,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2= 26 , .isAdd_op1= NO, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_6_HW_DELAY, .SWdelay=TASK_6_SW_DELAY}
+		},
+
+		{
+			  .id=  51 , .operation= OpAdd, .mode =HybHW , .next= 52 ,.initPrio=0,  .TypeID=6,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_6_HW_DELAY, .SWdelay=TASK_6_SW_DELAY}
+		},
+
+		{
+			  .id=  52 , .operation= OpAdd, .mode =HybHW , .next= 53 ,.initPrio=0,  .TypeID=5,.CanRun=0x1F,
+			  .D={.op1= 48 ,.op2=  1 , .isAdd_op1=YES, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_5_HW_DELAY, .SWdelay=TASK_5_SW_DELAY}
+		},
+
+		{
+			  .id=  53 , .operation= OPMult, .mode =HybHW , .next= 54 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id=  54 , .operation= OpAdd, .mode =HybHW , .next= 55 ,.initPrio=0,  .TypeID=4,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id=  55 , .operation= OpAdd, .mode =HybHW , .next= 56 ,.initPrio=0,  .TypeID=6,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_6_HW_DELAY, .SWdelay=TASK_6_SW_DELAY}
+		},
+
+		{
+			  .id=  56 , .operation= OpAdd, .mode =HybHW , .next= 57 ,.initPrio=0,  .TypeID=5,.CanRun=0x1F,
+			  .D={.op1=  4 ,.op2=  1 , .isAdd_op1=YES, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_5_HW_DELAY, .SWdelay=TASK_5_SW_DELAY}
+		},
+
+		{
+			  .id=  57 , .operation= OpAdd, .mode =HybHW , .next= 58 ,.initPrio=0,  .TypeID=1,.CanRun=0x1F,
+			  .D={.op1= 15 ,.op2= 41 , .isAdd_op1=YES, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+
+		{
+			  .id=  58 , .operation= OpAdd, .mode =HybHW , .next= 59 ,.initPrio=0,  .TypeID=4,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id=  59 , .operation= OpAdd, .mode =HybHW , .next= 60 ,.initPrio=0,  .TypeID=4,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id=  60 , .operation= OPMult, .mode =HybHW , .next= 61 ,.initPrio=0,  .TypeID=3,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+			  .id=  61 , .operation= OpSub, .mode =HybHW , .next= 62 ,.initPrio=0,  .TypeID=7,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_7_HW_DELAY, .SWdelay=TASK_7_SW_DELAY}
+		},
+
+		{
+			  .id=  62 , .operation= OPMult, .mode =HybHW , .next= 63 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=  9 ,.op2=  8 , .isAdd_op1=YES, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id=  63 , .operation= OpAdd, .mode =HybHW , .next= 64 ,.initPrio=0,  .TypeID=5,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2= 59 , .isAdd_op1= NO, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_5_HW_DELAY, .SWdelay=TASK_5_SW_DELAY}
+		},
+
+		{
+			  .id=  64 , .operation= OpSub, .mode =HybHW , .next= 65 ,.initPrio=0,  .TypeID=7,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_7_HW_DELAY, .SWdelay=TASK_7_SW_DELAY}
+		},
+
+		{
+			  .id=  65 , .operation= OpAdd, .mode =HybHW , .next= 66 ,.initPrio=0,  .TypeID=6,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_6_HW_DELAY, .SWdelay=TASK_6_SW_DELAY}
+		},
+
+		{
+			  .id=  66 , .operation= OpAdd, .mode =HybHW , .next= 67 ,.initPrio=0,  .TypeID=5,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_5_HW_DELAY, .SWdelay=TASK_5_SW_DELAY}
+		},
+
+		{
+			  .id=  67 , .operation= OpAdd, .mode =HybHW , .next= 68 ,.initPrio=0,  .TypeID=1,.CanRun=0x1F,
+			  .D={.op1= 32 ,.op2=  1 , .isAdd_op1=YES, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+
+		{
+			  .id=  68 , .operation= OpAdd, .mode =HybHW , .next= 69 ,.initPrio=0,  .TypeID=1,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+
+		{
+			  .id=  69 , .operation= OPMult, .mode =HybHW , .next= 70 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id=  70 , .operation= OPMult, .mode =HybHW , .next= 71 ,.initPrio=0,  .TypeID=3,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+			  .id=  71 , .operation= OpAdd, .mode =HybHW , .next= 72 ,.initPrio=0,  .TypeID=6,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_6_HW_DELAY, .SWdelay=TASK_6_SW_DELAY}
+		},
+
+		{
+			  .id=  72 , .operation= OPMult, .mode =HybHW , .next= 73 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id=  73 , .operation= OpAdd, .mode =HybHW , .next= 74 ,.initPrio=0,  .TypeID=5,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_5_HW_DELAY, .SWdelay=TASK_5_SW_DELAY}
+		},
+
+		{
+			  .id=  74 , .operation= OpSub, .mode =HybHW , .next= 75 ,.initPrio=0,  .TypeID=2,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+		{
+			  .id=  75 , .operation= OpSub, .mode =HybHW , .next= 76 ,.initPrio=0,  .TypeID=2,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+		{
+			  .id=  76 , .operation= OpAdd, .mode =HybHW , .next= 77 ,.initPrio=0,  .TypeID=5,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2= 48 , .isAdd_op1= NO, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_5_HW_DELAY, .SWdelay=TASK_5_SW_DELAY}
+		},
+
+		{
+			  .id=  77 , .operation= OpAdd, .mode =HybHW , .next= 78 ,.initPrio=0,  .TypeID=5,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_5_HW_DELAY, .SWdelay=TASK_5_SW_DELAY}
+		},
+
+		{
+			  .id=  78 , .operation= OpAdd, .mode =HybHW , .next= 79 ,.initPrio=0,  .TypeID=1,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+
+		{
+			  .id=  79 , .operation= OpAdd, .mode =HybHW , .next= 80 ,.initPrio=0,  .TypeID=4,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id=  80 , .operation= OpAdd, .mode =HybHW , .next= 81 ,.initPrio=0,  .TypeID=1,.CanRun=0x1F,
+			  .D={.op1= 30 ,.op2=  1 , .isAdd_op1=YES, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+
+		{
+			  .id=  81 , .operation= OPMult, .mode =HybHW , .next= 82 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id=  82 , .operation= OpSub, .mode =HybHW , .next= 83 ,.initPrio=0,  .TypeID=7,.CanRun=0x1F,
+			  .D={.op1= 47 ,.op2=  1 , .isAdd_op1=YES, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_7_HW_DELAY, .SWdelay=TASK_7_SW_DELAY}
+		},
+
+		{
+			  .id=  83 , .operation= OPMult, .mode =HybHW , .next= 84 ,.initPrio=0,  .TypeID=3,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+			  .id=  84 , .operation= OpSub, .mode =HybHW , .next= 85 ,.initPrio=0,  .TypeID=2,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+		{
+			  .id=  85 , .operation= OpSub, .mode =HybHW , .next= 86 ,.initPrio=0,  .TypeID=7,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_7_HW_DELAY, .SWdelay=TASK_7_SW_DELAY}
+		},
+
+		{
+			  .id=  86 , .operation= OpAdd, .mode =HybHW , .next= 87 ,.initPrio=0,  .TypeID=5,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_5_HW_DELAY, .SWdelay=TASK_5_SW_DELAY}
+		},
+
+		{
+			  .id=  87 , .operation= OpAdd, .mode =HybHW , .next= 88 ,.initPrio=0,  .TypeID=1,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2= 19 , .isAdd_op1= NO, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+
+		{
+			  .id=  88 , .operation= OpSub, .mode =HybHW , .next= 89 ,.initPrio=0,  .TypeID=7,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2= 74 , .isAdd_op1= NO, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_7_HW_DELAY, .SWdelay=TASK_7_SW_DELAY}
+		},
+
+		{
+			  .id=  89 , .operation= OPMult, .mode =HybHW , .next= 90 ,.initPrio=0,  .TypeID=3,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+			  .id=  90 , .operation= OpAdd, .mode =HybHW , .next= 91 ,.initPrio=0,  .TypeID=6,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_6_HW_DELAY, .SWdelay=TASK_6_SW_DELAY}
+		},
+
+		{
+			  .id=  91 , .operation= OpAdd, .mode =HybHW , .next= 92 ,.initPrio=0,  .TypeID=5,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_5_HW_DELAY, .SWdelay=TASK_5_SW_DELAY}
+		},
+
+		{
+			  .id=  92 , .operation= OpAdd, .mode =HybHW , .next= 93 ,.initPrio=0,  .TypeID=4,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id=  93 , .operation= OpAdd, .mode =HybHW , .next= 94 ,.initPrio=0,  .TypeID=6,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_6_HW_DELAY, .SWdelay=TASK_6_SW_DELAY}
+		},
+
+		{
+			  .id=  94 , .operation= OPMult, .mode =HybHW , .next= 95 ,.initPrio=0,  .TypeID=3,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+			  .id=  95 , .operation= OpAdd, .mode =HybHW , .next= 96 ,.initPrio=0,  .TypeID=6,.CanRun=0x1F,
+			  .D={.op1= 24 ,.op2= 33 , .isAdd_op1=YES, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_6_HW_DELAY, .SWdelay=TASK_6_SW_DELAY}
+		},
+
+		{
+			  .id=  96 , .operation= OPMult, .mode =HybHW , .next= 97 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2= 26 , .isAdd_op1= NO, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id=  97 , .operation= OpSub, .mode =HybHW , .next= 98 ,.initPrio=0,  .TypeID=2,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+		{
+			  .id=  98 , .operation= OpSub, .mode =HybHW , .next= 99 ,.initPrio=0,  .TypeID=2,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+		{
+			  .id=  99 , .operation= OpAdd, .mode =HybHW , .next=100 ,.initPrio=0,  .TypeID=1,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+
+		{
+			  .id= 100 , .operation= OpAdd, .mode =HybHW , .next=101 ,.initPrio=0,  .TypeID=4,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id= 101 , .operation= OpAdd, .mode =HybHW , .next=102 ,.initPrio=0,  .TypeID=6,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_6_HW_DELAY, .SWdelay=TASK_6_SW_DELAY}
+		},
+
+		{
+			  .id= 102 , .operation= OPMult, .mode =HybHW , .next=103 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1= 36 ,.op2=  1 , .isAdd_op1=YES, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id= 103 , .operation= OpAdd, .mode =HybHW , .next=104 ,.initPrio=0,  .TypeID=6,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_6_HW_DELAY, .SWdelay=TASK_6_SW_DELAY}
+		},
+
+		{
+			  .id= 104 , .operation= OPMult, .mode =HybHW , .next=105 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id= 105 , .operation= OpAdd, .mode =HybHW , .next=106 ,.initPrio=0,  .TypeID=4,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id= 106 , .operation= OPMult, .mode =HybHW , .next=107 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id= 107 , .operation= OpSub, .mode =HybHW , .next=108 ,.initPrio=0,  .TypeID=2,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+		{
+			  .id= 108 , .operation= OpAdd, .mode =HybHW , .next=109 ,.initPrio=0,  .TypeID=4,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id= 109 , .operation= OPMult, .mode =HybHW , .next=110 ,.initPrio=0,  .TypeID=3,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2= 25 , .isAdd_op1= NO, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+			  .id= 110 , .operation= OpSub, .mode =HybHW , .next=111 ,.initPrio=0,  .TypeID=7,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_7_HW_DELAY, .SWdelay=TASK_7_SW_DELAY}
+		},
+
+		{
+			  .id= 111 , .operation= OpAdd, .mode =HybHW , .next=112 ,.initPrio=0,  .TypeID=1,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+
+		{
+			  .id= 112 , .operation= OpAdd, .mode =HybHW , .next=113 ,.initPrio=0,  .TypeID=1,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2= 99 , .isAdd_op1= NO, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+
+		{
+			  .id= 113 , .operation= OpAdd, .mode =HybHW , .next=114 ,.initPrio=0,  .TypeID=4,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id= 114 , .operation= OpAdd, .mode =HybHW , .next=115 ,.initPrio=0,  .TypeID=4,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id= 115 , .operation= OpAdd, .mode =HybHW , .next=116 ,.initPrio=0,  .TypeID=6,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_6_HW_DELAY, .SWdelay=TASK_6_SW_DELAY}
+		},
+
+		{
+			  .id= 116 , .operation= OpAdd, .mode =HybHW , .next=117 ,.initPrio=0,  .TypeID=6,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_6_HW_DELAY, .SWdelay=TASK_6_SW_DELAY}
+		},
+
+		{
+			  .id= 117 , .operation= OpAdd, .mode =HybHW , .next=118 ,.initPrio=0,  .TypeID=6,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_6_HW_DELAY, .SWdelay=TASK_6_SW_DELAY}
+		},
+
+		{
+			  .id= 118 , .operation= OpAdd, .mode =HybHW , .next=119 ,.initPrio=0,  .TypeID=6,.CanRun=0x1F,
+			  .D={.op1= 76 ,.op2=  1 , .isAdd_op1=YES, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_6_HW_DELAY, .SWdelay=TASK_6_SW_DELAY}
+		},
+
+		{
+			  .id= 119 , .operation= OpAdd, .mode =HybHW , .next=120 ,.initPrio=0,  .TypeID=6,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_6_HW_DELAY, .SWdelay=TASK_6_SW_DELAY}
+		},
+
+		{
+			  .id= 120 , .operation= OpAdd, .mode =HybHW , .next=121 ,.initPrio=0,  .TypeID=5,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_5_HW_DELAY, .SWdelay=TASK_5_SW_DELAY}
+		},
+
+		{
+			  .id= 121 , .operation= OpSub, .mode =HybHW , .next=122 ,.initPrio=0,  .TypeID=2,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1=YES, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+		{
+			  .id= 122 , .operation= OpAdd, .mode =HybHW , .next=123 ,.initPrio=0,  .TypeID=6,.CanRun=0x1F,
+			  .D={.op1=  9 ,.op2= 14 , .isAdd_op1=YES, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_6_HW_DELAY, .SWdelay=TASK_6_SW_DELAY}
+		},
+
+		{
+			  .id= 123 , .operation= OpAdd, .mode =HybHW , .next=124 ,.initPrio=0,  .TypeID=1,.CanRun=0x1F,
+			  .D={.op1= 21 ,.op2=  1 , .isAdd_op1=YES, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+
+		{
+			  .id= 124 , .operation= OpAdd, .mode =HybHW , .next=125 ,.initPrio=0,  .TypeID=1,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2= 78 , .isAdd_op1= NO, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+
+		{
+			  .id= 125 , .operation= OpAdd, .mode =HybHW , .next=126 ,.initPrio=0,  .TypeID=4,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id= 126 , .operation= OpAdd, .mode =HybHW , .next=127 ,.initPrio=0,  .TypeID=6,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_6_HW_DELAY, .SWdelay=TASK_6_SW_DELAY}
+		},
+
+		{
+			  .id= 127 , .operation= OpSub, .mode =HybHW , .next=128 ,.initPrio=0,  .TypeID=2,.CanRun=0x1F,
+			  .D={.op1= 51 ,.op2= 14 , .isAdd_op1=YES, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+		{
+			  .id= 128 , .operation= OpSub, .mode =HybHW , .next=129 ,.initPrio=0,  .TypeID=7,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=119 , .isAdd_op1= NO, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_7_HW_DELAY, .SWdelay=TASK_7_SW_DELAY}
+		},
+
+		{
+			  .id= 129 , .operation= OpAdd, .mode =HybHW , .next=130 ,.initPrio=0,  .TypeID=4,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id= 130 , .operation= OpSub, .mode =HybHW , .next=131 ,.initPrio=0,  .TypeID=7,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2= 26 , .isAdd_op1= NO, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_7_HW_DELAY, .SWdelay=TASK_7_SW_DELAY}
+		},
+
+		{
+			  .id= 131 , .operation= OpSub, .mode =HybHW , .next=132 ,.initPrio=0,  .TypeID=7,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_7_HW_DELAY, .SWdelay=TASK_7_SW_DELAY}
+		},
+
+		{
+			  .id= 132 , .operation= OpAdd, .mode =HybHW , .next=133 ,.initPrio=0,  .TypeID=5,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_5_HW_DELAY, .SWdelay=TASK_5_SW_DELAY}
+		},
+
+		{
+			  .id= 133 , .operation= OpAdd, .mode =HybHW , .next=134 ,.initPrio=0,  .TypeID=4,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id= 134 , .operation= OPMult, .mode =HybHW , .next=135 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id= 135 , .operation= OPMult, .mode =HybHW , .next=136 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=125 ,.op2=  1 , .isAdd_op1=YES, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id= 136 , .operation= OpSub, .mode =HybHW , .next=137 ,.initPrio=0,  .TypeID=2,.CanRun=0x1F,
+			  .D={.op1=130 ,.op2=115 , .isAdd_op1=YES, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+		{
+			  .id= 137 , .operation= OpAdd, .mode =HybHW , .next=138 ,.initPrio=0,  .TypeID=4,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=132 , .isAdd_op1= NO, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id= 138 , .operation= OpSub, .mode =HybHW , .next=139 ,.initPrio=0,  .TypeID=7,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_7_HW_DELAY, .SWdelay=TASK_7_SW_DELAY}
+		},
+
+		{
+			  .id= 139 , .operation= OpAdd, .mode =HybHW , .next=140 ,.initPrio=0,  .TypeID=1,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+
+		{
+			  .id= 140 , .operation= OpAdd, .mode =HybHW , .next=141 ,.initPrio=0,  .TypeID=4,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id= 141 , .operation= OPMult, .mode =HybHW , .next=142 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id= 142 , .operation= OPMult, .mode =HybHW , .next=143 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id= 143 , .operation= OPMult, .mode =HybHW , .next=144 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=111 ,.op2=  1 , .isAdd_op1=YES, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id= 144 , .operation= OpAdd, .mode =HybHW , .next=145 ,.initPrio=0,  .TypeID=5,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2= 99 , .isAdd_op1= NO, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_5_HW_DELAY, .SWdelay=TASK_5_SW_DELAY}
+		},
+
+		{
+			  .id= 145 , .operation= OpAdd, .mode =HybHW , .next=146 ,.initPrio=0,  .TypeID=5,.CanRun=0x1F,
+			  .D={.op1=129 ,.op2= 73 , .isAdd_op1=YES, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_5_HW_DELAY, .SWdelay=TASK_5_SW_DELAY}
+		},
+
+		{
+			  .id= 146 , .operation= OPMult, .mode =HybHW , .next=147 ,.initPrio=0,  .TypeID=3,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+			  .id= 147 , .operation= OpSub, .mode =HybHW , .next=148 ,.initPrio=0,  .TypeID=2,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2= 11 , .isAdd_op1= NO, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+		{
+			  .id= 148 , .operation= OpSub, .mode =HybHW , .next=149 ,.initPrio=0,  .TypeID=2,.CanRun=0x1F,
+			  .D={.op1= 28 ,.op2=  1 , .isAdd_op1=YES, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+		{
+			  .id= 149 , .operation= OpAdd, .mode =HybHW , .next=150 ,.initPrio=0,  .TypeID=5,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_5_HW_DELAY, .SWdelay=TASK_5_SW_DELAY}
+		},
+
+		{
+			  .id= 150 , .operation= OpAdd, .mode =HybHW , .next=151 ,.initPrio=0,  .TypeID=5,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_5_HW_DELAY, .SWdelay=TASK_5_SW_DELAY}
+		},
+
+		{
+			  .id= 151 , .operation= OpAdd, .mode =HybHW , .next=152 ,.initPrio=0,  .TypeID=4,.CanRun=0x1F,
+			  .D={.op1=147 ,.op2=  1 , .isAdd_op1=YES, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id= 152 , .operation= OpAdd, .mode =HybHW , .next=153 ,.initPrio=0,  .TypeID=5,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_5_HW_DELAY, .SWdelay=TASK_5_SW_DELAY}
+		},
+
+		{
+			  .id= 153 , .operation= OPMult, .mode =HybHW , .next=154 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1= 19 ,.op2=  1 , .isAdd_op1=YES, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id= 154 , .operation= OPMult, .mode =HybHW , .next=155 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id= 155 , .operation= OpAdd, .mode =HybHW , .next=156 ,.initPrio=0,  .TypeID=6,.CanRun=0x1F,
+			  .D={.op1= 83 ,.op2=  7 , .isAdd_op1=YES, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_6_HW_DELAY, .SWdelay=TASK_6_SW_DELAY}
+		},
+
+		{
+			  .id= 156 , .operation= OpAdd, .mode =HybHW , .next=157 ,.initPrio=0,  .TypeID=5,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_5_HW_DELAY, .SWdelay=TASK_5_SW_DELAY}
+		},
+
+		{
+			  .id= 157 , .operation= OpAdd, .mode =HybHW , .next=158 ,.initPrio=0,  .TypeID=4,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id= 158 , .operation= OpSub, .mode =HybHW , .next=159 ,.initPrio=0,  .TypeID=2,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+		{
+			  .id= 159 , .operation= OpSub, .mode =HybHW , .next=160 ,.initPrio=0,  .TypeID=2,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+		{
+			  .id= 160 , .operation= OpAdd, .mode =HybHW , .next=161 ,.initPrio=0,  .TypeID=6,.CanRun=0x1F,
+			  .D={.op1= 63 ,.op2=  1 , .isAdd_op1=YES, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_6_HW_DELAY, .SWdelay=TASK_6_SW_DELAY}
+		},
+
+		{
+			  .id= 161 , .operation= OpAdd, .mode =HybHW , .next=162 ,.initPrio=0,  .TypeID=4,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id= 162 , .operation= OpSub, .mode =HybHW , .next=163 ,.initPrio=0,  .TypeID=7,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_7_HW_DELAY, .SWdelay=TASK_7_SW_DELAY}
+		},
+
+		{
+			  .id= 163 , .operation= OPMult, .mode =HybHW , .next=164 ,.initPrio=0,  .TypeID=3,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+			  .id= 164 , .operation= OpSub, .mode =HybHW , .next=165 ,.initPrio=0,  .TypeID=2,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2= 11 , .isAdd_op1= NO, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+		{
+			  .id= 165 , .operation= OPMult, .mode =HybHW , .next=166 ,.initPrio=0,  .TypeID=3,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+			  .id= 166 , .operation= OpAdd, .mode =HybHW , .next=167 ,.initPrio=0,  .TypeID=4,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id= 167 , .operation= OpSub, .mode =HybHW , .next=168 ,.initPrio=0,  .TypeID=2,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+		{
+			  .id= 168 , .operation= OPMult, .mode =HybHW , .next=169 ,.initPrio=0,  .TypeID=3,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+			  .id= 169 , .operation= OpSub, .mode =HybHW , .next=170 ,.initPrio=0,  .TypeID=7,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_7_HW_DELAY, .SWdelay=TASK_7_SW_DELAY}
+		},
+
+		{
+			  .id= 170 , .operation= OpSub, .mode =HybHW , .next=171 ,.initPrio=0,  .TypeID=7,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_7_HW_DELAY, .SWdelay=TASK_7_SW_DELAY}
+		},
+
+		{
+			  .id= 171 , .operation= OPMult, .mode =HybHW , .next=172 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id= 172 , .operation= OpAdd, .mode =HybHW , .next=173 ,.initPrio=0,  .TypeID=1,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+
+		{
+			  .id= 173 , .operation= OPMult, .mode =HybHW , .next=174 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id= 174 , .operation= OpAdd, .mode =HybHW , .next=175 ,.initPrio=0,  .TypeID=6,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_6_HW_DELAY, .SWdelay=TASK_6_SW_DELAY}
+		},
+
+		{
+			  .id= 175 , .operation= OPMult, .mode =HybHW , .next=176 ,.initPrio=0,  .TypeID=3,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+			  .id= 176 , .operation= OpAdd, .mode =HybHW , .next=177 ,.initPrio=0,  .TypeID=5,.CanRun=0x1F,
+			  .D={.op1= 79 ,.op2=  1 , .isAdd_op1=YES, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_5_HW_DELAY, .SWdelay=TASK_5_SW_DELAY}
+		},
+
+		{
+			  .id= 177 , .operation= OPMult, .mode =HybHW , .next=178 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id= 178 , .operation= OPMult, .mode =HybHW , .next=179 ,.initPrio=0,  .TypeID=3,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2= 58 , .isAdd_op1= NO, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+			  .id= 179 , .operation= OPMult, .mode =HybHW , .next=180 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=115 ,.op2=  1 , .isAdd_op1=YES, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id= 180 , .operation= OpAdd, .mode =HybHW , .next=181 ,.initPrio=0,  .TypeID=6,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_6_HW_DELAY, .SWdelay=TASK_6_SW_DELAY}
+		},
+
+		{
+			  .id= 181 , .operation= OpAdd, .mode =HybHW , .next=182 ,.initPrio=0,  .TypeID=5,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_5_HW_DELAY, .SWdelay=TASK_5_SW_DELAY}
+		},
+
+		{
+			  .id= 182 , .operation= OpAdd, .mode =HybHW , .next=183 ,.initPrio=0,  .TypeID=5,.CanRun=0x1F,
+			  .D={.op1=154 ,.op2=  1 , .isAdd_op1=YES, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_5_HW_DELAY, .SWdelay=TASK_5_SW_DELAY}
+		},
+
+		{
+			  .id= 183 , .operation= OpSub, .mode =HybHW , .next=184 ,.initPrio=0,  .TypeID=2,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+		{
+			  .id= 184 , .operation= OpSub, .mode =HybHW , .next=185 ,.initPrio=0,  .TypeID=7,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_7_HW_DELAY, .SWdelay=TASK_7_SW_DELAY}
+		},
+
+		{
+			  .id= 185 , .operation= OpSub, .mode =HybHW , .next=186 ,.initPrio=0,  .TypeID=2,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+		{
+			  .id= 186 , .operation= OpSub, .mode =HybHW , .next=187 ,.initPrio=0,  .TypeID=2,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+		{
+			  .id= 187 , .operation= OpSub, .mode =HybHW , .next=188 ,.initPrio=0,  .TypeID=7,.CanRun=0x1F,
+			  .D={.op1= 34 ,.op2= 97 , .isAdd_op1=YES, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_7_HW_DELAY, .SWdelay=TASK_7_SW_DELAY}
+		},
+
+		{
+			  .id= 188 , .operation= OpAdd, .mode =HybHW , .next=189 ,.initPrio=0,  .TypeID=4,.CanRun=0x1F,
+			  .D={.op1= 94 ,.op2=  1 , .isAdd_op1=YES, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+			  .id= 189 , .operation= OPMult, .mode =HybHW , .next=190 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id= 190 , .operation= OpSub, .mode =HybHW , .next=191 ,.initPrio=0,  .TypeID=7,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_7_HW_DELAY, .SWdelay=TASK_7_SW_DELAY}
+		},
+
+		{
+			  .id= 191 , .operation= OpSub, .mode =HybHW , .next=192 ,.initPrio=0,  .TypeID=7,.CanRun=0x1F,
+			  .D={.op1=136 ,.op2=  1 , .isAdd_op1=YES, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_7_HW_DELAY, .SWdelay=TASK_7_SW_DELAY}
+		},
+
+		{
+			  .id= 192 , .operation= OpSub, .mode =HybHW , .next=193 ,.initPrio=0,  .TypeID=7,.CanRun=0x1F,
+			  .D={.op1= 87 ,.op2=  1 , .isAdd_op1=YES, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_7_HW_DELAY, .SWdelay=TASK_7_SW_DELAY}
+		},
+
+		{
+			  .id= 193 , .operation= OpSub, .mode =HybHW , .next=194 ,.initPrio=0,  .TypeID=7,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=122 , .isAdd_op1= NO, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_7_HW_DELAY, .SWdelay=TASK_7_SW_DELAY}
+		},
+
+		{
+			  .id= 194 , .operation= OPMult, .mode =HybHW , .next=195 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		{
+			  .id= 195 , .operation= OpSub, .mode =HybHW , .next=196 ,.initPrio=0,  .TypeID=2,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+		{
+			  .id= 196 , .operation= OpSub, .mode =HybHW , .next=197 ,.initPrio=0,  .TypeID=2,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=124 , .isAdd_op1= NO, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+		{
+			  .id= 197 , .operation= OpSub, .mode =HybHW , .next=198 ,.initPrio=0,  .TypeID=2,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2=  1 , .isAdd_op1= NO, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+		{
+			  .id= 198 , .operation= OpAdd, .mode =HybHW , .next=199 ,.initPrio=0,  .TypeID=5,.CanRun=0x1F,
+			  .D={.op1=160 ,.op2=  1 , .isAdd_op1=YES, .isAdd_op2= NO },
+			  .Emu={.HWdelay=TASK_5_HW_DELAY, .SWdelay=TASK_5_SW_DELAY}
+		},
+
+		{
+			  .id= 199 , .operation= OPMult, .mode =HybHW , .next=  0 ,.initPrio=0,  .TypeID=8,.CanRun=0x1F,
+			  .D={.op1=  2 ,.op2= 29 , .isAdd_op1= NO, .isAdd_op2=YES },
+			  .Emu={.HWdelay=TASK_8_HW_DELAY, .SWdelay=TASK_8_SW_DELAY}
+		},
+
+		},
+	},
