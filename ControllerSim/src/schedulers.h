@@ -10,7 +10,7 @@
 #include "headers.h"
 
 #include "queue.h"
-#define MAX_QUEUE_TASKS 256
+
 #define BUSY 1
 #define QEmpty 3
 #define ERROR 4

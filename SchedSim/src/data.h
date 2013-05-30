@@ -10,10 +10,6 @@
 
 #include "PlatformConfig.h"
 
-/* TODO use more compact structure
- * by using btwise operators and one words for all flags
- */
-
 
 
 
@@ -85,10 +81,10 @@ struct PRRProcess {
 	enum PRRID PRR_ID[MAX_PR_MODULES];
 };
 
-/* TODO sperate this structure into seprate structure one is read only and the other is read/write
- *  Create different files to update the internal properties, instead fo the stupid golabal variable tech.
- *  each functions takes one value which is ID and store or return the approporate value.
- *  I guess it's better to seperate the structures instead of having one for everything.
+/* TODO separate this structure into separate structure one is read only and the other is read/write
+ *  Create different files to update the internal properties, instead for the stupid global variable tech.
+ *  each functions takes one value which is ID and store or return the appropriate value.
+ *  I guess it's better to separate the structures instead of having one for everything.
  *
  *
  * */
@@ -99,14 +95,13 @@ struct nodeData
 	unsigned int Done ;
 	int result;
 	unsigned int  Q;
-	//   unsigned int  prio; // initial priority to start with
-	struct Simulation Sim; // move to a seperate struct
+	struct Simulation Sim; // move to a separate struct
 
 };
 struct node {
 	const unsigned int  id;
 	const unsigned char  operation;
-	const   enum Mode mode;
+	const enum Mode mode;
 	const unsigned int next;
 	const struct data D;
 	const unsigned int  initPrio; // initial priority to start with
@@ -128,11 +123,12 @@ struct TaskType{
 
 };
 struct tasksTableToken
-{	struct node *dfg;
-struct taskData *TaskTable;
-void * token;
-int ID;
-int size;
+{
+	struct node *dfg;
+	struct taskData *TaskTable;
+	void * token;
+	int ID;
+	int size;
 };
 struct DFG {
 	int size;

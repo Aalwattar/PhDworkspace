@@ -92,28 +92,28 @@ pEs.SW->size =1;
 
 		/* start real work */
 	Init_TasksTypes();
-		printf("\r\n*******************************************************************************\r\n");
-		printf("*******************************************************************************\r\n");
+		printf("\n*******************************************************************************\n");
+		printf("*******************************************************************************\n");
 		//printf("***PLATFORM PRRS[%d] , SCHED [%s] , REUSE[YES], SWPE[%s] ****\r\n", AVAILABLE_PRR,
 	//			SCHED_III_EN? "III": SIMPLE_SCHED_II? "II":"I",SW_HW_MIG?"YES":"NO");
-		printf("*******************************************************************************\r\n");
-		printf("*******************************************************************************\r\n\r\n");
+		printf("*******************************************************************************\n");
+		printf("*******************************************************************************\n");
 
 		for (i=0;i<NO_OF_DFGS;i++)
 		{
-			printf("\r\n\r\n\r\n*******************************************************************************\r\n");
+			printf("\n*******************************************************************************\n");
 		//	printf("Processing: DFG[%d] with [%d] nodes please wait .....\r\n", i, DFGArray[i].size);
-			printf("*******************************************************************************\r\n");
+			printf("*******************************************************************************\n");
 	#if INDEPENDENT_DFGS
 
-
+			rstCounters(&Counters);
 	#endif
 			for (w=0;w<NO_OF_DFG_REP;w++)
 			{
 	#if  SCHED_I_EN
 				Init_Rand_Prr(AVAILABLE_PRR);
 	#endif
-				printf("\r\n Processing: DFG[%d] with [%d] nodes ITERATION [%d] \r\n", i, DFGArray[i].size,w);
+				printf("\r\n Processing: DFG[%d] with [%d] nodes ITERATION [%d] \n", i, DFGArray[i].size,w);
 			//	ResetTimer();
 				MakeEmpty(ReadyQ);
 				dfg1=DFGArray[i].dfg;
@@ -137,7 +137,7 @@ pEs.SW->size =1;
 	#elif SCHED_III_EN
 						RunTaskSIII(ReadyQ,&Counters);
 	#elif SIMPLE_SCHED_II
-						RunTask(ReadyQ,&Counters);
+						RunTask(ReadyQ,&Counters, &pEs);
 	#endif
 						State=TaskDone;
 						break;
@@ -152,7 +152,8 @@ pEs.SW->size =1;
 
 						RunTaskSIII(ReadyQ,&Counters);
 	#elif SIMPLE_SCHED_II
-						RunTask(ReadyQ,&Counters);
+
+						RunTask(ReadyQ,&Counters, &pEs);
 	#endif
 						State=TaskDone;
 						break;
@@ -164,7 +165,7 @@ pEs.SW->size =1;
 					case None:
 						break;
 					default :
-						printf("ERROR: Unknown state ...\r\n");
+						printf("ERROR: Unknown state ...\n");
 						break ;
 
 					}
@@ -182,7 +183,7 @@ pEs.SW->size =1;
 //				printf("SW2HW MIG [%lu]  HW2SW Mig [%lu] #of Reuse [%lu]  #SW tasks [%lu] \r\n",Counters.SW2HWMig,Counters.HW2SWMig,Counters.ReuseCounter,Counters.SWTasksCounter);
 			}
 		}
-		printf("Cleaning up ....\r\n\r\n\r\n");
+		printf("Cleaning up ....\n");
 
 
 		freeTasksTable();

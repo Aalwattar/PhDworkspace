@@ -13,8 +13,8 @@
 #define INDEPENDENT_DFGS 0
 
 #define SCHED_I_EN 0
-#define SCHED_III_EN 1
-#define SIMPLE_SCHED_II 0
+#define SCHED_III_EN 0
+#define SIMPLE_SCHED_II 1
 
 #define NO_OF_PRRS 5
 #define NO_OF_GPPS 1
@@ -25,9 +25,9 @@
 #define YES 1
 #define NO 0
 
-#define MAX_QUEUE_TASKS 128
+#define MAX_QUEUE_TASKS 256
 #define NO_OF_DFGS 1
-
+#define CONFIG_TIME 200000000
 
 
 

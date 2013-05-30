@@ -10,6 +10,7 @@
 
 
 #include "queue.h"
+#include "processors.h"
 #define MAX_QUEUE_TASKS 256
 #define BUSY 1
 #define QEmpty 3
@@ -27,13 +28,15 @@
 };
 
 
-int IsNodeReady(unsigned int id );
-int ReusePRR(int module);
-int FindFreePRR();
-int   RunTaskSI(Queue ReadyQ ,  struct Counts *Counters);
-int     RunTask(Queue ReadyQ , struct Counts *Counters);
-int RunTaskSIII(Queue ReadyQ ,  struct Counts *Counters);
-void Init_Rand_Prr(int no);
+
+
+
+
+
+
+
+int RunTask(Queue ReadyQ , struct Counts *Counters, struct PEs *pes);
 int SchedSimple(Queue ReadyQ,int size);
 void rstCounters(struct Counts* counters);
+
 #endif /* SCHEDULERS_H_ */

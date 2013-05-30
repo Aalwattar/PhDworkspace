@@ -8,6 +8,7 @@
 #ifndef RECONFIGURATION_H_
 #define RECONFIGURATION_H_
 
+#include "processors.h"
 int Reconfigure(struct Processor *processor, int PRRID, unsigned long time) ;
 int TickConfiguration( struct Processor *processor);
 int TickConfig(struct Processor *processor);
