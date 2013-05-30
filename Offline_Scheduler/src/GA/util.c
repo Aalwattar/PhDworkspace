@@ -6,7 +6,7 @@
  *                  for each task's operation
  * 
  * Created  : May 7, 2013
- * Modified : May 26, 2013
+ * Modified : May 29, 2013
  ******************************************************************************/
 
 /*******************************************************************************
@@ -31,13 +31,8 @@ void seedRandGenerator(int seed) {
     srand(seed);
 }
 
-void randSeed(void) {
-    int seed;
-
-    seed = time(NULL);
-    fprintf(stdout, "Seed = %d\n", seed);
-
-    srand(seed);
+int randSeed(void) {
+    return time(NULL);
 }
 
 double randomNumber(void) {

@@ -5,7 +5,7 @@
  * Project  : A DFG Off-Line Task Scheduler for FPGA
  * 
  * Created  : May 22, 2013
- * Modified : May 22, 2013
+ * Modified : May 28, 2013
  *************************************************************************/
 
 //global header files
@@ -21,9 +21,9 @@
 #include <types.h>
 #include <ecodes.h>
 #include <napoleon.h>
+#include <functions.h>
 #include <main.h>
 #include <io.h>
-
 
 int evaluate_ASAP(short int, short int *, short int *, t_task *);
 int evaluate_ALAP(short int, short int *, short int *, short int, t_task *);
@@ -40,21 +40,21 @@ short int grid_config[__NUM_FPGA_COLUMNS][__NUM_FPGA_ROWS];
 Function name: sort
 
 inputs:
-        short int *val_ALAP_u
-        short int num_nodes
+	short int *val_ALAP_u
+	short int num_nodes
 outputs:
-        short int *p_list
+	short int *p_list
 
 This sort algorithm implements the INSERTION sort technique. 
 Sorting is done in NON_DECREASING order of two keys: 
   a. ALAP value(primary)
   
 
- *(val_ALAP_u+i) has the ALAP value
+    *(val_ALAP_u+i) has the ALAP value
     
- ************************************************/
+************************************************/
 
-int sortbyALAP(short int *val_ALAP_u,
+int sortbyALAP(	short int *val_ALAP_u, 
         short int *val_ASAP_u,
         short int num_nodes,
         short int *p_list) {
@@ -143,6 +143,7 @@ int opqueue(short int mode, short int *queue, short int node) {
             head = 0;
             tail = 0;
             ret_val = -1;
+            
             break;
         case __ENQUEUE:
             *(queue + tail) = node;
@@ -359,7 +360,7 @@ bool findFarthestCompatibleModule(short int x, short int t, short int *N_sched, 
             if (grid[i][j] != -1 &&
                     *(N_sched + grid[i][j]) != -1 &&
                     (*(N_sched + grid[i][j])+(task + grid[i][j])->latency - 1) < t &&
-                    (task + grid[i][j])->type == (task + x)->type) {
+                    (((task + grid[i][j])->type == (task + x)->type) && ((task + grid[i][j])->impl == (task + x)->impl))) {
                 compatible = true;
                 curr_kc = (i + (task + grid[i][j])->columns) / 2;
                 curr_mc = (j + (task + grid[i][j])->rows) / 2;
@@ -506,16 +507,18 @@ short int Napoleon(FILE *grid_strm, short int *succ_adj_mat, short int num_nodes
     if ((err = evaluate_ALAP(num_nodes, succ_adj_mat, val_ALAP_u, *(val_ASAP_u + (num_nodes + 1)), task)))
         print_error(err);
 
+#ifdef __DEBUG
     short int dim_size[1];
     *dim_size = (num_nodes + 2);
 
-//    //display the ASAP values
-//    printf("The ASAP Schedule\n");
-//    display_array(val_ASAP_u, 1, dim_size);
-//
-//    //display the ALAP values
-//    printf("The ALAP Schedule\n");
-//    display_array(val_ALAP_u, 1, dim_size);
+    //display the ASAP values
+    printf("The ASAP Schedule\n");
+    display_array(val_ASAP_u, 1, dim_size);
+
+    //display the ALAP values
+    printf("The ALAP Schedule\n");
+    display_array(val_ALAP_u, 1, dim_size);
+#endif
 
     //create memory for priority list
     p_list = (short int *) malloc(sizeof (short int)*(num_nodes + 2));
@@ -527,10 +530,12 @@ short int Napoleon(FILE *grid_strm, short int *succ_adj_mat, short int num_nodes
     //sort p_list based-on ALAP
     sortbyALAP(val_ALAP_u, val_ASAP_u, num_nodes, p_list);
 
-//    printf("Tasks sorted by ALAP:\n");
-//    for (i = 0; i <= (num_nodes + 1); i++)
-//        printf("%d ", *(p_list + i));
-//    printf("\n");
+#ifdef __DEBUG
+    printf("Tasks sorted by ALAP:\n");
+    for (i = 0; i <= (num_nodes + 1); i++)
+        printf("%d ", *(p_list + i));
+    printf("\n");
+#endif
 
     //allocate memory for the queue
     Na = (short int *) malloc(sizeof (short int)*__SIZE_Q);
@@ -545,19 +550,28 @@ short int Napoleon(FILE *grid_strm, short int *succ_adj_mat, short int num_nodes
     //store the available tasks in Na
     findAvailableTasks(Na, num_nodes, p_list, N_sched, succ_adj_mat);
 
-//    fprintf(grid_strm, "T\t\t C0\t\tC1\t\tC2\t\tC3\t\tC4\n");
-
+#ifdef __DEBUG
+    fprintf(grid_strm, "T\t\t C0\t\tC1\t\tC2\t\tC3\t\tC4\n");
+#endif
+    long int deletemeCounter =0;
     while (*(N_sched + num_nodes + 1) == -1) {
         reuse = true;
-        //printf("Current Time is %d\n", t);
+        
+        if(num_nodes < 10)
+        fprintf(stdout, "%ld-> %d\t%d\n", deletemeCounter++, *(N_sched + num_nodes + 1), num_nodes);
+
+        
+        
+        //display_task(task, NULL);
+        
         while ((x = opqueue(__DEQUEUE, Na, __INVALID)) != -1) {
-            //printf("x=%d \n", x);
+
             if ((flag = findFarthestCompatibleModule(x, t, N_sched, task))) {
                 schedule(x, t, reuse, N_sched, task, succ_adj_mat);
-                //printf("reuse=true x=%d is scheduled on %d\n", x, (task+x)->exec_sched);
+
             } else {
                 opqueue2(__ENQUEUE, t_Na, x);
-                //printf("reuse=true x=%d not scheduled \n", x);
+
             }
         }
 
@@ -570,35 +584,38 @@ short int Napoleon(FILE *grid_strm, short int *succ_adj_mat, short int num_nodes
             if ((free_reconfig < t) && (findFarthestAvailableSpace(x, t, task))) {
                 schedule(x, t, reuse, N_sched, task, succ_adj_mat);
                 free_reconfig = (task + x)->reconfig_sched + (task + x)->reconfig_time - 1;
-                //printf("reuse=false x=%d is reconfigured at %d and scheduled on %d\n", x, (task+x)->reconfig_sched, (task+x)->exec_sched);
+
                 break;
             } else {
                 opqueue2(__ENQUEUE, t_Na, x);
-                //printf("reuse=false x=%d not scheduled \n", x);
+
             }
         }
 
         while ((x = opqueue(__DEQUEUE, Na, __INVALID)) != -1);
         while ((x = opqueue2(__DEQUEUE, t_Na, __INVALID)) != -1);
 
-//        fprintf(grid_strm, "t=%3d\t\t", t);
-//        for (i = 0; i < __NUM_FPGA_COLUMNS; i++) {
-//            if (grid[i][0] != -1) {
-//                if ((((task + grid[i][0])->reconfig_sched + (task + grid[i][0])->reconfig_time - 1) >= t) && ((task + grid[i][0])->reconfig_sched <= t)) // reconfig period
-//                {
-//                    fprintf(grid_strm, "\"T%d/R/%d\"\t", grid[i][0], (task + grid[i][0])->type);
-//                } else if ((((task + grid[i][0])->exec_sched + (task + grid[i][0])->latency - 1) >= t) && ((task + grid[i][0])->exec_sched <= t)) // exec period
-//                {
-//                    fprintf(grid_strm, "\"T%d/E/%d\"\t", grid[i][0], (task + grid[i][0])->type);
-//                } else {
-//                    fprintf(grid_strm, "\t\t");
-//                }
-//            } else {
-//                fprintf(grid_strm, "\t\t");
-//            }
-//        }
-//        fprintf(grid_strm, "\n");
+#ifdef __DEBUG    
+        fprintf(grid_strm, "t=%3d\t\t", t);
+        for (i = 0; i < __NUM_FPGA_COLUMNS; i++) {
+            if (grid[i][0] != -1) {
+                if ((((task + grid[i][0])->reconfig_sched + (task + grid[i][0])->reconfig_time - 1) >= t) && ((task + grid[i][0])->reconfig_sched <= t)) // reconfig period
+                {
+                    fprintf(grid_strm, "\"T%d/R/%d\"\t", grid[i][0], (task + grid[i][0])->type);
+                } else if ((((task + grid[i][0])->exec_sched + (task + grid[i][0])->latency - 1) >= t) && ((task + grid[i][0])->exec_sched <= t)) // exec period
+                {
+                    fprintf(grid_strm, "\"T%d/E/%d\"\t", grid[i][0], (task + grid[i][0])->type);
+                } else {
+                    fprintf(grid_strm, "\t\t");
+                }
+            } else {
+                fprintf(grid_strm, "\t\t");
+            }
+        }
+        fprintf(grid_strm, "\n");
+#endif 
 
+        // FIX - is this necessary???
         t = t + 1;
         findAvailableTasks(Na, num_nodes, p_list, N_sched, succ_adj_mat);
 
@@ -614,97 +631,84 @@ short int Napoleon(FILE *grid_strm, short int *succ_adj_mat, short int num_nodes
 
     }
 
-//    do {
-//        fprintf(grid_strm, "t=%3d\t\t", t);
-//        for (i = 0; i < __NUM_FPGA_COLUMNS; i++) {
-//            if (grid[i][0] != -1) {
-//                if ((((task + grid[i][0])->reconfig_sched + (task + grid[i][0])->reconfig_time - 1) >= t) && ((task + grid[i][0])->reconfig_sched <= t)) // reconfig period
-//                {
-//                    fprintf(grid_strm, "\"T%d/R/%d\"\t", grid[i][0], (task + grid[i][0])->type);
-//                } else if ((((task + grid[i][0])->exec_sched + (task + grid[i][0])->latency - 1) >= t) && ((task + grid[i][0])->exec_sched <= t)) // exec period
-//                {
-//                    fprintf(grid_strm, "\"T%d/E/%d\"\t", grid[i][0], (task + grid[i][0])->type);
-//                } else {
-//                    fprintf(grid_strm, "\t\t");
-//                }
-//            } else {
-//                fprintf(grid_strm, "\t\t");
-//            }
-//        }
-//        fprintf(grid_strm, "\n");
-//        t++;
-//    } while (t <= *(N_sched + num_nodes + 1));
-
-//    printf("N_sched: \n");
-//    for (i = 0; i <= num_nodes + 1; i++)
-//        printf("%d ", *(N_sched + i));
-//    printf("\n");
-//
-//    printf("task reconfigured at: \n");
-//    for (i = 0; i <= num_nodes + 1; i++)
-//        printf("%d ", (task + i)->reconfig_sched);
-//    printf("\n");
-//
-//    printf("task scheduled at: \n");
-//    for (i = 0; i <= num_nodes + 1; i++)
-//        printf("%d ", (task + i)->exec_sched);
-//    printf("\n");
-//
-//    printf("leftmost column: \n");
-//    for (i = 0; i <= num_nodes + 1; i++)
-//        printf("%d ", (task + i)->leftmost_column);
-//    printf("\n");
-//
-//    printf("bottommost rows: \n");
-//    for (i = 0; i <= num_nodes + 1; i++)
-//        printf("%d ", (task + i)->bottommost_row);
-//    printf("\n");
-
 #ifdef __DEBUG
-    printf("grid: \n");
-    for (i = 0; i < __NUM_FPGA_COLUMNS; i++) {
-        for (j = __NUM_FPGA_ROWS - 1; j >= 0; j--) {
-            if (grid[i][j] != -1)
-                printf("%d %d %d\n", i, j, grid[i][j]);
-        }
-    }
-
-    printf("grid_config: \n");
-    for (i = 0; i < __NUM_FPGA_COLUMNS; i++) {
-        for (j = __NUM_FPGA_ROWS - 1; j >= 0; j--) {
-            if (grid_config[i][j] != -1)
-                printf("%d %d %d\n", i, j, grid_config[i][j]);
-        }
-    }
-#endif
-
-    short int cnt_reuse = 0, cnt_prefetch = 0;
-    bool prefetch_flag = false;
-
-    for (j = 1; j <= num_nodes; j++) {
-        prefetch_flag = false;
-        for (i = 1; i <= num_nodes; i++) {
-            if (*(succ_adj_mat + (num_nodes + 2) * i + j) == 1) {
-                if ((task + j)->reconfig_sched != 0 && (task + j)->reconfig_sched <= ((task + i)->exec_sched + (task + i)->latency - 1)) {
-                    prefetch_flag = true;
+    do {
+        fprintf(grid_strm, "t=%3d\t\t", t);
+        for (i = 0; i < __NUM_FPGA_COLUMNS; i++) {
+            if (grid[i][0] != -1) {
+                if ((((task + grid[i][0])->reconfig_sched + (task + grid[i][0])->reconfig_time - 1) >= t) && ((task + grid[i][0])->reconfig_sched <= t)) // reconfig period
+                {
+                    fprintf(grid_strm, "\"T%d/R/%d\"\t", grid[i][0], (task + grid[i][0])->type);
+                } else if ((((task + grid[i][0])->exec_sched + (task + grid[i][0])->latency - 1) >= t) && ((task + grid[i][0])->exec_sched <= t)) // exec period
+                {
+                    fprintf(grid_strm, "\"T%d/E/%d\"\t", grid[i][0], (task + grid[i][0])->type);
+                } else {
+                    fprintf(grid_strm, "\t\t");
                 }
+            } else {
+                fprintf(grid_strm, "\t\t");
             }
         }
-        if (prefetch_flag)
-            cnt_prefetch++;
-    }
+        fprintf(grid_strm, "\n");
+        t++;
+    } while (t <= *(N_sched + num_nodes + 1));
+
+    printf("N_sched: \n");
+    for (i = 0; i <= num_nodes + 1; i++)
+        printf("%d ", *(N_sched + i));
+    printf("\n");
+
+    printf("task reconfigured at: \n");
+    for (i = 0; i <= num_nodes + 1; i++)
+        printf("%d ", (task + i)->reconfig_sched);
+    printf("\n");
+
+    printf("task scheduled at: \n");
+    for (i = 0; i <= num_nodes + 1; i++)
+        printf("%d ", (task + i)->exec_sched);
+    printf("\n");
+
+    printf("leftmost column: \n");
+    for (i = 0; i <= num_nodes + 1; i++)
+        printf("%d ", (task + i)->leftmost_column);
+    printf("\n");
+
+    printf("bottommost rows: \n");
+    for (i = 0; i <= num_nodes + 1; i++)
+        printf("%d ", (task + i)->bottommost_row);
+    printf("\n");
+#endif
+
+    // REMOVED - COUNT THE NUMBER OF PREFETCHES
+//    short int cnt_reuse = 0, cnt_prefetch = 0;
+//    bool prefetch_flag = false;
+//
+//    for (j = 1; j <= num_nodes; j++) {
+//        prefetch_flag = false;
+//        for (i = 1; i <= num_nodes; i++) {
+//            if (*(succ_adj_mat + (num_nodes + 2) * i + j) == 1) {
+//                if ((task + j)->reconfig_sched != 0 && (task + j)->reconfig_sched <= ((task + i)->exec_sched + (task + i)->latency - 1)) {
+//                    prefetch_flag = true;
+//                }
+//            }
+//        }
+//        if (prefetch_flag)
+//            cnt_prefetch++;
+//    }
 
 //    printf("Total Prefetching is %d\n", cnt_prefetch);
-
-    for (i = 1; i <= num_nodes; i++)
-        if ((task + i)->reconfig_sched == 0)
-            cnt_reuse++;
-
+//
+//    for (i = 1; i <= num_nodes; i++)
+//        if ((task + i)->reconfig_sched == 0)
+//            cnt_reuse++;
+//
+    
+    // REMOVED - PRINTING STUFF
 //    printf("Total Number of Reuse is %d\n", cnt_reuse);
 //
-//    printf("TaskID\tReconfig At\tExec At\t\tColumn\t\tRow\t\tType\n");
+//    printf("TaskID\tReconfig At\tExec At\t\tColumn\t\tRow\t\tType\t\tImpl\n");
 //    for (i = 1; i <= num_nodes; i++)
-//        printf("T%d\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n", i, (task + i)->reconfig_sched, (task + i)->exec_sched, (task + i)->leftmost_column, (task + i)->bottommost_row, (task + i)->type);
+//        printf("T%d\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n", i, (task + i)->reconfig_sched, (task + i)->exec_sched, (task + i)->leftmost_column, (task + i)->bottommost_row, (task + i)->type, (task + i)->impl);
 //
 //    printf("***** TOTAL NUMBER OF CYCLES = %d *****\n", (task + num_nodes + 1)->exec_sched - 1);
 
@@ -715,8 +719,5 @@ short int Napoleon(FILE *grid_strm, short int *succ_adj_mat, short int num_nodes
     free(val_ASAP_u);
     free(N_sched);
 
-    //return err;
-    return (task + num_nodes + 1)->exec_sched - 1;
+    return ((task + num_nodes + 1)->exec_sched - 1);
 }
-
-

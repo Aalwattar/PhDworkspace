@@ -62,11 +62,9 @@ typedef struct s_task {
     short int input1;
     short int input2;
     short int output;
-    
-    // Jenn's additions
-    short int conf_power;
-    short int exec_power;
     short int impl;
+    short int reconfig_pwr;
+    short int exec_pwr;
 } t_task;
 
 typedef struct s_task_interface {
@@ -82,6 +80,18 @@ typedef struct s_task_Type {
     short int columns;
     short int rows;
 } t_task_type;
+
+typedef struct s_task_Impl {
+    short int id;
+    short int type;
+    short int impl;
+    short int latency;
+    short int reconfig_time;
+    short int columns;
+    short int rows;
+    short int reconfig_pwr;
+    short int exec_pwr;
+} t_task_impl;
 
 
 #endif /* TYPES_H */

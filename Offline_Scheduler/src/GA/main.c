@@ -37,28 +37,28 @@
 static char * ARCH_FILENAME = "input/architecture_library.txt";
 static char * DFG_FILENAME = "input/DFG.txt";
 
-static char * AIF_FILENAME = "input/B1_25_5.aif";
+static char * AIF_FILENAME = "input/B1_10_5.aif";
+static char * RES_DAT_FILENAME = "input/res.dat";
 
 int STOP_CONDITION = 500;
-int generation_num;
+int generation_num = 0;
 
 
 void initParameters(int num_tokens, char ** input_token);
 bool populationConverged(Population * pop);
-
+void bruteForce();
 
 
 int main(int argc, char * argv[]) {
     Population * pop, * mating_pop;
     int i, j;
-
-    // FIX - make option to enter your own seed
-    randSeed();
-    //seedRandGenerator(1369671822);
     
     initParameters(argc, argv);
+    
     initArchLibrary(ARCH_FILENAME);
-    initNapoleon(AIF_FILENAME);
+    initNapoleon(AIF_FILENAME, RES_DAT_FILENAME);
+    
+//    fprintf(stdout, "Fitness = %d\n", evaluateFitness(ind));
     
     pop = genRandPopulation();
 
@@ -73,11 +73,10 @@ int main(int argc, char * argv[]) {
 
     while (generation_num < STOP_CONDITION) {
         for (i = 0; i < getPopSize(); i++) {
-//            fprintf(stdout, "\n%2d)\n", i+1);
-            pop->member[i].fitness = evaluateFitness(pop->member[i].encoding);
+            pop->member[i].fitness = evaluateFitness(pop->member[i].encoding);;
         }
-
-//        fprintf(stdout, "----------GENERATION %d-----------------\n\n", generation_num);
+//
+//        fprintf(stdout, "\n-----------------   GENERATION %d   -----------------\n", generation_num + 1);
 //        for (i = 0; i < getPopSize(); i++) {
 //            for (j = 0; j < getNumGenes(); j++) {
 //                fprintf(stdout, "%d", pop->member[i].encoding[j]);
@@ -113,6 +112,7 @@ int main(int argc, char * argv[]) {
 
 
 void initParameters(int num_tokens, char ** input_token) {
+    int seed = randSeed();
     int i;
 
     //    5. selection method
@@ -144,11 +144,14 @@ void initParameters(int num_tokens, char ** input_token) {
         }
 
         if (strncmp(input_token[i], "-seed=", 6) == 0) {
-            seedRandGenerator(atoi(&(input_token[i][6])));
+            seed = atoi(&(input_token[i][6]));
         }
     }
+    
+    seedRandGenerator(seed);
 
-    fprintf(stdout, "Parameters:\n\n");
+    fprintf(stdout, "Parameters:\n");
+    fprintf(stdout, "\tSeed = %d\n\n", seed);
     fprintf(stdout, "\tPopulation Size       = %d\n", getPopSize());
     fprintf(stdout, "\tNumber of Generations = %d\n\n", STOP_CONDITION);
     fprintf(stdout, "\tMutation Rate  = %.4lf\n", getMutationRate());

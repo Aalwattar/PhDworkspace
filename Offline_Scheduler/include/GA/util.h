@@ -6,7 +6,7 @@
  *                  for each task's operation
  * 
  * Created  : May 7, 2013
- * Modified : May 26, 2013
+ * Modified : May 29, 2013
  ******************************************************************************/
 
 /*******************************************************************************
@@ -36,7 +36,7 @@ void seedRandGenerator(int);
  * PURPOSE : initialize the random number generator using the current system
  *              time as the seed
  *****************************************************************************/
-void randSeed(void);
+int randSeed(void);
 
 /******************************************************************************
  * NAME : randomNumber
