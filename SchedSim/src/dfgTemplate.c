@@ -1,16 +1,9 @@
-
-/** DFG automatically generated file,
- * Created by a tasksgenerated written by
- * 			Ahmed Al-Wattar
- * 		 	aalwatta@uoguelph.ca
- */
-
 #ifndef DFGTEMPLATE_H_
 #define DFGTEMPLATE_H_
 
-#include "data.h"
-#include "PlatformConfig.h"
 
+#include "PlatformConfig.h"
+#include "data.h"
 /* DONT FORGET TO ADD (#define LAST_NODE 14 ) in platform_config.h */
 
 struct  DFG DFGArray[NO_OF_DFGS] = {

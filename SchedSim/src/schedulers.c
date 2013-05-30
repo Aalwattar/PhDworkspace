@@ -247,14 +247,18 @@ int RunTask(Queue ReadyQ , struct Counts *Counters, struct PEs *pes)
 		nd.ExecCount=(unsigned int) dfg1[task].Emu.HWdelay;
 		nd.Module=dfg1[task].TypeID;
 
-		if ((freePRR=ReusePRR_V2(nd.Module, pes->HW->pe)) <0)
+		if ((freePRR=ReusePRR_V2(nd.Module, pes->HW)) <0)
 		{
+			if(IsReconfiguring())
+			{
+				return 5;
+			}
 #if SCHED_II_WORSTCASE
 			if((freePRR=FindFreePRROrig(PRR_T.CanRun))<0)
 #elif  SCHED_II_RANDOM
 			if((freePRR=FindFreePRR(PRR_T.CanRun))<0)
 #else
-				if((freePRR=FindFreePRRBestCase(TasksTypes[dfg1[task].TypeID].CanRun, pes->HW->pe))<0)
+				if((freePRR=FindFreePRRBestCase(TasksTypes[dfg1[task].TypeID].CanRun, pes->HW))<0)
 #endif
 			{
 #if SW_HW_MIG
@@ -284,8 +288,9 @@ int RunTask(Queue ReadyQ , struct Counts *Counters, struct PEs *pes)
 
 			Reconfigure(pes->HW->pe+ freePRR,freePRR,CONFIG_TIME);
 
+			break;
 
-	//		print("Configured \r\n");
+
 		} else
 
 		{
