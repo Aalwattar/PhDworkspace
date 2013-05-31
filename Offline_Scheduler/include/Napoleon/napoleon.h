@@ -5,7 +5,7 @@
  * Project  : A DFG Off-Line Task Scheduler for FPGA
  * 
  * Created  : May 22, 2013
- * Modified : May 22, 2013
+ * Modified : May 30, 2013
  *************************************************************************/
 
 /*************************************************************************
@@ -19,7 +19,8 @@
 #define NAPOLEON_H
 
 #include <stdio.h>
+#include "fitness.h"
 
-extern short int Napoleon(FILE *, short int *, short int, t_task *);
+extern GA_Info Napoleon(FILE *, int *, int, t_task *);
 
 #endif /* NAPOLEON_H */

@@ -6,7 +6,7 @@
  *                  for each task's operation
  * 
  * Created  : May 7, 2013
- * Modified : May 22, 2013
+ * Modified : May 30, 2013
  ******************************************************************************/
 
 /*******************************************************************************
@@ -24,7 +24,7 @@
 static double CROSSOVER_RATE = 0.85;
 static double MUTATION_RATE  = 0.001;
 
-static int POP_SIZE = 16; // MUST BE AN EVEN NUMBER
+static int POP_SIZE = 16;
 
 
 Population * genRandPopulation(){
@@ -35,7 +35,7 @@ Population * genRandPopulation(){
     pop->member = malloc(sizeof(Individual) * POP_SIZE);
     pop->total_fitness = 0;
 
-    for(i=0; i<POP_SIZE; i++)
+    for(i=0; i < POP_SIZE; i++)
         initRandIndividual(&(pop->member[i]));
     
     return pop;
@@ -57,15 +57,16 @@ void freePopulation(Population * pop){
 void generateNextGeneration(Population * pop){
     int i;
     
-    for(i=0; i<POP_SIZE; i = i + 2)
+    for(i=0; i + 1 <POP_SIZE; i = i + 2)
         if(randomNumber() < CROSSOVER_RATE)
-                crossover(&(pop->member[i]), &(pop->member[i+1]));
+                crossover(&(pop->member[i]), &(pop->member[i + 1]));
     
     for(i=0; i<POP_SIZE; i++)
         mutate(&(pop->member[i]));
 }
 
 
+// FIX - ensure that the crossover rate is between 0 and 1 
 void setCrossoverRate(char * raw_rate){
     CROSSOVER_RATE = atof(raw_rate);
 }
@@ -74,6 +75,7 @@ double getCrossoverRate(void){
     return CROSSOVER_RATE;
 }
 
+// FIX - ensure that the mutation rate is between 0 and 1 
 void setMutationRate(char * raw_rate){
     MUTATION_RATE = atof(raw_rate);
 }
@@ -82,6 +84,7 @@ double getMutationRate(void){
     return MUTATION_RATE;
 }
 
+// FIX - ensure that the population size is between 1 and 10000
 void setPopSize(char * raw_size){
     POP_SIZE = atoi(raw_size);
 }

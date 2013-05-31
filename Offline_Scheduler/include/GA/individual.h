@@ -6,7 +6,7 @@
  *                  for each task's operation
  * 
  * Created  : May 7, 2013
- * Modified : May 22, 2013
+ * Modified : May 30, 2013
  ******************************************************************************/
 
 /*******************************************************************************
@@ -24,7 +24,7 @@
 typedef struct{
     int * encoding;     // their genotype
     
-    int fitness;     // true fitness value
+    int fitness;        // true fitness value
     double rfitness;    // fitness relative to population
     double cfitness;    // cumulative fitness
 } Individual;
@@ -36,7 +36,7 @@ typedef struct{
 /******************************************************************************
  * NAME : initRandIndividual
  * 
- * PURPOSE : Initializes an individual with a randomly generated genotype
+ * PURPOSE : Initializes an individual with randomly generated genes
  * ARGUMENTS : Individual * = the individual to initialize
  * 
  * PRECONDITIONS : the Individual struct must already exist in memory
@@ -50,11 +50,8 @@ void initRandIndividual(Individual *);
  * ARGUMENTS : Individual * = the destination for the copy
  *             Individual * = the individual that you wish to copy
  * 
- * RETURNS : An individual that contains the same data as the individual passed
- *              in as an argument
- * 
- * PRECONDITIONS : the Individual passed in as a parameter must have been
- *      previously created either through initRandIndividual() or 
+ * PRECONDITIONS : the Individuals passed in as a second parameter must have
+ *      been previously created either through initRandIndividual() or 
  *      duplicateIndividual().
  *****************************************************************************/
 void duplicateIndividual(Individual *, Individual *);

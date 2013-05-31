@@ -6,7 +6,7 @@
  *                  for each task's operation
  * 
  * Created  : May 16, 2013
- * Modified : May 22, 2013
+ * Modified : May 30, 2013
  ******************************************************************************/
 
 /*******************************************************************************
@@ -42,23 +42,23 @@
  *****************************************************************************/
 
 // represents one architecture's implementation
-
 typedef struct {
-    short int columns;
-    short int rows;
+    int columns;
+    int rows;
 
-    short int conf_t; // configuration time
-    short int exec_t; // execution time (AKA latency)
-    short int conf_p; // configuration power
-    short int exec_p; // execution power (or energy???)
+    int conf_t; // configuration time
+    int exec_t; // execution time (AKA latency)
+    int conf_p; // configuration power
+    int exec_p; // execution power (or energy???)
 } Implementation;
 
-// contains all of the architectures of an task
 
+// contains all of the architectures of an task
 typedef struct {
-    short int num_impl; // the number of architectures for this task
+    int num_impl; // the number of architectures for this task
     Implementation * impl; // the properties of each architecture
 } Operation;
+
 
 static Operation * arch_library;
 
@@ -89,14 +89,13 @@ bool initArchLibrary(char * filename) {
     return parse_status;
 }
 
-// FIX - add error checking
 
 bool parseArchLibrary(FILE * fp) {
     char buffer[BUFF_SIZE];
     int num_ops;
     int i;
 
-    // read in the number of possible tasks
+    // read in the number of task types
     fscanf(fp, "%*s %d", &num_ops);
 
     // create and clear data structures
@@ -110,12 +109,13 @@ bool parseArchLibrary(FILE * fp) {
         if (strlen(buffer) < 2) // a blank line
             continue;
 
-        // FIX - implement some form of file validation???
         if (buffer[0] == '#') // a comment
             continue;
 
-        if (strncmp(buffer, "TASK", 4) == 0)
-            parseArch(buffer);
+        if (strncmp(buffer, "TASK", 4) == 0){
+            if(parseArch(buffer) != true)
+                return false;
+        }
 
         else {
             fprintf(stderr, "GA parseArchLibrary Failed!\n");
@@ -127,10 +127,7 @@ bool parseArchLibrary(FILE * fp) {
     return true;
 }
 
-// FIX - add error checking
-
 bool parseArch(char * raw_arch) {
-    char * token;
     int arch_num;
     int op_type;
 
@@ -140,10 +137,7 @@ bool parseArch(char * raw_arch) {
     (arch_library[op_type]).impl = realloc((arch_library[op_type]).impl,
             sizeof (Implementation) * (arch_library[op_type]).num_impl);
 
-    token = strtok(raw_arch, " ");
-    token = strtok(NULL, "\n");
-
-    if (sscanf(token, "%hd%*[ ]%hd%*[ ]%hd%*[ ]%hd%*[ ]%hd%*[ ]%hd",
+    if (sscanf(raw_arch, "%*s%*[ ]%d%*[ ]%d%*[ ]%d%*[ ]%d%*[ ]%d%*[ ]%d",
             &(((arch_library[op_type]).impl[arch_num]).columns),
             &(((arch_library[op_type]).impl[arch_num]).rows),
             &(((arch_library[op_type]).impl[arch_num]).conf_t),
@@ -151,12 +145,14 @@ bool parseArch(char * raw_arch) {
             &(((arch_library[op_type]).impl[arch_num]).conf_p),
             &(((arch_library[op_type]).impl[arch_num]).exec_p)) < 6) {
 
-        printf("Could not parse %s\n", token);
+        fprintf(stderr, "Could not parse the line : %s\n", raw_arch);
         return false;
     }
 
     return true;
 }
+
+
 
 void freeArchLibrary(void) {
     int i;
@@ -187,7 +183,7 @@ void printArchLibrary(void) {
     }
 }
 
-short int getNumArch(int opr) {
+int getNumArch(int opr) {
     return arch_library[opr].num_impl;
 }
 
@@ -202,6 +198,7 @@ static t_task *task; //
     
     
     // FIX - make smaller
+// FIX - add error checking
 bool initNapoleon(char * aif_filename) {
     FILE *aif_strm;
     int err;
@@ -255,14 +252,16 @@ void freeNapoleon(void){
      free(task);
 }
 
+// FIX - add error checking
 int evaluateFitness(int * chromosome){
-    short int * succ_adj_mat;
-    short int * reuse_mat;
+    GA_Info schedule;
+    int * succ_adj_mat;
+    int * reuse_mat;
     int err = __NO_ERROR;
     int i = 0;
     
     //allocate memory for the successor graph adjacency matrix
-    succ_adj_mat = (short int*) malloc(sizeof (short int)*(task->width + 2)*(task->width + 2));
+    succ_adj_mat = (int*) malloc(sizeof (int)*(task->width + 2)*(task->width + 2));
 
     //create the successor matrix
     //and exit on unsuccessful execution of the parse_aif function
@@ -270,7 +269,7 @@ int evaluateFitness(int * chromosome){
         print_error(err);
 
     //allocate memory for the reuse matrix
-    reuse_mat = (short int*) malloc(sizeof (short int)*(task->width + 2)*(task->width + 2));
+    reuse_mat = (int*) malloc(sizeof (int)*(task->width + 2)*(task->width + 2));
 
     //create the reuse matrix
     if ((err = create_reuse_mat(task, reuse_mat)))
@@ -292,13 +291,14 @@ int evaluateFitness(int * chromosome){
         task[i + 1].leftmost_column = 0;
     }
     
-//    display_task(task, task_interface);
+    //display_task(task, task_interface);
 
-    Napoleon(NULL, succ_adj_mat, task->width, task);
+    schedule = Napoleon(NULL, succ_adj_mat, task->width, task);
     
     free(reuse_mat);
     free(succ_adj_mat);
-    return (task + getNumGenes() + 1)->exec_sched - 1;
+    
+    return (schedule.power * POWER_WEIGHT) + (schedule.runtime * RUNTIME_WEIGHT);
 }
 
 
@@ -308,36 +308,32 @@ int getNumGenes(void) {
     return task[0].width;
 }
 
+// this function interfaces the GA's indices (which all start at 0) with Napoleon (starts at 1)
 int getTaskType(int task_num) {
     // each task is offset by 1 in Napoleon to accomodate a source + sink
-    // the types start at 1, not 0. I convert them to indicies.
     return task[task_num + 1].type - 1;
 }
 
-int getTaskImpl(int task_num) {
-    return task[task_num + 1].impl;
+int getColumns(int task_num) {
+    return ((arch_library[getTaskType(task_num)]).impl[task[task_num + 1].impl]).columns;
 }
 
-int getColumns(int impl) {
-    return ((arch_library[getTaskType(impl)]).impl[getTaskImpl(impl)]).columns;
+int getRows(int task_num) {
+    return ((arch_library[getTaskType(task_num)]).impl[task[task_num + 1].impl]).rows;
 }
 
-int getRows(int impl) {
-    return ((arch_library[getTaskType(impl)]).impl[getTaskImpl(impl)]).rows;
+int getConfigTime(int task_num) {
+    return ((arch_library[getTaskType(task_num)]).impl[task[task_num + 1].impl]).conf_t;
 }
 
-int getConfigTime(int impl) {
-    return ((arch_library[getTaskType(impl)]).impl[getTaskImpl(impl)]).conf_t;
+int getExecTime(int task_num) {
+    return ((arch_library[getTaskType(task_num)]).impl[task[task_num + 1].impl]).exec_t;
 }
 
-int getExecTime(int impl) {
-    return ((arch_library[getTaskType(impl)]).impl[getTaskImpl(impl)]).exec_t;
+int getConfigPower(int task_num) {
+    return ((arch_library[getTaskType(task_num)]).impl[task[task_num + 1].impl]).conf_p;
 }
 
-int getConfigPower(int impl) {
-    return ((arch_library[getTaskType(impl)]).impl[getTaskImpl(impl)]).conf_p;
-}
-
-int getExecPower(int impl) {
-    return ((arch_library[getTaskType(impl)]).impl[getTaskImpl(impl)]).exec_p;
+int getExecPower(int task_num) {
+    return ((arch_library[getTaskType(task_num)]).impl[task[task_num + 1].impl]).exec_p;
 }

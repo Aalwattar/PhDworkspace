@@ -38,7 +38,6 @@ static char * ARCH_FILENAME = "input/architecture_library.txt";
 static char * DFG_FILENAME = "input/DFG.txt";
 
 static char * AIF_FILENAME = "input/B1_10_5.aif";
-static char * RES_DAT_FILENAME = "input/res.dat";
 
 int STOP_CONDITION = 500;
 int generation_num = 0;
@@ -50,15 +49,13 @@ void bruteForce();
 
 
 int main(int argc, char * argv[]) {
-    Population * pop, * mating_pop;
+    Population * pop, * next_generation;
     int i, j;
     
     initParameters(argc, argv);
     
     initArchLibrary(ARCH_FILENAME);
-    initNapoleon(AIF_FILENAME, RES_DAT_FILENAME);
-    
-//    fprintf(stdout, "Fitness = %d\n", evaluateFitness(ind));
+    initNapoleon(AIF_FILENAME);
     
     pop = genRandPopulation();
 
@@ -73,9 +70,9 @@ int main(int argc, char * argv[]) {
 
     while (generation_num < STOP_CONDITION) {
         for (i = 0; i < getPopSize(); i++) {
-            pop->member[i].fitness = evaluateFitness(pop->member[i].encoding);;
+            pop->member[i].fitness = evaluateFitness(pop->member[i].encoding);
         }
-//
+
 //        fprintf(stdout, "\n-----------------   GENERATION %d   -----------------\n", generation_num + 1);
 //        for (i = 0; i < getPopSize(); i++) {
 //            for (j = 0; j < getNumGenes(); j++) {
@@ -83,12 +80,10 @@ int main(int argc, char * argv[]) {
 //            }
 //            fprintf(stdout, "\tfitness = %d\n", pop->member[i].fitness);
 //        }
-
-        mating_pop = tournamentSelection(pop);
+        
+        next_generation = tournamentSelection(pop);
         freePopulation(pop);
-
-        generateNextGeneration(mating_pop);
-        pop = mating_pop;
+        pop = next_generation;
 
         generation_num++;
     }
@@ -97,7 +92,7 @@ int main(int argc, char * argv[]) {
     fprintf(stdout, "\nFinal Population:\n");
     for (i = 0; i < getPopSize(); i++) {
         for (j = 0; j < getNumGenes(); j++) {
-            fprintf(stdout, "%d", pop->member[i].encoding[j]);
+            fprintf(stdout, "%d", pop->member[i].encoding[  j]);
         }
         fprintf(stdout, "\tfitness = %d\n", evaluateFitness(pop->member[i].encoding));
     }
@@ -181,51 +176,51 @@ void initParameters(int num_tokens, char ** input_token) {
 
 
 
-//void bruteForce(void){
-//    int solution[10];
-//    int bestFitness = 100000;
-//    int fitness;
-//    
-//    for(int a=0; a<5; a++){
-//        solution[0] = a;
-//        for(int b=0; b<2; b++){
-//            solution[1] = b;
-//            for(int c=0; c<4; c++){
-//                solution[2] = c;
-//                for(int d=0; d<5; d++){
-//                    solution[3] = d;
-//                    for(int e=0; e<4; e++){
-//                        solution[4] = e;
-//                        for(int f=0; f<3; f++){
-//                            solution[5] = f;
-//                            for(int g=0; g<5; g++){
-//                                solution[6] = g;
-//                                for(int h=0; h<4; h++){
-//                                    solution[7] = h;
-//                                    for(int i=0; i<3; i++){
-//                                        solution[8] = i;
-//                                        for(int j=0; j<4; j++){
-//                                            solution[9] = j;
-//                                            
-//                                            fitness = evaluateFitness(solution);
-//                                            
-//                                            if(fitness <= bestFitness){
-//                                                for(int ind=0; ind<10; ind++){
-//                                                    printf("%d", solution[ind]);
-//                                                }
-////                                                printf("%d%d%d%d%d%d%d%d%d%d", a, b, c, d, e, f, g, h, i, j);
-//                                                printf("\t Fitness = %d\n", fitness);
-//                                                
-//                                                bestFitness = fitness;
-//                                            }
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}
+void bruteForce(void){
+    int solution[10];
+    int bestFitness = 100000;
+    int fitness;
+    
+    for(int a=1; a<=5; a++){
+        solution[0] = a;
+        for(int b=1; b<=2; b++){
+            solution[1] = b;
+            for(int c=1; c<=4; c++){
+                solution[2] = c;
+                for(int d=1; d<=5; d++){
+                    solution[3] = d;
+                    for(int e=1; e<=4; e++){
+                        solution[4] = e;
+                        for(int f=1; f<=3; f++){
+                            solution[5] = f;
+                            for(int g=1; g<=5; g++){
+                                solution[6] = g;
+                                for(int h=1; h<=4; h++){
+                                    solution[7] = h;
+                                    for(int i=1; i<=3; i++){
+                                        solution[8] = i;
+                                        for(int j=1; j<=4; j++){
+                                            solution[9] = j;
+                                            
+                                            fitness = evaluateFitness(solution);
+                                            
+                                            if(fitness <= bestFitness){
+                                                for(int ind=0; ind<10; ind++){
+                                                    printf("%d", solution[ind]);
+                                                }
+//                                                printf("%d%d%d%d%d%d%d%d%d%d", a, b, c, d, e, f, g, h, i, j);
+                                                printf("\t Fitness = %d\n", fitness);
+                                                
+                                                bestFitness = fitness;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

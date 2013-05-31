@@ -6,7 +6,7 @@
  *                  for each task's operation
  * 
  * Created  : May 16, 2013
- * Modified : May 26, 2013
+ * Modified : May 30, 2013
  ******************************************************************************/
 
 /*******************************************************************************
@@ -21,9 +21,23 @@
 
 #include "population.h"
 
-Population * tournamentSelection(Population * original);
 
-Population * tournamentSelection(Population *); //
+/******************************************************************************
+ * NAME : tournamentSelection
+ * 
+ * PURPOSE : To create the next generation by selecting individuals from
+ *               a population via hard tournament selection
+ * ARGUMENTS : Population * = The population that you wish to select from 
+ * 
+ * RETURNS : The next generation
+ * 
+ * NOTE : This algorithms is presently generational (replaces all individuals
+ *          in a population at once.)
+ *****************************************************************************/
+Population * tournamentSelection(Population *);
+
+
+
 
 Population * rouletteWheelSelection(Population *); //
 

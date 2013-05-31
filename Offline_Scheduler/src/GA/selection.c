@@ -6,7 +6,7 @@
  *                  for each task's operation
  * 
  * Created  : May 16, 2013
- * Modified : May 26, 2013
+ * Modified : May 30, 2013
  ******************************************************************************/
 
 /*******************************************************************************
@@ -20,19 +20,21 @@
 
 #include <stdlib.h>
 
-// tournament selection of size 2
+// FIX -  Implement a steady state variant that selects two individuals at a time?
+
 Population * tournamentSelection(Population * original){
     Population * mating_pool;
+    int pop_size;
     int p1, p2;
     int i;
     
+    pop_size = getPopSize();
     mating_pool = malloc(sizeof(Population));
-    mating_pool->member = malloc(sizeof(Individual) * getPopSize());
+    mating_pool->member = malloc(sizeof(Individual) * pop_size);
     
-    // FIX - do I need to ensure that the two chosen for comparison are different?
-    for(i=0; i<getPopSize(); i++){
-        p1 = randomNumber() * getPopSize();
-        p2 = randomNumber() * getPopSize();
+    for(i=0; i < pop_size; i++){
+        p1 = randomNumber() * pop_size;
+        p2 = randomNumber() * pop_size;
         
         if(original->member[p1].fitness <= original->member[p2].fitness){
             duplicateIndividual(&(mating_pool->member[i]), &(original->member[p1]));
@@ -41,6 +43,8 @@ Population * tournamentSelection(Population * original){
             duplicateIndividual(&(mating_pool->member[i]), &(original->member[p2]));
         }
     }
+    
+    generateNextGeneration(mating_pool);
     return mating_pool;
 }
 

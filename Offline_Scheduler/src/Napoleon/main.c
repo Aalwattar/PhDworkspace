@@ -47,9 +47,10 @@ int mainFunction(int argc, char *argv[]) {
     t_task_impl *task_impl;
     t_config config;
     int err = 0;
-    short int *succ_adj_mat;
-    short int *reuse_mat; //aij
-    short int T = 99; //upper_bound_total_exec_time
+    int		*succ_adj_mat;
+    int		*reuse_mat;		//aij
+    int		T=99;			//upper_bound_total_exec_time
+  char			*fname;
     int i = 0, j = 0;
     int random_num;
 
@@ -127,6 +128,7 @@ int mainFunction(int argc, char *argv[]) {
 
     task_impl = (t_task_impl*) malloc(sizeof (t_task_impl) * __NUM_MAX_TASK_IMPLS);
     for (i = 0; i < __NUM_MAX_TASK_IMPLS; i++) {
+        (task_impl + i)->id = 0;
         (task_impl + i)->type = 0;
         (task_impl + i)->impl = 0;
         (task_impl + i)->latency = 0;
@@ -156,7 +158,7 @@ int mainFunction(int argc, char *argv[]) {
     display_task_impl(task_impl);
 
     //allocate memory for the successor graph adjacency matrix
-    succ_adj_mat = (short int*) malloc(sizeof (short int)*(task->width + 2)*(task->width + 2));
+    succ_adj_mat = (int*)malloc(sizeof ( int)*(task->width + 2)*(task->width + 2));
 
     //create the successor matrix
     //and exit on unsuccessful execution of the parse_aif function
@@ -164,7 +166,7 @@ int mainFunction(int argc, char *argv[]) {
         print_error(err);
 
     //allocate memory for the reuse matrix
-    reuse_mat = (short int*) malloc(sizeof (short int)*(task->width + 2)*(task->width + 2));
+    reuse_mat = (int*)malloc(sizeof ( int)*(task->width + 2)*(task->width + 2));
 
     //create the reuse matrix
     if ((err = create_reuse_mat(task, reuse_mat)))
@@ -236,8 +238,16 @@ int mainFunction(int argc, char *argv[]) {
                     break;
                 }
             }
+            (task + i)->exec_sched = 0;
+            (task + i)->reconfig_sched = 0;
+            (task + i)->leftmost_column = 0;
+            (task + i)->bottommost_row = 0;
+            //(task+i)->reconfig_pwr = 0;
+            //(task+i)->exec_pwr = 0;
+
+
         }
-        (task + 1)->latency = 75;
+        /*  (task+1)->latency = 75;
         (task + 1)->reconfig_time = 30;
         (task + 1)->columns = 3;
         (task + 1)->rows = 2;
@@ -247,6 +257,7 @@ int mainFunction(int argc, char *argv[]) {
         (task + 1)->bottommost_row = 0;
         (task + 1)->reconfig_pwr = 0;
         (task + 1)->exec_pwr = 0;
+          (task+1)->impl = 2;
 
         (task + 2)->latency = 40;
         (task + 2)->reconfig_time = 125;
@@ -258,6 +269,7 @@ int mainFunction(int argc, char *argv[]) {
         (task + 2)->bottommost_row = 0;
         (task + 2)->reconfig_pwr = 0;
         (task + 2)->exec_pwr = 0;
+          (task+2)->impl = 2;
 
         (task + 3)->latency = 10;
         (task + 3)->reconfig_time = 20;
@@ -269,6 +281,7 @@ int mainFunction(int argc, char *argv[]) {
         (task + 3)->bottommost_row = 0;
         (task + 3)->reconfig_pwr = 0;
         (task + 3)->exec_pwr = 0;
+          (task+3)->impl = 3;
 
         (task + 4)->latency = 75;
         (task + 4)->reconfig_time = 30;
@@ -280,6 +293,7 @@ int mainFunction(int argc, char *argv[]) {
         (task + 4)->bottommost_row = 0;
         (task + 4)->reconfig_pwr = 0;
         (task + 4)->exec_pwr = 0;
+          (task+4)->impl = 2;
 
         (task + 5)->latency = 30;
         (task + 5)->reconfig_time = 5;
@@ -291,6 +305,7 @@ int mainFunction(int argc, char *argv[]) {
         (task + 5)->bottommost_row = 0;
         (task + 5)->reconfig_pwr = 0;
         (task + 5)->exec_pwr = 0;
+          (task+5)->impl = 1;
 
         (task + 6)->latency = 10;
         (task + 6)->reconfig_time = 10;
@@ -302,10 +317,11 @@ int mainFunction(int argc, char *argv[]) {
         (task + 6)->bottommost_row = 0;
         (task + 6)->reconfig_pwr = 0;
         (task + 6)->exec_pwr = 0;
+          (task+6)->impl = 2;
 
-        (task + 7)->latency = 75;
-        (task + 7)->reconfig_time = 30;
-        (task + 7)->columns = 3;
+          (task+7)->latency = 125;
+          (task+7)->reconfig_time = 20;
+          (task+7)->columns = 2;
         (task + 7)->rows = 2;
         (task + 7)->exec_sched = 0;
         (task + 7)->reconfig_sched = 0;
@@ -313,6 +329,7 @@ int mainFunction(int argc, char *argv[]) {
         (task + 7)->bottommost_row = 0;
         (task + 7)->reconfig_pwr = 0;
         (task + 7)->exec_pwr = 0;
+          (task+7)->impl = 1;
 
         (task + 8)->latency = 10;
         (task + 8)->reconfig_time = 20;
@@ -324,6 +341,7 @@ int mainFunction(int argc, char *argv[]) {
         (task + 8)->bottommost_row = 0;
         (task + 8)->reconfig_pwr = 0;
         (task + 8)->exec_pwr = 0;
+          (task+8)->impl = 3;
 
         (task + 9)->latency = 10;
         (task + 9)->reconfig_time = 10;
@@ -335,6 +353,7 @@ int mainFunction(int argc, char *argv[]) {
         (task + 9)->bottommost_row = 0;
         (task + 9)->reconfig_pwr = 0;
         (task + 9)->exec_pwr = 0;
+          (task+9)->impl = 2;
 
         (task + 10)->latency = 5;
         (task + 10)->reconfig_time = 30;
@@ -346,7 +365,8 @@ int mainFunction(int argc, char *argv[]) {
         (task + 10)->bottommost_row = 0;
         (task + 10)->reconfig_pwr = 0;
         (task + 10)->exec_pwr = 0;
-
+          (task+10)->impl = 4;
+         */
         display_task(task, task_interface);
 
         //call the napoleon scheduler
@@ -370,6 +390,7 @@ int mainFunction(int argc, char *argv[]) {
     exit(0);
 }
 
+
 void print_help(void) {
     fprintf(stderr, "hyperspace <options>\n");
     fprintf(stderr, "<options>: -aif <aif file>\n");
@@ -377,6 +398,7 @@ void print_help(void) {
     fprintf(stderr, "          [-log_file <log file>]\n");
     fprintf(stderr, "          [-options_file <options file>]\n");
 }
+
 
 int parse_cmd_line_opts(int argc, char *argv[], t_config *config) {
     int err = 0;

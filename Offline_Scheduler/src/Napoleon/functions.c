@@ -39,6 +39,7 @@
 #include <io.h>
 #include <main.h>
 
+
 /************************************************
 Function name: create_graph
 
@@ -46,7 +47,7 @@ inputs:
         t_task *task
         t_task_interface *task_interface
 output:
-        short int *succ_adj_mat (2-D array)
+      int *succ_adj_mat (2-D array)
 
 This function creates an adjacency matrix from the tasks' 
 list and the interface list of the tasks. It also adds a
@@ -56,11 +57,11 @@ the primary outputs.
 
 int create_graph(t_task *task,
         t_task_interface *task_interface,
-        short int *succ_adj_mat) {
+                 int *succ_adj_mat){
     int err = 0;
-    short int num_nodes = task->width;
-    short int i = 0, j = 0;
-    //short int *dummy;
+    int num_nodes = task->width;
+    int i = 0, j = 0;
+    //  int *dummy;
 
     //matrix size is (num_nodes+2) x (num_nodes+2) because of 
     //the source and the sink nodes
@@ -97,7 +98,7 @@ int create_graph(t_task *task,
     //display the task info
     display_task(task, task_interface);
 
-    short int dim_size[2];
+    int dim_size[2];
 
     *dim_size = num_nodes + 2;
     *(dim_size + 1) = num_nodes + 2;
@@ -110,11 +111,12 @@ int create_graph(t_task *task,
     return err;
 }
 
+
 int create_reuse_mat(t_task *task,
-        short int *reuse_mat) {
+                     int *reuse_mat){
     int err = 0;
-    short int num_nodes = task->width;
-    short int i = 0, j = 0;
+    int num_nodes = task->width;
+    int i = 0, j = 0;
 
     //matrix size is (num_nodes+2) x (num_nodes+2) because of 
     //the source and the sink nodes
@@ -138,7 +140,7 @@ int create_reuse_mat(t_task *task,
     }
 
 #ifdef __DEBUG
-    short int dim_size[2];
+    int dim_size[2];
 
     *dim_size = num_nodes + 2;
     *(dim_size + 1) = num_nodes + 2;

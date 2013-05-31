@@ -23,28 +23,28 @@
 #include <ilp.h>
 #include <main.h>
 
-short int calc_T(t_task*, short int*);
-void ilp_equations(FILE *, t_task *, short int, short int *, short int *);
-void print_first_constraint(FILE*, t_task*, short int);
-void print_second_constraint(FILE*, t_task*, short int);
-void print_third_constraint(FILE*, t_task*, short int);
+void ilp_equations(FILE *, t_task *, int, int *, int *);
+void print_first_constraint(FILE*, t_task*, int);
+void print_second_constraint(FILE*, t_task*, int);
+void print_third_constraint(FILE*, t_task*, int);
 void print_fourth_constraint(FILE*, t_task*);
-//void print_fifth_constraint(FILE*, t_task*, short int);
-void print_sixth_constraint(FILE*, t_task*, short int);
-void print_seventh_constraint(FILE*, t_task*, short int);
-void print_eighth_constraint(FILE*, t_task*, short int);
-void print_nineth_constraint(FILE*, t_task*, short int*);
-void print_tenth_constraint(FILE*, t_task*, short int);
-void print_eleventh_constraint(FILE*, t_task*, short int);
-void print_twelveth_constraint(FILE*, t_task*, short int);
-void print_thirteenth_constraint(FILE*, t_task*, short int, short int*);
-//void print_fourteenth_constraint(FILE*, t_task*, short int);
-void print_fifteenth_constraint(FILE*, t_task*, short int);
-void print_sixteenth_constraint(FILE*, t_task*, short int);
+//void print_fifth_constraint(FILE*, t_task*,   int);
+void print_sixth_constraint(FILE*, t_task*, int);
+void print_seventh_constraint(FILE*, t_task*, int);
+void print_eighth_constraint(FILE*, t_task*, int);
+void print_nineth_constraint(FILE*, t_task*, int*);
+void print_tenth_constraint(FILE*, t_task*, int);
+void print_eleventh_constraint(FILE*, t_task*, int);
+void print_twelveth_constraint(FILE*, t_task*, int);
+void print_thirteenth_constraint(FILE*, t_task*, int, int*);
+//void print_fourteenth_constraint(FILE*, t_task*,   int);
+void print_fifteenth_constraint(FILE*, t_task*, int);
+void print_sixteenth_constraint(FILE*, t_task*, int);
 
-short int calc_T(t_task *task, short int *T) {
+
+int calc_T(t_task *task, int *T){
     int i = 0;
-    short int num_nodes = task->width;
+    int num_nodes = task->width;
     *T = 0;
 
     for (i = 1; i <= num_nodes; i++) {
@@ -55,7 +55,8 @@ short int calc_T(t_task *task, short int *T) {
     return *T;
 }
 
-void ilp_equations(FILE *ilp_strm, t_task *task, short int T, short int *succ_adj_mat, short int *reuse_mat) {
+
+void ilp_equations(FILE *ilp_strm, t_task *task, int T, int *succ_adj_mat, int *reuse_mat){
     print_first_constraint(ilp_strm, task, T);
     print_second_constraint(ilp_strm, task, T);
     print_third_constraint(ilp_strm, task, T);
@@ -74,9 +75,10 @@ void ilp_equations(FILE *ilp_strm, t_task *task, short int T, short int *succ_ad
     print_sixteenth_constraint(ilp_strm, task, T);
 }
 
-void print_second_constraint(FILE *ilp_strm, t_task *task, short int T) {
-    short int i, h, k, m, n, l, j;
-    short int num_nodes = task->width;
+
+void print_second_constraint(FILE *ilp_strm, t_task *task, int T) {
+    int i, h, k, m, n, l, j;
+    int num_nodes = task->width;
 
     //fprintf(ilp_strm, "/***********************************************************************************/\n");
     //fprintf(ilp_strm, "First Constraint Equations\n");
@@ -102,9 +104,10 @@ void print_second_constraint(FILE *ilp_strm, t_task *task, short int T) {
 
 }
 
-void print_first_constraint(FILE *ilp_strm, t_task *task, short int T) {
-    short int i, h, k, m, l, l_min, j, j_min;
-    short int num_nodes = task->width;
+
+void print_first_constraint(FILE *ilp_strm, t_task *task, int T) {
+    int i, h, k, m, l, l_min, j, j_min;
+    int num_nodes = task->width;
 
     //fprintf(ilp_strm, "/***********************************************************************************/\n");
     //fprintf(ilp_strm, "Second Constraint Equations\n");
@@ -134,9 +137,10 @@ void print_first_constraint(FILE *ilp_strm, t_task *task, short int T) {
 
 }
 
-void print_third_constraint(FILE *ilp_strm, t_task *task, short int T) {
-    short int i, h, k, k_min, m, m_min;
-    short int num_nodes = task->width;
+
+void print_third_constraint(FILE *ilp_strm, t_task *task, int T) {
+    int i, h, k, k_min, m, m_min;
+    int num_nodes = task->width;
 
     //fprintf(ilp_strm, "/***********************************************************************************/\n");
     //fprintf(ilp_strm, "Third Constraint Equations\n");
@@ -157,9 +161,10 @@ void print_third_constraint(FILE *ilp_strm, t_task *task, short int T) {
 
 }
 
+
 void print_fourth_constraint(FILE *ilp_strm, t_task *task) {
-    short int i, k, m;
-    short int num_nodes = task->width;
+    int i, k, m;
+    int num_nodes = task->width;
 
     for (i = 1; i <= num_nodes; i++) {
         for (k = 1; k <= __NUM_FPGA_COLUMNS; k++) {
@@ -172,9 +177,10 @@ void print_fourth_constraint(FILE *ilp_strm, t_task *task) {
     fprintf(ilp_strm, "= 0\n");
 }
 
-void print_sixth_constraint(FILE *ilp_strm, t_task *task, short int T) {
-    short int i, h, k, m;
-    short int num_nodes = task->width;
+
+void print_sixth_constraint(FILE *ilp_strm, t_task *task, int T) {
+    int i, h, k, m;
+    int num_nodes = task->width;
 
     //fprintf(ilp_strm, "/***********************************************************************************/\n");
     //fprintf(ilp_strm, "Sixth Constraint Equations\n");
@@ -194,9 +200,10 @@ void print_sixth_constraint(FILE *ilp_strm, t_task *task, short int T) {
 
 }
 
-void print_seventh_constraint(FILE *ilp_strm, t_task *task, short int T) {
-    short int i, h, k, m;
-    short int num_nodes = task->width;
+
+void print_seventh_constraint(FILE *ilp_strm, t_task *task, int T) {
+    int i, h, k, m;
+    int num_nodes = task->width;
 
     //fprintf(ilp_strm, "/***********************************************************************************/\n");
     //fprintf(ilp_strm, "Seventh Constraint Equations\n");
@@ -215,9 +222,10 @@ void print_seventh_constraint(FILE *ilp_strm, t_task *task, short int T) {
 
 }
 
-void print_eighth_constraint(FILE *ilp_strm, t_task *task, short int T) {
-    short int i, h, k, m;
-    short int num_nodes = task->width;
+
+void print_eighth_constraint(FILE *ilp_strm, t_task *task, int T) {
+    int i, h, k, m;
+    int num_nodes = task->width;
 
     //fprintf(ilp_strm, "/***********************************************************************************/\n");
     //fprintf(ilp_strm, "Eighth Constraint Equations\n");
@@ -236,9 +244,10 @@ void print_eighth_constraint(FILE *ilp_strm, t_task *task, short int T) {
 
 }
 
-void print_nineth_constraint(FILE *ilp_strm, t_task *task, short int *succ_adj_mat) {
-    short int i, j;
-    short int num_nodes = task->width;
+
+void print_nineth_constraint(FILE *ilp_strm, t_task *task, int *succ_adj_mat) {
+    int i, j;
+    int num_nodes = task->width;
 
     //fprintf(ilp_strm, "/***********************************************************************************/\n");
     //fprintf(ilp_strm, "Nineth Constraint Equations\n");
@@ -253,9 +262,10 @@ void print_nineth_constraint(FILE *ilp_strm, t_task *task, short int *succ_adj_m
 
 }
 
-void print_tenth_constraint(FILE *ilp_strm, t_task *task, short int T) {
-    short int i, h, k, m;
-    short int num_nodes = task->width;
+
+void print_tenth_constraint(FILE *ilp_strm, t_task *task, int T) {
+    int i, h, k, m;
+    int num_nodes = task->width;
 
     //fprintf(ilp_strm, "/***********************************************************************************/\n");
     //fprintf(ilp_strm, "Tenth Constraint Equations\n");
@@ -274,9 +284,10 @@ void print_tenth_constraint(FILE *ilp_strm, t_task *task, short int T) {
 
 }
 
-void print_eleventh_constraint(FILE *ilp_strm, t_task *task, short int T) {
-    short int i, h;
-    short int num_nodes = task->width;
+
+void print_eleventh_constraint(FILE *ilp_strm, t_task *task, int T) {
+    int i, h;
+    int num_nodes = task->width;
 
     //fprintf(ilp_strm, "/***********************************************************************************/\n");
     //fprintf(ilp_strm, "Eleventh Constraint Equations\n");
@@ -297,9 +308,10 @@ void print_eleventh_constraint(FILE *ilp_strm, t_task *task, short int T) {
 
 }
 
-void print_twelveth_constraint(FILE *ilp_strm, t_task *task, short int T) {
-    short int i, h, m, m_min;
-    short int num_nodes = task->width;
+
+void print_twelveth_constraint(FILE *ilp_strm, t_task *task, int T) {
+    int i, h, m, m_min;
+    int num_nodes = task->width;
 
     //fprintf(ilp_strm, "/***********************************************************************************/\n");
     //fprintf(ilp_strm, "Tweleveth Constraint Equations\n");
@@ -317,9 +329,10 @@ void print_twelveth_constraint(FILE *ilp_strm, t_task *task, short int T) {
 
 }
 
-void print_thirteenth_constraint(FILE *ilp_strm, t_task *task, short int T, short int *reuse_mat) {
-    short int i, h, k, m, j;
-    short int num_nodes = task->width;
+
+void print_thirteenth_constraint(FILE *ilp_strm, t_task *task, int T, int *reuse_mat) {
+    int i, h, k, m, j;
+    int num_nodes = task->width;
 
     //fprintf(ilp_strm, "/***********************************************************************************/\n");
     //fprintf(ilp_strm, "Thirteenth Constraint Equations\n");
@@ -342,9 +355,10 @@ void print_thirteenth_constraint(FILE *ilp_strm, t_task *task, short int T, shor
 
 }
 
-void print_fifteenth_constraint(FILE *ilp_strm, t_task *task, short int T) {
-    short int i, h;
-    short int num_nodes = task->width;
+
+void print_fifteenth_constraint(FILE *ilp_strm, t_task *task, int T) {
+    int i, h;
+    int num_nodes = task->width;
 
     //fprintf(ilp_strm, "/***********************************************************************************/\n");
     //fprintf(ilp_strm, "Fifteenth Constraint Equations\n");
@@ -359,9 +373,10 @@ void print_fifteenth_constraint(FILE *ilp_strm, t_task *task, short int T) {
 
 }
 
-void print_sixteenth_constraint(FILE *ilp_strm, t_task *task, short int T) {
-    short int i, h, k, m;
-    short int num_nodes = task->width;
+
+void print_sixteenth_constraint(FILE *ilp_strm, t_task *task, int T) {
+    int i, h, k, m;
+    int num_nodes = task->width;
 
     //fprintf(ilp_strm, "/***********************************************************************************/\n");
     //fprintf(ilp_strm, "Sixteenth Constraint Equations\n");
@@ -405,3 +420,5 @@ void print_sixteenth_constraint(FILE *ilp_strm, t_task *task, short int T) {
     fprintf(ilp_strm, "end\n");
     fprintf(ilp_strm, "\n");
 }
+
+

@@ -5,7 +5,7 @@
  * Project  : A DFG Off-Line Task Scheduler for FPGA
  * 
  * Created  : May 22, 2013
- * Modified : May 22, 2013
+ * Modified : May 30, 2013
  *************************************************************************/
 
 /*************************************************************************
@@ -17,7 +17,7 @@
 #ifndef ECODES_H
 #define ECODES_H
 
-#define __NO_ERROR       0
+#define __NO_ERROR      0
 #define __LESSARGS 	1
 #define __AIF_FILE 	2
 #define __LOG_FILE 	3

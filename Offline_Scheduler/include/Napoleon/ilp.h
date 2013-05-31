@@ -22,7 +22,7 @@
 
 #include "types.h"
 
-extern void ilp_equations(FILE *, t_task *, short int, short int *, short int *);
-short int calc_T(t_task*, short int*);
+extern void ilp_equations(FILE *, t_task *, int, int *, int *);
+int calc_T(t_task *, int *);
 
 #endif /* ILP_H */

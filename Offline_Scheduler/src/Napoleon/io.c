@@ -5,7 +5,7 @@
  * Project  : A DFG Off-Line Task Scheduler for FPGA
  * 
  * Created  : May 22, 2013
- * Modified : May 22, 2013
+ * Modified : May 30, 2013
  *************************************************************************/
 
 /*************************************************************************
@@ -38,9 +38,9 @@
 #include <io.h>
 #include <main.h>
 
-short int parse_task_type(char *);
-short int intfc_mode(char *);
-short int get_index(char *, t_task_interface *, short int);
+  int parse_task_type(char *);
+  int intfc_mode(char *);
+  int get_index(char *, t_task_interface *,   int);
 void print_error(int);
 
 void print_error(int ecode) {
@@ -73,16 +73,16 @@ void print_error(int ecode) {
 
 int parse_impl(FILE *in_strm, t_task_impl *task_impl) {
     int err = 0;
-    short int index = 0;
+    int index = 0;
     char buff[__SIZE_MAX_BUFF], *token;
-    short int add_impl_num = 0;
-    short int mul_impl_num = 0;
-    short int sub_impl_num = 0;
-    short int div_impl_num = 0;
-    short int lt_impl_num = 0;
-    short int gt_impl_num = 0;
-    short int lte_impl_num = 0;
-    short int gte_impl_num = 0;
+    int add_impl_num = 0;
+    int mul_impl_num = 0;
+    int sub_impl_num = 0;
+    int div_impl_num = 0;
+    int lt_impl_num = 0;
+    int gt_impl_num = 0;
+    int lte_impl_num = 0;
+    int gte_impl_num = 0;
 
     //read through the lines of the arch file
     //fprintf(log_strm, "Reading the arch file...\n");
@@ -178,9 +178,10 @@ int parse_impl(FILE *in_strm, t_task_impl *task_impl) {
     return (err);
 }
 
+
 int parse_res(FILE *in_strm, t_task_type *task_type) {
     int err = 0;
-    short int index = 0, count_task_type = 0;
+    int index = 0, count_task_type = 0;
     char buff[__SIZE_MAX_BUFF], *token;
 
     count_task_type = 0;
@@ -250,9 +251,10 @@ int parse_res(FILE *in_strm, t_task_type *task_type) {
     return (err);
 }
 
+
 int parse_aif(FILE *in_strm, t_task *task, t_task_interface *task_interface) {
     int err = 0;
-    short int count_intfc = 0, count_task = 0;
+    int count_intfc = 0, count_task = 0;
     t_task *task_curr;
     t_task_interface *task_interface_curr;
     char buff[__SIZE_MAX_BUFF], *token;
@@ -268,7 +270,7 @@ int parse_aif(FILE *in_strm, t_task *task, t_task_interface *task_interface) {
         if (!strcasecmp(token, "inputs")
                 || !strcasecmp(token, "outputs")
                 || !strcasecmp(token, "regs")) {
-            short int mode = intfc_mode(token);
+            int mode = intfc_mode(token);
             while ((token = strtok(NULL, " \n"))) {
                 strcpy(task_interface_curr->name, token);
                 task_interface_curr->mode = mode;
@@ -280,7 +282,7 @@ int parse_aif(FILE *in_strm, t_task *task, t_task_interface *task_interface) {
         } else if (!strcasecmp(token, "end")) {
             break;
         } else {
-            short int task_attrib = 0;
+            int task_attrib = 0;
             do {
                 // ERROR in AIF FORMAT
                 assert(task_attrib <= 6);
@@ -322,8 +324,8 @@ int parse_aif(FILE *in_strm, t_task *task, t_task_interface *task_interface) {
     return err;
 }
 
-short int parse_task_type(char *token) {
-    short int type = 0;
+int parse_task_type(char *token) {
+    int type = 0;
 
     if (!strcasecmp(token, "TASK1")) type = __ADD;
     else if (!strcasecmp(token, "TASK2")) type = __MULT;
@@ -337,8 +339,9 @@ short int parse_task_type(char *token) {
     return type;
 }
 
-short int intfc_mode(char *token) {
-    short int mode = 0;
+
+int intfc_mode(char *token) {
+    int mode = 0;
 
     if (!strcasecmp(token, "inputs")) mode = __INPUT;
     else if (!strcasecmp(token, "outputs")) mode = __OUTPUT;
@@ -347,9 +350,10 @@ short int intfc_mode(char *token) {
     return mode;
 }
 
-short int get_index(char *token, t_task_interface* task_interface, short int count) {
-    short int index = 0;
-    short int i = 0;
+
+int get_index(char *token, t_task_interface* task_interface, int count){
+    int index = 0;
+    int i = 0;
     //t_task_interface *task_interface_curr;
 
     for (i = 1; i <= count; i++) {
@@ -362,8 +366,9 @@ short int get_index(char *token, t_task_interface* task_interface, short int cou
     return (index) ? index : -1;
 }
 
-void display_array(short int *start, short int dim, short int *dim_size) {
-    short int i = 0, j = 0;
+
+void display_array(int *start, int dim, int *dim_size) {
+    int i = 0, j = 0;
 
     switch (dim) {
         case 1:
@@ -388,26 +393,24 @@ void display_array(short int *start, short int dim, short int *dim_size) {
     printf("\n");
 }
 
+
 void display_task(t_task *task, t_task_interface *task_interface) {
     int i = 0;
-    short int num_nodes = task->width;
+    int num_nodes = task->width;
 
     fprintf(stdout, "name type width latency reconfig_time columns rows input1 input2 output exec_sched " \
-                 "reconfig_sched leftmost_column bottommost_row conf_power exec_power impl + 1\n");
+                 "reconfig_sched leftmost_column bottommost_row conf_power exec_power impl\n");
     
     for (i = 1; i <= num_nodes; i++) {
-        fprintf(stdout, "%s %3d %3d %3d %3d %3d %3d %3d %3d %3d %3d %3d %3d %3d %3d %3d %3d\n", (task + i)->name, (task + i)->type, (task + i)->width, 
-                (task + i)->latency, (task + i)->reconfig_time, (task + i)->columns, (task + i)->rows, (task + i)->input1, 
-                (task + i)->input2, (task + i)->output, (task + i)->exec_sched, 
-                (task + i)->reconfig_sched, (task + i)->leftmost_column, (task + i)->bottommost_row, (task + i)->reconfig_pwr,
-                (task + i)->exec_pwr, (task + i)->impl + 1);
+        printf("%s %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d\n", (task + i)->name, (task + i)->type, (task + i)->impl, (task + i)->width, (task + i)->latency, (task + i)->reconfig_time, (task + i)->columns, (task + i)->rows, (task + i)->input1, (task + i)->input2, (task + i)->output, (task_interface + (task + i)->output)->mode, (task + i)->exec_sched, (task + i)->reconfig_sched, (task + i)->leftmost_column, (task + i)->bottommost_row, (task + i)->reconfig_pwr, (task + i)->exec_pwr);
     }
 
 }
 
+
 void display_task_type(t_task_type *task_type) {
     int i = 0;
-    short int num_task_types = task_type->columns;
+    int num_task_types = task_type->columns;
 
     for (i = 1; i < num_task_types; i++) {
         printf("%d %d %d %d %d\n", i, (task_type + i)->columns, (task_type + i)->rows, (task_type + i)->latency, (task_type + i)->reconfig_time);
@@ -415,9 +418,10 @@ void display_task_type(t_task_type *task_type) {
 
 }
 
+
 void display_task_impl(t_task_impl *task_impl) {
     int i = 0;
-    short int num_task_impls = task_impl->columns;
+    int num_task_impls = task_impl->columns;
 
     printf("%d\n", num_task_impls);
     for (i = 1; i <= num_task_impls; i++) {
@@ -425,9 +429,10 @@ void display_task_impl(t_task_impl *task_impl) {
     }
 }
 
+
 void set_task_parameter(t_task *task, t_task_type *task_type) {
     int i = 0;
-    short int num_nodes = task->width;
+    int num_nodes = task->width;
 
     for (i = 1; i <= num_nodes; i++) {
         (task + i)->columns = (task_type + (task + i)->type)->columns;

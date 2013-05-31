@@ -6,7 +6,7 @@
  *                  for each task's operation
  * 
  * Created  : May 7, 2013
- * Modified : May 24, 2013
+ * Modified : May 30, 2013
  ******************************************************************************/
 
 /*******************************************************************************
@@ -22,6 +22,7 @@
 #include "util.h"
 
 #include <stdlib.h>
+#include <stdio.h>
 
 
 void initRandIndividual(Individual * ind){
@@ -30,19 +31,11 @@ void initRandIndividual(Individual * ind){
     ind->encoding = malloc(sizeof(int) * getNumGenes());
     
     for(i=0; i<getNumGenes(); i++)
-        ind->encoding[i] = getNumArch(getTaskType(i)) * randomNumber();
+        ind->encoding[i] = (getNumArch(getTaskType(i)) - 1) * randomNumber() + 1;
     
-    // FIX - remove AFTER testing the patch to the Napoleon 2D bug
-//    ind->encoding[0] = 1;
-//    ind->encoding[1] = 1;
-//    ind->encoding[2] = 2;
-//    ind->encoding[3] = 1;
-//    ind->encoding[4] = 0;
-//    ind->encoding[5] = 1;
-//    ind->encoding[6] = 0;
-//    ind->encoding[7] = 2;
-//    ind->encoding[8] = 1;
-//    ind->encoding[9] = 3;
+    // FIX
+    // TESTING  - right now I restrict the GA from choosing any of the GPPs
+    // ORIGINAL - ind->encoding[i] = getNumArch(getTaskType(i)) * randomNumber();
     
     ind->fitness = 0;
     ind->cfitness = 0;
@@ -71,7 +64,11 @@ void mutate(Individual * ind){
     
     for(i=0; i<getNumGenes(); i++)
         if(randomNumber() < getMutationRate())
-            ind->encoding[i] = getNumArch(getTaskType(i)) * randomNumber();
+            ind->encoding[i] = (getNumArch(getTaskType(i)) - 1) * randomNumber() + 1;
+    
+    // FIX
+    // TESTING  - right now I restrict the GA from choosing any of the GPPs
+    // ORIGINAL - ind->encoding[i] = getNumArch(getTaskType(i)) * randomNumber();
 }                              
 
 void crossover(Individual * p1, Individual * p2){
@@ -86,7 +83,8 @@ void crossover(Individual * p1, Individual * p2){
         cross2 = getNumGenes() * randomNumber();
 
     if(cross1 > cross2){
-        // Unnecessary, but fun!
+        
+//        // Unnecessary, but fun!
 //        Individual * swap;
 //        swap = p1;
 //        p1 = p2;

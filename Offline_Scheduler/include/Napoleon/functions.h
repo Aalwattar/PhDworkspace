@@ -5,7 +5,7 @@
  * Project  : A DFG Off-Line Task Scheduler for FPGA
  * 
  * Created  : May 22, 2013
- * Modified : May 22, 2013
+ * Modified : May 30, 2013
  *************************************************************************/
 
 /*************************************************************************
@@ -20,7 +20,7 @@
 
 #include "types.h"
 
-extern int create_graph(t_task *, t_task_interface *, short int *);
-extern int create_reuse_mat(t_task *, short int *);
+extern int create_graph(t_task *, t_task_interface *, int *);
+extern int create_reuse_mat(t_task *, int *);
 
 #endif /* FUNCTIONS_H */
