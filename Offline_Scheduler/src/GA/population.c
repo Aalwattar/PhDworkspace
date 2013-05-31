@@ -20,6 +20,7 @@
 #include "fitness.h"
 
 #include <stdlib.h>
+#include <stdio.h>
 
 static double CROSSOVER_RATE = 0.85;
 static double MUTATION_RATE  = 0.001;
@@ -51,6 +52,26 @@ void freePopulation(Population * pop){
     free(pop);
 }
 
+
+void printPopulation(Population * pop){
+    int i, j;
+    
+    for (i = 0; i < POP_SIZE; i++) {
+        for (j = 0; j < getNumGenes(); j++) {
+            fprintf(stdout, "%d", pop->member[i].encoding[j]);
+        }
+        fprintf(stdout, "\tfitness = %d\n", pop->member[i].fitness);
+    }
+}
+
+
+void determineFitness(Population * pop){
+    int i;
+    
+    for (i = 0; i < POP_SIZE; i++) {
+        pop->member[i].fitness = evaluateFitness(pop->member[i].encoding);
+    }
+}
 
 
 // a Generational algorithm

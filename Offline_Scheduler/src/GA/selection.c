@@ -45,6 +45,7 @@ Population * tournamentSelection(Population * original){
     }
     
     generateNextGeneration(mating_pool);
+    freePopulation(original);
     return mating_pool;
 }
 

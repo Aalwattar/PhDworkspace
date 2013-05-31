@@ -65,6 +65,22 @@ void freePopulation(Population *);
 void generateNextGeneration(Population *);
 
 
+/******************************************************************************
+ * NAME : printPopulation
+ * 
+ * PURPOSE : Print all chromosomes with their fitness values
+ * ARGUMENTS : Population * = the population that you wish visualize
+ *****************************************************************************/
+void printPopulation(Population * pop);
+
+/******************************************************************************
+ * NAME : determineFitness
+ * 
+ * PURPOSE : Calculate the fitness of all members of a population
+ * ARGUMENTS : Population * = the population that you wish evaluate
+ *****************************************************************************/
+void determineFitness(Population * pop);
+
 
 
 /******************************************************************************

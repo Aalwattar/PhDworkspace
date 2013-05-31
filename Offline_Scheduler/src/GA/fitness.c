@@ -6,7 +6,7 @@
  *                  for each task's operation
  * 
  * Created  : May 16, 2013
- * Modified : May 30, 2013
+ * Modified : May 31, 2013
  ******************************************************************************/
 
 /*******************************************************************************
@@ -67,8 +67,38 @@ static Operation * arch_library;
  *****************            ARCHITECTURE FILE I/O           *****************
  *****************************************************************************/
 
+/******************************************************************************
+ * NAME : parseArchLibrary
+ * 
+ * PURPOSE : Parses each line the in the architecture library file into a
+ *              Operation struct
+ * ARGUMENTS : FILE * = a file pointer open to the beginning of the file that
+ *              contains the architecture information
+ * 
+ * RETURNS : true if the file could be successfully parsed
+ *           false if the file was not formatted correctly 
+ *              (in addition to an error being printed on stdout)
+ * 
+ * NOTE : This is a helper function and should only ever be called from within
+ *          initArchLibrary()
+ *****************************************************************************/
 bool parseArchLibrary(FILE *);
+
+/******************************************************************************
+ * NAME : parseArch
+ * 
+ * PURPOSE : Parses one line (one architecture) into an Implementation struct
+ * ARGUMENTS : char * = the string that requires parsing
+ * 
+ * RETURNS : true if the file could be successfully parsed
+ *           false if the file was not formatted correctly 
+ *              (in addition to an error being printed on stdout)
+ * 
+ * NOTE : This is a helper function and should only ever be called from within
+ *          parseArchLibrary()
+ *****************************************************************************/
 bool parseArch(char *);
+
 
 bool initArchLibrary(char * filename) {
     FILE * fp;
@@ -164,6 +194,11 @@ void freeArchLibrary(void) {
 }
 
 
+int getNumArch(int opr) {
+    return arch_library[opr].num_impl;
+}
+
+
 
 void printArchLibrary(void) {
     int i, j;
@@ -183,9 +218,6 @@ void printArchLibrary(void) {
     }
 }
 
-int getNumArch(int opr) {
-    return arch_library[opr].num_impl;
-}
 
 
 /******************************************************************************
@@ -308,9 +340,9 @@ int getNumGenes(void) {
     return task[0].width;
 }
 
-// this function interfaces the GA's indices (which all start at 0) with Napoleon (starts at 1)
+
 int getTaskType(int task_num) {
-    // each task is offset by 1 in Napoleon to accomodate a source + sink
+    // this function interfaces the GA's indices (which all start at 0) with Napoleon (starts at 1)
     return task[task_num + 1].type - 1;
 }
 

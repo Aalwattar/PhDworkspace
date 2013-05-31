@@ -6,7 +6,7 @@
  *                  for each task's operation
  * 
  * Created  : May 7, 2013
- * Modified : May 22, 2013
+ * Modified : May 31, 2013
  ******************************************************************************/
 
 /*******************************************************************************
@@ -34,10 +34,8 @@
 #include <functions.h>
 #include <main.h>
 
-static char * ARCH_FILENAME = "input/architecture_library.txt";
-static char * DFG_FILENAME = "input/DFG.txt";
-
-static char * AIF_FILENAME = "input/B1_10_5.aif";
+#define ARCH_FILENAME "input/architecture_library.txt"
+#define AIF_FILENAME  "input/B1_10_5.aif"
 
 int STOP_CONDITION = 500;
 int generation_num = 0;
@@ -45,6 +43,8 @@ int generation_num = 0;
 
 void initParameters(int num_tokens, char ** input_token);
 bool populationConverged(Population * pop);
+void freeParameters(Population *);
+
 void bruteForce();
 
 
@@ -53,54 +53,31 @@ int main(int argc, char * argv[]) {
     int i, j;
     
     initParameters(argc, argv);
-    
-    initArchLibrary(ARCH_FILENAME);
-    initNapoleon(AIF_FILENAME);
-    
     pop = genRandPopulation();
+    determineFitness(pop);
 
     fprintf(stdout, "\n----------------------------------------------------------\n\n");
     fprintf(stdout, "Starting Population:\n");
-    for (i = 0; i < getPopSize(); i++) {
-        for (j = 0; j < getNumGenes(); j++) {
-            fprintf(stdout, "%d", pop->member[i].encoding[j]);
-        }
-        fprintf(stdout, "\n");
-    }
+    printPopulation(pop);
 
     while (generation_num < STOP_CONDITION) {
-        for (i = 0; i < getPopSize(); i++) {
-            pop->member[i].fitness = evaluateFitness(pop->member[i].encoding);
-        }
-
-//        fprintf(stdout, "\n-----------------   GENERATION %d   -----------------\n", generation_num + 1);
-//        for (i = 0; i < getPopSize(); i++) {
-//            for (j = 0; j < getNumGenes(); j++) {
-//                fprintf(stdout, "%d", pop->member[i].encoding[j]);
-//            }
-//            fprintf(stdout, "\tfitness = %d\n", pop->member[i].fitness);
-//        }
+        determineFitness(pop);
+        
+        #ifdef __DEBUG
+            fprintf(stdout, "\n-----------------   GENERATION %d   -----------------\n", generation_num + 1);
+            printPopulation(pop);
+        #endif
         
         next_generation = tournamentSelection(pop);
-        freePopulation(pop);
         pop = next_generation;
-
+        
         generation_num++;
     }
 
-    //fprintf(stdout, "\nGenerations to create best solution = %d\n", generation_num);
     fprintf(stdout, "\nFinal Population:\n");
-    for (i = 0; i < getPopSize(); i++) {
-        for (j = 0; j < getNumGenes(); j++) {
-            fprintf(stdout, "%d", pop->member[i].encoding[  j]);
-        }
-        fprintf(stdout, "\tfitness = %d\n", evaluateFitness(pop->member[i].encoding));
-    }
+    printPopulation(pop);
 
-    freePopulation(pop);
-    freeArchLibrary();
-    freeNapoleon();
-    
+    freeParameters(pop);
     return EXIT_SUCCESS;
 }
 
@@ -108,8 +85,11 @@ int main(int argc, char * argv[]) {
 
 void initParameters(int num_tokens, char ** input_token) {
     int seed = randSeed();
+    char * arch_filename = ARCH_FILENAME;
+    char * aif_filename = AIF_FILENAME;
     int i;
 
+    //    FIX - still missing the following
     //    5. selection method
     //    6. crossover type
     //    7. mutation type
@@ -129,21 +109,19 @@ void initParameters(int num_tokens, char ** input_token) {
             STOP_CONDITION = atoi(&(input_token[i][3]));
         }
         if (strncmp(input_token[i], "-arch=", 6) == 0) {
-            ARCH_FILENAME = &(input_token[i][6]);
-        }
-        if (strncmp(input_token[i], "-dfg=", 5) == 0) {
-            DFG_FILENAME = &(input_token[i][5]);
+            arch_filename = &(input_token[i][6]);
         }
         if (strncmp(input_token[i], "-aif=", 5) == 0) {
-            AIF_FILENAME = &(input_token[i][5]);
+            aif_filename = &(input_token[i][5]);
         }
-
         if (strncmp(input_token[i], "-seed=", 6) == 0) {
             seed = atoi(&(input_token[i][6]));
         }
     }
     
     seedRandGenerator(seed);
+    initArchLibrary(arch_filename);
+    initNapoleon(aif_filename);
 
     fprintf(stdout, "Parameters:\n");
     fprintf(stdout, "\tSeed = %d\n\n", seed);
@@ -154,28 +132,15 @@ void initParameters(int num_tokens, char ** input_token) {
 }
 
 
-// COMMENTING TEMPLATE
-
-/******************************************************************************
- * NAME : initRandGenerator
- * PURPOSE : 
- * ARGUMENTS : 
- * PRECONDITIONS : 
- * RETURNS : 
- * NOTE : 
- *****************************************************************************/
+void freeParameters(Population * pop){
+    freePopulation(pop);
+    freeArchLibrary();
+    freeNapoleon();
+}
+    
 
 
-// FIX - validate each of the arguments
-// FIX - Improve the error message
-//    if(argc < 2){
-//        fprintf(stderr, "Improper arguments. \nPlease try again, using the following format : "
-//                "\n\tGA.exe <rand_seed> \n\nFor more information, please view the README file");
-//        exit(1);
-//    }
-
-
-
+// a testing function for B1_10_5.aif
 void bruteForce(void){
     int solution[10];
     int bestFitness = 100000;
@@ -224,3 +189,14 @@ void bruteForce(void){
         }
     }
 }
+
+
+// COMMENTING TEMPLATE
+/******************************************************************************
+ * NAME : initRandGenerator
+ * PURPOSE : 
+ * ARGUMENTS : 
+ * PRECONDITIONS : 
+ * RETURNS : 
+ * NOTE : 
+ *****************************************************************************/
