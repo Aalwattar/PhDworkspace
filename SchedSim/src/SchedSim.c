@@ -50,7 +50,6 @@ printf("one");
 	PRRs=InitProcessors(5, HW);
 	GPPs=InitProcessors(1, SW);
 
-	printf("one2");
 pEs.HW->pe=PRRs;
 pEs.HW->size=5;
 pEs.SW->pe=GPPs;
@@ -58,7 +57,6 @@ pEs.SW->size =1;
 
 
 
-printf("three");
 
 		/*
 		 * Init QUEUES
@@ -111,7 +109,7 @@ printf("three");
 					TickAllProcessors(PRRs, 5);
 					TickAllProcessors(GPPs, 1);
 					TickConfig(PRRs);
-					printf(" %ud->",timer++);
+				//	fprintf(stderr," %u->",timer++);
 					switch(State)
 					{
 					case CfgDone:
@@ -173,7 +171,8 @@ printf("three");
 		FreeProcessors(PRRs);
 		FreeProcessors(GPPs);
 		DisposeQueue(ReadyQ);
-
+                free(pEs.HW);
+		free(pEs.SW);
 		return 0;
 	}
 

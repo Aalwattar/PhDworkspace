@@ -27,6 +27,7 @@ struct Processor
 struct NodeData
 {
 	int Module;
+	int TaskID;
 	unsigned long ExecCount;
 };
 

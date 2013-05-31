@@ -26,13 +26,14 @@ int ReusePRR_V2(int module, struct PE *pRRs)
 {
 
 	int i;
-	for (i=0;i<pRRs->size;i++,pRRs->pe++)
+	for (i=0;i<pRRs->size;i++)
 	{
-	if (pRRs->pe->CurrentModule==module && !IsProcessorBusy(pRRs->pe))
+	if (pRRs->pe[i].CurrentModule==module && !IsProcessorBusy(&pRRs->pe[i]))
 	{
 #if DEBUG_PRINT
 		printf("found module %d, reusing %d\r\n",module,i);
 #endif
+		printf("found module %d, reusing %d\n",module,i);
 		return i;
 	}
 	}
@@ -45,14 +46,14 @@ int FindFreePRRBestCase(unsigned int mask, struct PE *pRRs)
 {
   static int count=0;
 	int i;
-	for (i=count;i<pRRs->size;i++,pRRs->pe++)
+	for (i=count;i<pRRs->size;i++)
 		{
-			if (!IsProcessorBusy(pRRs->pe)  && CanRun(mask,i))
+			if (!IsProcessorBusy(&pRRs->pe[i])  && CanRun(mask,i))
 			{
 #if DEBUG_PRINT
 			printf("found free PRR %d\r\n",i);
 #endif
-
+			printf("found free PRR %d\n",i);
 			return i;
 			}
 		}
@@ -140,7 +141,7 @@ int SchedSimple(Queue ReadyQ, int size)
 				TasksTypes[dfg1[i].TypeID].CanRun=dfg1[i].CanRun;
 
 #if DEBUG_PRINT
-			printf("Engueue %d \r\n",i);
+			printf("Enqueue %d \r\n",i);
 #endif
 			break;
 
@@ -201,7 +202,7 @@ int RunTask(Queue ReadyQ , struct Counts *Counters, struct PEs *pes)
 
 	case SWOnly:
 /*
- * FIXME this has to be changed to accomodate more than one GPPs
+ * FIXME this has to be changed to accommodate more than one GPPs
  */
 		if (IsProcessorBusy(pes->SW->pe))
 		{
@@ -246,7 +247,7 @@ int RunTask(Queue ReadyQ , struct Counts *Counters, struct PEs *pes)
 
 		nd.ExecCount=(unsigned int) dfg1[task].Emu.HWdelay;
 		nd.Module=dfg1[task].TypeID;
-
+		nd.TaskID=task;
 		if ((freePRR=ReusePRR_V2(nd.Module, pes->HW)) <0)
 		{
 			if(IsReconfiguring())
@@ -286,7 +287,7 @@ int RunTask(Queue ReadyQ , struct Counts *Counters, struct PEs *pes)
 			simtmp.PRRUsed=freePRR;
 			simtmp.Reused=NO;
 
-			Reconfigure(pes->HW->pe+ freePRR,freePRR,CONFIG_TIME);
+			ReconfignLoad(pes->HW->pe+ freePRR,freePRR,CONFIG_TIME,nd);
 
 			break;
 

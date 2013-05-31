@@ -27,7 +27,7 @@
 
 #define MAX_QUEUE_TASKS 256
 #define NO_OF_DFGS 1
-#define CONFIG_TIME 200000000
+#define CONFIG_TIME 20
 
 
 
