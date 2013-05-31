@@ -10,11 +10,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "data.h"
 #include "processors.h"
 #include "reconfiguration.h"
 #include "PlatformConfig.h"
 #include "queue.h"
-#include "dfgTemplate.c"
 #include "schedulers.h"
 
 
@@ -29,56 +29,36 @@ int main(void) {
 
 struct Processor *PRRs;
 struct Processor *GPPs;
-struct NodeData nd1, nd2,nd3,nd4,nd5;
+
 int i,w;
 
+/* TODO change that to counters */
 static struct Counts Counters={0,0,0,0,0,0};
+unsigned int timer=0 ;
 Queue ReadyQ;
 
 
+pEs.HW=(struct PE*) malloc(sizeof(struct PE));
+pEs.SW=(struct PE*) malloc(sizeof(struct PE));
 /*
  * Initialization functions.
  */
 
+printf("one");
 
 
 	PRRs=InitProcessors(5, HW);
 	GPPs=InitProcessors(1, SW);
 
+	printf("one2");
 pEs.HW->pe=PRRs;
 pEs.HW->size=5;
 pEs.SW->pe=GPPs;
 pEs.SW->size =1;
 
 
-	Reconfigure(&PRRs[0], 0, 12);
-	LoadProcessor( &PRRs[0], nd1);
 
-	LoadProcessor( &PRRs[1], nd2);
-
-	LoadProcessor( &PRRs[2], nd3);
-
-	LoadProcessor( &PRRs[3], nd4);
-
-	LoadProcessor( &PRRs[4], nd5);
-
-	for (i=0; i<60; i++)
-	{  printf("[%d]",i+1);
-
-	TickAllProcessors(PRRs, 5);
-	TickAllProcessors(GPPs, 1);
-
-	TickConfig(PRRs);
-
-	if (i==14)
-		LoadProcessor( &PRRs[0], nd1);
-		printf("\n");
-	}
-
-
-
-
-
+printf("three");
 
 		/*
 		 * Init QUEUES
@@ -92,17 +72,15 @@ pEs.SW->size =1;
 
 		/* start real work */
 	Init_TasksTypes();
-		printf("\n*******************************************************************************\n");
-		printf("*******************************************************************************\n");
-		//printf("***PLATFORM PRRS[%d] , SCHED [%s] , REUSE[YES], SWPE[%s] ****\r\n", AVAILABLE_PRR,
-	//			SCHED_III_EN? "III": SIMPLE_SCHED_II? "II":"I",SW_HW_MIG?"YES":"NO");
-		printf("*******************************************************************************\n");
-		printf("*******************************************************************************\n");
+
+
+
+
 
 		for (i=0;i<NO_OF_DFGS;i++)
 		{
 			printf("\n*******************************************************************************\n");
-		//	printf("Processing: DFG[%d] with [%d] nodes please wait .....\r\n", i, DFGArray[i].size);
+			printf("Processing: DFG[%d] with [%d] nodes please wait .....\n", i, DFGArray[i].size);
 			printf("*******************************************************************************\n");
 	#if INDEPENDENT_DFGS
 
@@ -129,6 +107,11 @@ pEs.SW->size =1;
 
 
 				do {
+
+					TickAllProcessors(PRRs, 5);
+					TickAllProcessors(GPPs, 1);
+					TickConfig(PRRs);
+					printf(" %ud->",timer++);
 					switch(State)
 					{
 					case CfgDone:
@@ -143,7 +126,7 @@ pEs.SW->size =1;
 						break;
 					case TaskDone:
 						SchedSimple(ReadyQ,DFGArray[i].size);
-						//SchedSimpleRc();
+
 
 
 	#if  SCHED_I_EN
@@ -159,7 +142,7 @@ pEs.SW->size =1;
 						break;
 					case Start:
 						SchedSimple(ReadyQ,DFGArray[i].size);
-						// SchedSimpleRc();
+
 						State=TaskDone;
 						break;
 					case None:
@@ -188,6 +171,8 @@ pEs.SW->size =1;
 
 		freeTasksTable();
 		FreeProcessors(PRRs);
+		FreeProcessors(GPPs);
+		DisposeQueue(ReadyQ);
 
 		return 0;
 	}

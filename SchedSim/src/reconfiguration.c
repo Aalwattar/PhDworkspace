@@ -5,11 +5,22 @@
  *      Author: aalwatta
  */
 #include <stdio.h>
+#include <stdlib.h>
 #include "processors.h"
 
 
 static int Reconfiguring =NO;
 static int ReconfigPRRID=0;
+static struct NodeData ND;
+static int LoadTask=NO;
+static struct Processor *PE;
+
+
+int IsReconfiguring(void)
+{
+		return Reconfiguring;
+}
+
 
 int Reconfigure(struct Processor *processor, int PRRID, unsigned long time)
 {
@@ -43,6 +54,22 @@ int Reconfigure(struct Processor *processor, int PRRID, unsigned long time)
 
 }
 
+int ReconfignLoad(struct Processor *processor, int PRRID, unsigned long time, struct NodeData nd)
+{
+	Reconfigure(processor,PRRID,time);
+
+	/*
+	 * TODO  move all this mess to one static structure.
+	 */
+	PE=processor;
+	ND.ExecCount=nd.ExecCount;
+	ND.Module=nd.Module;
+	LoadTask=YES;
+
+	return EXIT_SUCCESS;
+
+}
+
 
 int TickConfiguration( struct Processor *processor)
 {
@@ -56,6 +83,12 @@ int TickConfiguration( struct Processor *processor)
 		if(!(--processor->ConfigCount))
 		{
 		processor->Busy=NO;
+
+			if (LoadTask)
+			{
+				LoadTask=NO;
+				LoadProcessor(PE,ND);
+			}
 
 		}
 		return processor->ConfigCount;

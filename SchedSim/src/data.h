@@ -1,10 +1,3 @@
-/*
- * data.h
- *
- *  Created on: Jun 1, 2011
- *      Author: ahmed
- */
-
 #ifndef DATA_H_
 #define DATA_H_
 
@@ -13,25 +6,25 @@
 
 
 
-#define TASK_1_HW_DELAY 20000000LU  // add Same HW/SW
+#define TASK_1_HW_DELAY 20LU  // add Same HW/SW
 #define TASK_1_SW_DELAY (TASK_1_HW_DELAY )
-#define TASK_2_HW_DELAY 20000000LU  // sub  HW/0.75SW
+#define TASK_2_HW_DELAY 20LU  // sub  HW/0.75SW
 #define TASK_2_SW_DELAY (TASK_2_HW_DELAY /2)
-#define TASK_3_HW_DELAY 80000000LU  // mult HW/1.5 SW
+#define TASK_3_HW_DELAY 80LU  // mult HW/1.5 SW
 #define TASK_3_SW_DELAY (TASK_3_HW_DELAY *1.2 )
-#define TASK_4_HW_DELAY 20000000LU  // shift HW /2.5 SW
+#define TASK_4_HW_DELAY 20LU  // shift HW /2.5 SW
 #define TASK_4_SW_DELAY (TASK_4_HW_DELAY *3 )
-#define TASK_5_HW_DELAY 15000000LU  // add
+#define TASK_5_HW_DELAY 15LU  // add
 #define TASK_5_SW_DELAY (TASK_5_HW_DELAY*2 )
-#define TASK_6_HW_DELAY 10000000LU  // add
+#define TASK_6_HW_DELAY 10LU  // add
 #define TASK_6_SW_DELAY (TASK_6_HW_DELAY *4)
-#define TASK_7_HW_DELAY 30000000LU  // add
+#define TASK_7_HW_DELAY 30LU  // add
 #define TASK_7_SW_DELAY (TASK_7_HW_DELAY )
-#define TASK_8_HW_DELAY 15000000LU  // add
+#define TASK_8_HW_DELAY 15LU  // add
 #define TASK_8_SW_DELAY (TASK_8_HW_DELAY )
-#define TASK_9_HW_DELAY 20000000LU  // add
+#define TASK_9_HW_DELAY 20LU  // add
 #define TASK_9_SW_DELAY (TASK_9_HW_DELAY )
-#define TASK_10_HW_DELAY 20000000LU  // add
+#define TASK_10_HW_DELAY 20LU  // add
 #define TASK_10_SW_DELAY (TASK_10_HW_DELAY )
 
 
@@ -142,9 +135,12 @@ enum SystemStates {Start,CfgDone,TaskDone,None};
 
 extern enum SystemStates State;
 
-extern   struct node *dfg1;
+extern struct node *dfg1;
+
 extern struct DFG DFGArray[];
+
 extern struct TaskType TasksTypes[];
+
 void Init_TasksTypes(void);
 void initTasksTable( int nubmerOfTasks);
 void reinitTasksTable( int numberOfTasks);
