@@ -21,161 +21,141 @@
 
 int main(void) {
 
-/*
- * Variable declarations
- */
+	/*
+	 * Variable declarations
+	 */
 
- struct PEs pEs;
-
-struct Processor *PRRs;
-struct Processor *GPPs;
-
-int i,w;
-
-/* TODO change that to counters */
-static struct Counts Counters={0,0,0,0,0,0};
-unsigned int timer=0 ;
-Queue ReadyQ;
+	struct PEs pEs;
+	int i,w;
+	static struct Counts counters={0,0,0,0,0,0};
+	Queue ReadyQ;
 
 
-pEs.HW=(struct PE*) malloc(sizeof(struct PE));
-pEs.SW=(struct PE*) malloc(sizeof(struct PE));
-/*
- * Initialization functions.
- */
+	/*
+	 * Initialization functions.
+	 */
 
-printf("one");
-
-
-	PRRs=InitProcessors(5, HW);
-	GPPs=InitProcessors(1, SW);
-
-pEs.HW->pe=PRRs;
-pEs.HW->size=5;
-pEs.SW->pe=GPPs;
-pEs.SW->size =1;
-
-
-
-
-		/*
-		 * Init QUEUES
-		 */
-		/* TODO check if I Am freeing the queue */
-		ReadyQ=CreateQueue(MAX_QUEUE_TASKS);
-
-
-
-
-
-		/* start real work */
+	CreateAllPEs(&pEs,NO_OF_PRRS,NO_OF_GPPS);
+	ReadyQ=CreateQueue(MAX_QUEUE_TASKS);
 	Init_TasksTypes();
 
 
 
 
+ /*
+  * Start Program
+  */
 
-		for (i=0;i<NO_OF_DFGS;i++)
+
+	for (i=0;i<NO_OF_DFGS;i++)
+	{
+		fprintf(stdout,"\n*******************************************************************************\n");
+		fprintf(stdout,"Processing: DFG[%d] with [%d] nodes please wait .....\n", i, DFGArray[i].size);
+		fprintf(stdout,"*******************************************************************************\n");
+#if INDEPENDENT_DFGS
+
+		rstCounters(&counters);
+#endif
+		for (w=0;w<NO_OF_DFG_REP;w++)
 		{
-			printf("\n*******************************************************************************\n");
-			printf("Processing: DFG[%d] with [%d] nodes please wait .....\n", i, DFGArray[i].size);
-			printf("*******************************************************************************\n");
-	#if INDEPENDENT_DFGS
+#if  SCHED_I_EN
+			Init_Rand_Prr(AVAILABLE_PRR);
+#endif
 
-			rstCounters(&Counters);
-	#endif
-			for (w=0;w<NO_OF_DFG_REP;w++)
-			{
-	#if  SCHED_I_EN
-				Init_Rand_Prr(AVAILABLE_PRR);
-	#endif
-				printf("\r\n Processing: DFG[%d] with [%d] nodes ITERATION [%d] \n", i, DFGArray[i].size,w);
-			//	ResetTimer();
-				MakeEmpty(ReadyQ);
-				dfg1=DFGArray[i].dfg;
-				/* Reset Configuration Counter */
-			//	ResetConfigCount();
-				setTaskCounter(DFGArray[i].size);
-				reinitTasksTable(DFGArray[i].size);
+			fprintf(stdout,"Processing: DFG[%d] with [%d] nodes ITERATION [%d] \n", i, DFGArray[i].size,w);
+/*
+ * Reset Things before every DFG
+ */
 
+			MakeEmpty(ReadyQ);
+			dfg1=DFGArray[i].dfg;
+			/* Reset Configuration Counter */
+			ResetConfigCount();
+			setTaskCounter(DFGArray[i].size);
+			reinitTasksTable(DFGArray[i].size);
+			ResetTimer();
+			rstCounters(&counters);
+			/*init seed*/
+			//srand(totalTV.Value);
 
-				rstCounters(&Counters);
-				/*init seed*/
-				//srand(totalTV.Value);
+/*
+ * Start Processing DFG
+ */
 
-
-				do {
-
-					TickAllProcessors(PRRs, 5);
-					TickAllProcessors(GPPs, 1);
-					TickConfig(PRRs);
-				//	fprintf(stderr," %u->",timer++);
-					switch(State)
-					{
-					case CfgDone:
-	#if  SCHED_I_EN
-						RunTaskSI(ReadyQ,&Counters;
-	#elif SCHED_III_EN
-						RunTaskSIII(ReadyQ,&Counters);
-	#elif SIMPLE_SCHED_II
-						RunTask(ReadyQ,&Counters, &pEs);
-	#endif
-						State=TaskDone;
-						break;
+			do {
+/*
+ * TODO Cannot remember Why I have these three states!! Might be  duplicated
+ * code!! Double check if they are necessary and rewrite the code if necessary.
+ */
+				switch(State)
+				{
+				case CfgDone:
+#if  SCHED_I_EN
+					RunTaskSI(ReadyQ,&counters;
+#elif SCHED_III_EN
+					RunTaskSIII(ReadyQ,&counters);
+#elif SIMPLE_SCHED_II
+					RCSchedII(ReadyQ,&counters, &pEs);
+#endif
+					Ticker(&pEs);
+					State=TaskDone;
+					break;
 					case TaskDone:
-						SchedSimple(ReadyQ,DFGArray[i].size);
+						AddTask2Queue(ReadyQ,DFGArray[i].size);
 
 
+#if  SCHED_I_EN
+						RunTaskSI(ReadyQ,&counters);
+#elif SCHED_III_EN
 
-	#if  SCHED_I_EN
-						RunTaskSI(ReadyQ,&Counters);
-	#elif SCHED_III_EN
+						RunTaskSIII(ReadyQ,&counters);
+#elif SIMPLE_SCHED_II
 
-						RunTaskSIII(ReadyQ,&Counters);
-	#elif SIMPLE_SCHED_II
-
-						RunTask(ReadyQ,&Counters, &pEs);
-	#endif
+						RCSchedII(ReadyQ,&counters, &pEs);
+#endif
+						Ticker(&pEs);
 						State=TaskDone;
 						break;
 					case Start:
-						SchedSimple(ReadyQ,DFGArray[i].size);
+						AddTask2Queue(ReadyQ,DFGArray[i].size);
 
 						State=TaskDone;
 						break;
 					case None:
 						break;
 					default :
-						printf("ERROR: Unknown state ...\n");
+						fprintf(stderr,"ERROR: Unknown state ...\n");
 						break ;
 
-					}
+				}
 
 
-					//}while (dfg1[LAST_NODE].Done==NO );
-				}while (getTaskCounter() );
+			}while (getTaskCounter() );
 
 
 
 			//	print_DFG( );
 
-				//printf("Process complete in {%2lu:%.3lu} Second \r\n",tmpT.Sec,tmpT.ThSec );
-//				printf ("Number of configuration= %lu SW Busy [%lu] HW Busy [%lu]\r\n",GetConfigCount(),Counters.busyCounterSW,Counters.busyCounterHW);
-//				printf("SW2HW MIG [%lu]  HW2SW Mig [%lu] #of Reuse [%lu]  #SW tasks [%lu] \r\n",Counters.SW2HWMig,Counters.HW2SWMig,Counters.ReuseCounter,Counters.SWTasksCounter);
-			}
+			fprintf(stdout,"Process complete in {%d} cycles \n",GetTimer());
+			fprintf (stdout,"Number of configuration= %u SW Busy [%u] HW Busy [%u]\n",GetConfigCount(),counters.busyCounterSW,counters.busyCounterHW);
+			fprintf(stdout,"SW2HW MIG [%u]  HW2SW Mig [%u] #of Reuse [%u]  #SW tasks [%u]\n",counters.SW2HWMig,counters.HW2SWMig,counters.ReuseCounter,counters.SWTasksCounter);
 		}
-		printf("Cleaning up ....\n");
-
-
-		freeTasksTable();
-		FreeProcessors(PRRs);
-		FreeProcessors(GPPs);
-		DisposeQueue(ReadyQ);
-                free(pEs.HW);
-		free(pEs.SW);
-		return 0;
 	}
 
-	///////////////////////////////////
+
+
+	/*
+	 * Clean Up
+	 */
+	fprintf(stdout,"Cleaning up .... \n");
+
+	freeTasksTable();
+	CleanAllPEs(&pEs);
+	DisposeQueue(ReadyQ);
+
+	return EXIT_SUCCESS;
+}
+
+///////////////////////////////////
 
 

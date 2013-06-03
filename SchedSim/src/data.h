@@ -6,26 +6,6 @@
 
 
 
-#define TASK_1_HW_DELAY 20LU  // add Same HW/SW
-#define TASK_1_SW_DELAY (TASK_1_HW_DELAY )
-#define TASK_2_HW_DELAY 20LU  // sub  HW/0.75SW
-#define TASK_2_SW_DELAY (TASK_2_HW_DELAY /2)
-#define TASK_3_HW_DELAY 80LU  // mult HW/1.5 SW
-#define TASK_3_SW_DELAY (TASK_3_HW_DELAY *1.2 )
-#define TASK_4_HW_DELAY 20LU  // shift HW /2.5 SW
-#define TASK_4_SW_DELAY (TASK_4_HW_DELAY *3 )
-#define TASK_5_HW_DELAY 15LU  // add
-#define TASK_5_SW_DELAY (TASK_5_HW_DELAY*2 )
-#define TASK_6_HW_DELAY 10LU  // add
-#define TASK_6_SW_DELAY (TASK_6_HW_DELAY *4)
-#define TASK_7_HW_DELAY 30LU  // add
-#define TASK_7_SW_DELAY (TASK_7_HW_DELAY )
-#define TASK_8_HW_DELAY 15LU  // add
-#define TASK_8_SW_DELAY (TASK_8_HW_DELAY )
-#define TASK_9_HW_DELAY 20LU  // add
-#define TASK_9_SW_DELAY (TASK_9_HW_DELAY )
-#define TASK_10_HW_DELAY 20LU  // add
-#define TASK_10_SW_DELAY (TASK_10_HW_DELAY )
 
 
 enum Mode {SWOnly=0x0001,HWOnly=0x0002,HybSW=0x0003,HybHW=0x0013, CustomHW=0x0004,
@@ -39,8 +19,8 @@ enum PRRID {Math0,Math1,Math2,Math3,Math4};
 
 struct TimerTime
 {
-	unsigned long start;
-	unsigned long end;
+	unsigned  start;
+	unsigned  end;
 };
 
 struct Simulation
@@ -127,18 +107,12 @@ struct DFG {
 	int size;
 	struct node dfg[MAX_NO_OF_NODES];
 };
-/* TODO DFG must be read from external memory
- *  A agreed structure must be developed
- *  and specification for the file format
- */
+
 enum SystemStates {Start,CfgDone,TaskDone,None};
 
 extern enum SystemStates State;
-
 extern struct node *dfg1;
-
 extern struct DFG DFGArray[];
-
 extern struct TaskType TasksTypes[];
 
 void Init_TasksTypes(void);
@@ -151,17 +125,12 @@ inline unsigned char  isTaskQed(int ID);
 inline void taskQed(int ID);
 inline int getTaskResult( int ID);
 inline void setTaskResult (int ID,int value);
-
 void getTaskSimulation( int ID,struct Simulation *value);
 void setTaskSimulation (int ID,struct Simulation *value);
 inline enum Mode getTaskMode( int ID);
 inline void setTaskMode (int ID,enum Mode value);
-
-
 inline void setTaskCounter(int value);
-
 inline void decTaskCounter(void);
-
 inline int getTaskCounter(void);
 
 #endif /* DATA_H_ */

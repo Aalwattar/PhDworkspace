@@ -35,8 +35,8 @@
 
 
 
-int RunTask(Queue ReadyQ , struct Counts *Counters, struct PEs *pes);
-int SchedSimple(Queue ReadyQ,int size);
+int RCSchedII(Queue ReadyQ , struct Counts *Counters, struct PEs *pes);
+int AddTask2Queue(Queue ReadyQ,int size);
 void rstCounters(struct Counts* counters);
 
 #endif /* SCHEDULERS_H_ */

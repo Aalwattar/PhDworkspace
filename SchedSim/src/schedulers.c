@@ -18,24 +18,21 @@ inline int CanRun(unsigned int mask, unsigned int prr)
 
 
 
-/*
- * This function differ from the ReusePRR in that it check the TypeID instead of module
- * to work with different emulated type ID
- */
+
 int ReusePRR_V2(int module, struct PE *pRRs)
 {
 
 	int i;
 	for (i=0;i<pRRs->size;i++)
 	{
-	if (pRRs->pe[i].CurrentModule==module && !IsProcessorBusy(&pRRs->pe[i]))
-	{
+		if (pRRs->pe[i].CurrentModule==module && !IsProcessorBusy(&pRRs->pe[i]))
+		{
 #if DEBUG_PRINT
-		printf("found module %d, reusing %d\r\n",module,i);
+			fprintf(stderr,"found module %d, reusing %d\n",module,i);
 #endif
-		printf("found module %d, reusing %d\n",module,i);
-		return i;
-	}
+
+			return i;
+		}
 	}
 
 	return -1;
@@ -44,19 +41,20 @@ int ReusePRR_V2(int module, struct PE *pRRs)
 
 int FindFreePRRBestCase(unsigned int mask, struct PE *pRRs)
 {
-  static int count=0;
+	//static int count=0;
+	int count=0;
 	int i;
 	for (i=count;i<pRRs->size;i++)
+	{
+		if (!IsProcessorBusy(&pRRs->pe[i])  && CanRun(mask,i))
 		{
-			if (!IsProcessorBusy(&pRRs->pe[i])  && CanRun(mask,i))
-			{
 #if DEBUG_PRINT
-			printf("found free PRR %d\r\n",i);
+			fprintf(stderr,"found free PRR %d\n",i);
 #endif
-			printf("found free PRR %d\n",i);
+
 			return i;
-			}
 		}
+	}
 
 
 	if (count>=pRRs->size-1 )
@@ -64,7 +62,7 @@ int FindFreePRRBestCase(unsigned int mask, struct PE *pRRs)
 
 		count=0;
 	}
-
+	//fprintf(stderr,"NOT found free PRR B\n");
 	return -1;
 }
 
@@ -72,7 +70,7 @@ int FindFreePRRBestCase(unsigned int mask, struct PE *pRRs)
 
 /*****************************************************************************
  * This Test if the node is ready by checking it's dependency .
- * If all the dependancy are are ready the it's ready .
+ * If all the dependency are are ready the it's ready .
  *
  * @param	unsigned int Node ID
  *
@@ -83,44 +81,33 @@ int FindFreePRRBestCase(unsigned int mask, struct PE *pRRs)
  ******************************************************************************/
 int IsNodeReady(unsigned int id )
 {
-        if(dfg1[id].D.isAdd_op1 == NO && dfg1[id].D.isAdd_op2 ==NO) {
-        //	 printf ("ID [%d]ready yes \r\n",id);
-                return YES;
-        }
+	if(dfg1[id].D.isAdd_op1 == NO && dfg1[id].D.isAdd_op2 ==NO) {
+		return YES;
+	}
 
-        if (dfg1[id].D.isAdd_op1 == YES && dfg1[id].D.isAdd_op2 ==YES) {
-                  return (isTaskDone(dfg1[id].D.op1) && isTaskDone(dfg1[id].D.op2)) ;
-        }
+	if (dfg1[id].D.isAdd_op1 == YES && dfg1[id].D.isAdd_op2 ==YES) {
+		return (isTaskDone(dfg1[id].D.op1) && isTaskDone(dfg1[id].D.op2)) ;
+	}
 
-        if (dfg1[id].D.isAdd_op1 ==YES) {
-
-      // 	printf ("ID [%d] is ready third[%d] \r\n",id,isTaskDone(dfg1[id].D.op1));
-       // 	print("not ready2\r\n");
-                return isTaskDone(dfg1[id].D.op1);
-
-
-        }
-     //   printf ("ID [%d] is ready final [%d] \r\n",id,isTaskDone(dfg1[id].D.op2));
-
-        return isTaskDone(dfg1[id].D.op2);
+	if (dfg1[id].D.isAdd_op1 ==YES) {
+		return isTaskDone(dfg1[id].D.op1);
+	}
+	return isTaskDone(dfg1[id].D.op2);
 }
 
 
 /*
- * schedSimple
+ * AddTask2Queue
  */
-int SchedSimple(Queue ReadyQ, int size)
+int AddTask2Queue(Queue ReadyQ, int size)
 {
-	 int i=0;
-
+	int i=0;
 
 	do {
-
 		if (IsNodeReady(i)== NO || isTaskQed(i)==YES  )
 		{i++;
 		continue;
 		}
-
 		setTaskMode(i,dfg1[i].mode);
 		switch (getTaskMode(i)) {
 
@@ -136,27 +123,23 @@ int SchedSimple(Queue ReadyQ, int size)
 			Enqueue(i,ReadyQ);
 			taskQed(i);
 			/*TODO add some error checking here */
-			/*FIXME This is not efficient , do it one somewhere else */
 
-				TasksTypes[dfg1[i].TypeID].CanRun=dfg1[i].CanRun;
-
+    		TasksTypes[dfg1[i].TypeID].CanRun=dfg1[i].CanRun;
 #if DEBUG_PRINT
-			printf("Enqueue %d \r\n",i);
+			fprintf(stderr,"Enqueue %d \r\n",i);
 #endif
 			break;
 
 		case CustomHW:
 		case CustomHWnSW:
 		default:
-
-			printf ("Unsupported mode[%d] for task [%d] check you DFG file .. Exiting\r\n",dfg1[i].mode,i);
+			fprintf (stderr,"ERROR [SchedSimple] Unsupported mode[%d] "
+					"for task [%d] check you DFG file .. Exiting\n",dfg1[i].mode,i);
 			return EXIT_FAILURE;
 		}
-	i++;
+		i++;
 	}while(i<size);
-
-
- return EXIT_SUCCESS;
+	return EXIT_SUCCESS;
 };
 
 
@@ -164,36 +147,31 @@ int SchedSimple(Queue ReadyQ, int size)
 
 
 /*
- * Run task
+ * Run task SII
  */
-int RunTask(Queue ReadyQ , struct Counts *Counters, struct PEs *pes)
-	{
-
-
+int RCSchedII(Queue ReadyQ , struct Counts *counters, struct PEs *pes)
+{
 	int task;
-//	struct PRRMOD PRR_T;
-    struct Simulation simtmp;
-    struct NodeData nd;
+	struct Simulation simtmp;
+	struct NodeData nd;
 #if SIMPLE_SCHED_SER
 	static int i=0;
 #endif
 	int freePRR=5;
 
-
 	if (IsEmpty(ReadyQ))
 		return QEmpty;
 	task =Front(ReadyQ);
-
 	getTaskSimulation(task,&simtmp);
 
-//	PRR_T.Module= msgS[1] = dfg1[task].operation;
-//	PRR_T.TypeID=dfg1[task].TypeID;
-//	PRR_T.CanRun=TasksTypes[dfg1[task].TypeID].CanRun;
-//	msgS[2] = dfg1[task].D.isAdd_op1 ? getTaskResult(dfg1[task].D.op1)
-//			: dfg1[task].D.op1;
-//	msgS[3] = dfg1[task].D.isAdd_op2 ? getTaskResult(dfg1[task].D.op2)
-//			: dfg1[task].D.op2;
-//	msgS[4]=dfg1[task].Emu.HWdelay;
+	//	PRR_T.Module= msgS[1] = dfg1[task].operation;
+	//	PRR_T.TypeID=dfg1[task].TypeID;
+	//	PRR_T.CanRun=TasksTypes[dfg1[task].TypeID].CanRun;
+	//	msgS[2] = dfg1[task].D.isAdd_op1 ? getTaskResult(dfg1[task].D.op1)
+	//			: dfg1[task].D.op1;
+	//	msgS[3] = dfg1[task].D.isAdd_op2 ? getTaskResult(dfg1[task].D.op2)
+	//			: dfg1[task].D.op2;
+	//	msgS[4]=dfg1[task].Emu.HWdelay;
 
 
 	switch (getTaskMode(task)) {
@@ -201,44 +179,38 @@ int RunTask(Queue ReadyQ , struct Counts *Counters, struct PEs *pes)
 	case HybSW:
 
 	case SWOnly:
-/*
- * FIXME this has to be changed to accommodate more than one GPPs
- */
+		/*
+		 * FIXME this has to be changed to accommodate more than one GPPs
+		 */
 		if (IsProcessorBusy(pes->SW->pe))
 		{
 
 #if SW_HW_MIG
 			if(getTaskMode(task)==HybSW)
 			{
-			setTaskMode(task,HybHW);
-			Counters->SW2HWMig++;
+				setTaskMode(task,HybHW);
+				counters->SW2HWMig++;
 #if DEBUG_PRINT
-			printf("Task %d migrate from SW to Any\r\n",task);
+				fprintf(stderr,"Task %d migrate from SW to Any\n",task);
 #endif
 			} else
 			{
 #endif
-				Counters->busyCounterSW++;
+				counters->busyCounterSW++;
 				return BUSY;
-		}
+			}
 
 #if SW_HW_MIG
 		}
 #endif
 		Dequeue(ReadyQ);
 
-	//	simtmp.PRRUsed=SW_PE_ID;
-
 		nd.ExecCount=(unsigned int) dfg1[task].Emu.SWdelay;
 		nd.Module=dfg1[task].TypeID;
-
-		 LoadProcessor( pes->SW->pe,nd   );
-
-
-		//MB1.DFGID=task;
-		Counters->SWTasksCounter++;
-
-
+		nd.TaskID=task;
+		LoadProcessor( pes->SW->pe,nd);
+		fprintf(stderr,"Software taskssss\n");
+		counters->SWTasksCounter++;
 		break;
 
 
@@ -252,79 +224,63 @@ int RunTask(Queue ReadyQ , struct Counts *Counters, struct PEs *pes)
 		{
 			if(IsReconfiguring())
 			{
+
 				return 5;
 			}
 #if SCHED_II_WORSTCASE
 			if((freePRR=FindFreePRROrig(PRR_T.CanRun))<0)
 #elif  SCHED_II_RANDOM
-			if((freePRR=FindFreePRR(PRR_T.CanRun))<0)
+				if((freePRR=FindFreePRR(PRR_T.CanRun))<0)
 #else
-				if((freePRR=FindFreePRRBestCase(TasksTypes[dfg1[task].TypeID].CanRun, pes->HW))<0)
+					if((freePRR=FindFreePRRBestCase(TasksTypes[dfg1[task].TypeID].CanRun, pes->HW))<0)
 #endif
-			{
+					{
 #if SW_HW_MIG
-				if (MB1.Busy==NO && getTaskMode(task)==HybHW)
-				{
-					setTaskMode(task,HybSW);
-					Counters->HW2SWMig++;
-#if DEBUG_PRINT
-			printf("Task %d migrate from HW to SW\r\n",task);
+						if (!IsProcessorBusy(pes->SW->pe) && getTaskMode(task)==HybHW)
+						{
+							setTaskMode(task,HybSW);
+							counters->HW2SWMig++;
+//#if DEBUG_PRINT
+							fprintf(stderr,"Task %d migrate from HW to SW\n",task);
+//#endif
+							return 0;
+						}
+						else
+						{
 #endif
-					return 0;
-				}
-				else
-				{
-#endif
-				Counters->busyCounterHW++;
-				return BUSY;
+
+							counters->busyCounterHW++;
+							return BUSY;
 #if SW_HW_MIG
-				}
+						}
 #endif
-				}
+					}
 
 			Dequeue(ReadyQ);
-			//PRR_T.PRR_ID=freePRR;
 			simtmp.PRRUsed=freePRR;
 			simtmp.Reused=NO;
-
 			ReconfignLoad(pes->HW->pe+ freePRR,freePRR,CONFIG_TIME,nd);
 
 			break;
 
-
 		} else
 
 		{
-			Counters->ReuseCounter++;
+			counters->ReuseCounter++;
 			simtmp.PRRUsed=freePRR;
 			simtmp.Reused=YES;
 			Dequeue(ReadyQ);
-
 		}
-
-
-
-
-
 #if DEBUG_PRINT
-		printf("Using PRR MATH%d for task [%d]\r\n",freePRR,task);
+		fprintf(stderr,"Using PRR MATH%d for task [%d]\n",freePRR,task);
 #endif
-
-
-
-
-
-		//PRRs[PRR_T.PRR_ID].DFGID=task;
-
-
-
-		 LoadProcessor( pes->HW->pe+freePRR,nd   );
+		LoadProcessor( pes->HW->pe+freePRR,nd   );
 		break;
 
 	case CustomHW:
 	case CustomHWnSW:
 	default:
-		printf ("Unsupported mode check your DFG file .. Exiting\n");
+		fprintf (stderr,"ERROR [RunTask] Unsupported mode check your DFG file .. Exiting\n");
 		return EXIT_FAILURE;
 	}
 
@@ -335,11 +291,11 @@ int RunTask(Queue ReadyQ , struct Counts *Counters, struct PEs *pes)
 
 void rstCounters(struct Counts* counters)
 {
-	 counters->busyCounterSW=0;
-	 counters->busyCounterHW=0;
-	 counters->SW2HWMig=0;
-	 counters->HW2SWMig=0;
-	 counters->ReuseCounter=0;
-	 counters->SWTasksCounter=0;
+	counters->busyCounterSW=0;
+	counters->busyCounterHW=0;
+	counters->SW2HWMig=0;
+	counters->HW2SWMig=0;
+	counters->ReuseCounter=0;
+	counters->SWTasksCounter=0;
 }
 

@@ -519,7 +519,7 @@
 //					setTaskMode(task,HybSW);
 //				    Counters->HW2SWMig++;
 //				    return 0;
-//#if DEBUG
+//#if DEBUG_PRINT
 //				    printf("tasks [%d] moved to software due to priority \r\n",task);
 //#endif
 //				}

@@ -9,11 +9,65 @@
 #include <stdlib.h>
 #include "processors.h"
 #include "data.h"
+#include "reconfiguration.h"
 
-//#include "configuration.h"
+static unsigned int Timer;
+
+
 /*
  * TODO change small Functions to inline
  */
+
+
+/*****************************************************************************
+* This function retrieves the Timer
+*
+* @param        None
+*
+* @return       u32 ConfigCount Value
+*
+* @note         None.
+*
+******************************************************************************/
+unsigned int GetTimer(void)
+{
+        return Timer;
+}
+
+
+/*****************************************************************************
+* This function resets (=0) the Timer Counter
+*
+* @param        None
+*
+* @return       none
+*
+* @note         None.
+*
+******************************************************************************/
+
+void ResetTimer(void)
+{
+	Timer =0;
+}
+
+/*****************************************************************************
+* This function Increments the Timer It's
+*
+* @param        None
+*
+* @return       None
+*
+* @note         None.
+*
+******************************************************************************/
+ void IncTimer(void)
+{
+	 Timer++;
+}
+
+
+
 
 struct Processor * InitProcessors( int size, enum ProcessorType type)
 {
@@ -95,8 +149,10 @@ int LoadProcessor( struct Processor *processor, struct NodeData node )
 	processor->CurrentModule=node.Module; /*TODO fix this */
 	processor->ExecCount=node.ExecCount;
 	processor->CurrentTaskID=node.TaskID;
-	fprintf(stderr,"loading task [%d] Type [%d] with ExecCount [%lu] \n",
+#if DEBUG_PRINT
+	fprintf(stderr,"loading task [%d] Type [%d] with ExecCount [%lu] \n", \
 			processor->CurrentTaskID, processor->CurrentModule, processor->ExecCount);
+#endif
 	return 0;
 }
 
@@ -110,7 +166,9 @@ int TickAllProcessors(struct Processor *processor, int size)
 
 		if(!TickProcessor(processor+i))
 			{
-				printf("Task [%d] running on PRR[%d] is completed \n", processor[i].CurrentTaskID,i);
+#if DEBUG_PRINT
+				fprintf(stderr,"Task [%d] running on PRR[%d] is completed \n", processor[i].CurrentTaskID,i);
+#endif
 				State=TaskDone;
 				taskDone(processor[i].CurrentTaskID);
 				decTaskCounter();
@@ -120,5 +178,35 @@ int TickAllProcessors(struct Processor *processor, int size)
 	}
 
 	return 0;
+}
+
+
+unsigned int Ticker(struct PEs *pEs)
+{
+	TickAllProcessors(pEs->HW->pe, pEs->HW->size);
+	TickAllProcessors(pEs->SW->pe, pEs->SW->size);
+	TickConfig(pEs->HW->pe);
+	IncTimer();
+	return GetTimer();
+}
+
+void CreateAllPEs(struct PEs *pEs,int noOfPRRs, int noOfGPPs)
+{
+	pEs->HW=(struct PE*) malloc(sizeof(struct PE));
+	pEs->SW=(struct PE*) malloc(sizeof(struct PE));
+	pEs->HW->size=noOfPRRs;
+	pEs->SW->size =noOfGPPs;
+	pEs->HW->pe=InitProcessors(pEs->HW->size,HW );
+	pEs->SW->pe=InitProcessors(pEs->SW->size, SW);
+
+}
+
+void CleanAllPEs(struct PEs *pEs)
+{
+	FreeProcessors(pEs->HW->pe);
+	FreeProcessors(pEs->SW->pe);
+    free(pEs->HW);
+	free(pEs->SW);
+
 }
 

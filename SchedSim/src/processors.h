@@ -45,6 +45,8 @@ struct PEs
 };
 
 
+unsigned int GetTimer(void);
+void ResetTimer(void);
 struct Processor * InitProcessors( int , enum ProcessorType );
 int IsProcessorBusy( struct Processor *);
 void SetProcessorBusy( struct Processor *);
@@ -54,9 +56,9 @@ int TickProcessor( struct Processor *);
 int LoadProcessor( struct Processor *, struct NodeData  );
 int TickAllProcessors(struct Processor *, int );
 void FreeProcessors(struct Processor * processor);
-
-
-
-
+unsigned int Ticker(struct PEs *);
+void CleanAllProcessor(struct PEs *pEs);
+void CreateAllPEs(struct PEs *pEs,int noOfPRRs, int noOfGPPs);
+void CleanAllPEs(struct PEs *pEs);
 
 #endif /* PROCESSORS_H_ */

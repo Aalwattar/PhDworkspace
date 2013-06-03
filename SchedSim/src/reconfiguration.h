@@ -9,7 +9,8 @@
 #define RECONFIGURATION_H_
 
 #include "processors.h"
-
+void ResetConfigCount(void);
+unsigned int GetConfigCount(void);
 int IsReconfiguring(void);
 int Reconfigure(struct Processor *processor, int PRRID, unsigned long time) ;
 int TickConfiguration( struct Processor *processor);
