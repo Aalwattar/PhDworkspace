@@ -24,7 +24,7 @@
 ###############################################################################
 
 #compiler options
-DEBUG			= 
+DEBUG			= -DDEBUG
 CC 			= gcc
 C_FLAGS 		= -Wall -std=c99 -pedantic -g -O0 $(DEBUG)
 C_INCLUDES   		= -Iinclude/Napoleon -Iinclude/GA
@@ -95,7 +95,7 @@ clean :
 
 
 run: 
-	./$(PROG_NAME) -aif input/B1_25_10.aif
+	./$(PROG_NAME)
 			
 debug :
 	$(DBGR) $(DBG_OPTS) $(PROG_NAME)

@@ -32,10 +32,11 @@
 #include <strings.h>
 
 
-#define RUNTIME_WEIGHT 0.6
+#define RUNTIME_WEIGHT 0.75
 #define POWER_WEIGHT 1 - RUNTIME_WEIGHT
 
 #define BUFF_SIZE 500
+
 
 /******************************************************************************
  *****************         ARHITECTURE  DATA STORAGE         ******************
@@ -82,7 +83,7 @@ static Operation * arch_library;
  * NOTE : This is a helper function and should only ever be called from within
  *          initArchLibrary()
  *****************************************************************************/
-bool parseArchLibrary(FILE *);
+static bool parseArchLibrary(FILE *);
 
 /******************************************************************************
  * NAME : parseArch
@@ -97,7 +98,7 @@ bool parseArchLibrary(FILE *);
  * NOTE : This is a helper function and should only ever be called from within
  *          parseArchLibrary()
  *****************************************************************************/
-bool parseArch(char *);
+static bool parseArch(char *);
 
 
 bool initArchLibrary(char * filename) {
@@ -120,7 +121,7 @@ bool initArchLibrary(char * filename) {
 }
 
 
-bool parseArchLibrary(FILE * fp) {
+static bool parseArchLibrary(FILE * fp) {
     char buffer[BUFF_SIZE];
     int num_ops;
     int i;
@@ -157,7 +158,7 @@ bool parseArchLibrary(FILE * fp) {
     return true;
 }
 
-bool parseArch(char * raw_arch) {
+static bool parseArch(char * raw_arch) {
     int arch_num;
     int op_type;
 
@@ -184,7 +185,7 @@ bool parseArch(char * raw_arch) {
 
 
 
-void freeArchLibrary(void) {
+void freeArchLibrary(void){
     int i;
 
     for (i = 0; (arch_library[i]).impl != NULL; i++)
@@ -223,6 +224,28 @@ void printArchLibrary(void) {
 /******************************************************************************
  **********        FITNESS FUNCTION (INTERFACE WITH NAPOLEON)        **********
  *****************************************************************************/
+
+/******************************************************************************
+ * NAME : getColumns
+ * 
+ * PURPOSE : getter for number of columns that the implementation (architecture)
+ *              of a particular gene takes up
+ * ARGUMENTS : int = the position of the gene (task) in a chromosome
+ * 
+ * PRECONDITIONS : This function should only be called after initNapoleon()
+ *                      returns true.
+ * 
+ * RETURNS : the "width" of the implementation (or architecture) indicated by
+ *              the chosen task
+ *****************************************************************************/
+static int getColumns(int);
+
+
+static int getRows(int);
+static int getConfigTime(int);
+static int getExecTime(int);
+static int getConfigPower(int);
+static int getExecPower(int);
 
         // FIX - MAKE NON GLOBAL!!!
 static t_task_interface *task_interface; //
@@ -346,26 +369,93 @@ int getTaskType(int task_num) {
     return task[task_num + 1].type - 1;
 }
 
-int getColumns(int task_num) {
+
+
+static int getColumns(int task_num) {
     return ((arch_library[getTaskType(task_num)]).impl[task[task_num + 1].impl]).columns;
 }
 
-int getRows(int task_num) {
+/******************************************************************************
+ * NAME : getRows
+ * 
+ * PURPOSE : getter for number of rows that the implementation (architecture)
+ *              of a particular gene takes up
+ * ARGUMENTS : int = the position of the gene (task) in a chromosome
+ * 
+ * PRECONDITIONS : This function should only be called after initNapoleon()
+ *                      returns true.
+ * 
+ * RETURNS : the "height" of the implementation (or architecture) indicated by
+ *              the chosen task
+ *****************************************************************************/
+static int getRows(int task_num) {
     return ((arch_library[getTaskType(task_num)]).impl[task[task_num + 1].impl]).rows;
 }
 
-int getConfigTime(int task_num) {
+/******************************************************************************
+ * NAME : getConfigTime
+ * 
+ * PURPOSE : getter for the time it takes to configure the architecture 
+ *              (implementation) in hardware for a particular gene
+ * ARGUMENTS : int = the position of the gene (task) in a chromosome
+ * 
+ * PRECONDITIONS : This function should only be called after initNapoleon()
+ *                      returns true.
+ * 
+ * RETURNS : the configuration time of the implementation (architecture) 
+ *              indicated by the chosen task
+ *****************************************************************************/
+static int getConfigTime(int task_num) {
     return ((arch_library[getTaskType(task_num)]).impl[task[task_num + 1].impl]).conf_t;
 }
 
-int getExecTime(int task_num) {
+/******************************************************************************
+ * NAME : getExecTime
+ * 
+ * PURPOSE : getter for the execution time of the architecture 
+ *              (implementation) for a particular gene
+ * ARGUMENTS : int = the position of the gene (task) in a chromosome
+ * 
+ * PRECONDITIONS : This function should only be called after initNapoleon()
+ *                      returns true.
+ * 
+ * RETURNS : the execution time of the implementation (architecture) 
+ *              indicated by the chosen task
+ *****************************************************************************/
+static int getExecTime(int task_num) {
     return ((arch_library[getTaskType(task_num)]).impl[task[task_num + 1].impl]).exec_t;
 }
 
-int getConfigPower(int task_num) {
+/******************************************************************************
+ * NAME : getConfigPower
+ * 
+ * PURPOSE : getter for the power it takes to configure the architecture 
+ *              (implementation) in hardware for a particular gene
+ * ARGUMENTS : int = the position of the gene (task) in a chromosome
+ * 
+ * PRECONDITIONS : This function should only be called after initNapoleon()
+ *                      returns true.
+ * 
+ * RETURNS : the configuration power of the implementation (architecture) 
+ *              indicated by the chosen task
+ *****************************************************************************/
+static int getConfigPower(int task_num) {
     return ((arch_library[getTaskType(task_num)]).impl[task[task_num + 1].impl]).conf_p;
 }
 
-int getExecPower(int task_num) {
+/******************************************************************************
+ * NAME : getExecPower
+ * 
+ * PURPOSE : getter for execution power requirements of the architecture 
+ *              (implementation) for a particular gene
+ * ARGUMENTS : int = the position of the gene (task) in a chromosome
+ * 
+ * PRECONDITIONS : This function should only be called after initNapoleon()
+ *                      returns true.
+ * 
+ * RETURNS : the execution power of the implementation (architecture) 
+ *              indicated by the chosen task
+ *****************************************************************************/
+static int getExecPower(int task_num) {
     return ((arch_library[getTaskType(task_num)]).impl[task[task_num + 1].impl]).exec_p;
 }

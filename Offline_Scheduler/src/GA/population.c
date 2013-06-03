@@ -6,7 +6,7 @@
  *                  for each task's operation
  * 
  * Created  : May 7, 2013
- * Modified : May 30, 2013
+ * Modified : May 31, 2013
  ******************************************************************************/
 
 /*******************************************************************************
@@ -21,11 +21,12 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 
 static double CROSSOVER_RATE = 0.85;
 static double MUTATION_RATE  = 0.001;
 
-static int POP_SIZE = 16;
+static int POP_SIZE = 50;
 
 
 Population * genRandPopulation(){
@@ -53,6 +54,7 @@ void freePopulation(Population * pop){
 }
 
 
+
 void printPopulation(Population * pop){
     int i, j;
     
@@ -62,6 +64,45 @@ void printPopulation(Population * pop){
         }
         fprintf(stdout, "\tfitness = %d\n", pop->member[i].fitness);
     }
+    
+    printSummaryStatistics(pop);
+}
+
+void printSummaryStatistics(Population * pop){
+    double mean;
+    double differenceSum;
+    double sd;
+    
+    int max = 0;
+    int min = 1000000;
+    int fitnessSum;
+    int i;
+    
+    fitnessSum = 0;
+    for(i=0; i<POP_SIZE; i++){
+        
+        fitnessSum = fitnessSum + pop->member[i].fitness;
+        
+        if(pop->member[i].fitness > max)
+            max = pop->member[i].fitness;
+        
+        if(pop->member[i].fitness < min)
+            min = pop->member[i].fitness;
+    }
+    
+    mean = (double) fitnessSum / POP_SIZE;
+    
+    differenceSum = 0;
+    for(i=0; i<POP_SIZE; i++)
+        differenceSum = differenceSum + pow(mean - pop->member[i].fitness, 2);
+    
+    sd = sqrt(differenceSum / POP_SIZE);
+    
+    
+    fprintf(stdout, "\nAverage = %.3lf\n", mean);
+    fprintf(stdout, "SD      = %.3lf\n", sd);
+    fprintf(stdout, "Min     = %d\n", min);
+    fprintf(stdout, "Max     = %d\n", max);
 }
 
 
@@ -88,8 +129,8 @@ void generateNextGeneration(Population * pop){
 
 
 // FIX - ensure that the crossover rate is between 0 and 1 
-void setCrossoverRate(char * raw_rate){
-    CROSSOVER_RATE = atof(raw_rate);
+void setCrossoverRate(double rate){
+    CROSSOVER_RATE = rate;
 }
 
 double getCrossoverRate(void){
@@ -97,8 +138,8 @@ double getCrossoverRate(void){
 }
 
 // FIX - ensure that the mutation rate is between 0 and 1 
-void setMutationRate(char * raw_rate){
-    MUTATION_RATE = atof(raw_rate);
+void setMutationRate(double rate){
+    MUTATION_RATE = rate;
 }
 
 double getMutationRate(void){
@@ -106,8 +147,8 @@ double getMutationRate(void){
 }
 
 // FIX - ensure that the population size is between 1 and 10000
-void setPopSize(char * raw_size){
-    POP_SIZE = atoi(raw_size);
+void setPopSize(int size){
+    POP_SIZE = size;
 }
 
 int getPopSize(void){

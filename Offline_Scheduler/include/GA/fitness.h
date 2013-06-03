@@ -124,6 +124,7 @@ void freeNapoleon(void);
 int evaluateFitness(int *);
 
 
+
 /******************************************************************************
  * NAME : getNumGenes
  * 
@@ -149,112 +150,6 @@ int getNumGenes(void);
  * RETURNS : the type of task (or Operation) of the chosen task
  *****************************************************************************/
 int getTaskType(int);
-
-
-
-/******************************************************************************
- * NAME : getTaskImpl
- * 
- * PURPOSE : getter for the implementation (architecture) of a particular gene
- * ARGUMENTS : int = the position of the gene (task) in a chromosome
- * 
- * PRECONDITIONS : This function should only be called after initNapoleon()
- *                      returns true.
- * 
- * RETURNS : the implementation number (or architecture number) of the chosen
- *               task
- *****************************************************************************/
-int getTaskImpl(int);
-
-/******************************************************************************
- * NAME : getColumns
- * 
- * PURPOSE : getter for number of columns that the implementation (architecture)
- *              of a particular gene takes up
- * ARGUMENTS : int = the position of the gene (task) in a chromosome
- * 
- * PRECONDITIONS : This function should only be called after initNapoleon()
- *                      returns true.
- * 
- * RETURNS : the "width" of the implementation (or architecture) indicated by
- *              the chosen task
- *****************************************************************************/
-int getColumns(int);
-
-/******************************************************************************
- * NAME : getRows
- * 
- * PURPOSE : getter for number of rows that the implementation (architecture)
- *              of a particular gene takes up
- * ARGUMENTS : int = the position of the gene (task) in a chromosome
- * 
- * PRECONDITIONS : This function should only be called after initNapoleon()
- *                      returns true.
- * 
- * RETURNS : the "height" of the implementation (or architecture) indicated by
- *              the chosen task
- *****************************************************************************/
-int getRows(int);
-
-/******************************************************************************
- * NAME : getConfigTime
- * 
- * PURPOSE : getter for the time it takes to configure the architecture 
- *              (implementation) in hardware for a particular gene
- * ARGUMENTS : int = the position of the gene (task) in a chromosome
- * 
- * PRECONDITIONS : This function should only be called after initNapoleon()
- *                      returns true.
- * 
- * RETURNS : the configuration time of the implementation (architecture) 
- *              indicated by the chosen task
- *****************************************************************************/
-int getConfigTime(int);
-
-/******************************************************************************
- * NAME : getExecTime
- * 
- * PURPOSE : getter for the execution time of the architecture 
- *              (implementation) for a particular gene
- * ARGUMENTS : int = the position of the gene (task) in a chromosome
- * 
- * PRECONDITIONS : This function should only be called after initNapoleon()
- *                      returns true.
- * 
- * RETURNS : the execution time of the implementation (architecture) 
- *              indicated by the chosen task
- *****************************************************************************/
-int getExecTime(int);
-
-/******************************************************************************
- * NAME : getConfigPower
- * 
- * PURPOSE : getter for the power it takes to configure the architecture 
- *              (implementation) in hardware for a particular gene
- * ARGUMENTS : int = the position of the gene (task) in a chromosome
- * 
- * PRECONDITIONS : This function should only be called after initNapoleon()
- *                      returns true.
- * 
- * RETURNS : the configuration power of the implementation (architecture) 
- *              indicated by the chosen task
- *****************************************************************************/
-int getConfigPower(int);
-
-/******************************************************************************
- * NAME : getExecPower
- * 
- * PURPOSE : getter for execution power requirements of the architecture 
- *              (implementation) for a particular gene
- * ARGUMENTS : int = the position of the gene (task) in a chromosome
- * 
- * PRECONDITIONS : This function should only be called after initNapoleon()
- *                      returns true.
- * 
- * RETURNS : the execution power of the implementation (architecture) 
- *              indicated by the chosen task
- *****************************************************************************/
-int getExecPower(int);
 
 
 

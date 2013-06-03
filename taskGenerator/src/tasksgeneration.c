@@ -53,10 +53,10 @@ static int parseArgs(int argc, char *argv[]){
                 globalArgs.total_dep_no = atoi ( optarg );
                 break;    
             case ':':       /* -f or -o without operand */
-                    fprintf( stderr, "Option -%c requires an operand\n", optopt );
+                    fprintf(stderr, "Option -%c requires an operand\n", optopt);
                     break;
             case '?':
-                    fprintf( stderr, "Unrecognized option: -%c\n", optopt );
+                    fprintf(stderr, "Unrecognized option: -%c\n", optopt);
                     break;
         }
     }

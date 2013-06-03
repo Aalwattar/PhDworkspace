@@ -6,7 +6,7 @@
  *                  for each task's operation
  * 
  * Created  : May 7, 2013
- * Modified : May 30, 2013
+ * Modified : May 31, 2013
  ******************************************************************************/
 
 /*******************************************************************************
@@ -71,7 +71,15 @@ void generateNextGeneration(Population *);
  * PURPOSE : Print all chromosomes with their fitness values
  * ARGUMENTS : Population * = the population that you wish visualize
  *****************************************************************************/
-void printPopulation(Population * pop);
+void printPopulation(Population *);
+
+/******************************************************************************
+ * NAME : printSummaryStatistics
+ * 
+ * PURPOSE : Statistical information about a population. 
+ * ARGUMENTS : Population * = the population that you wish visualize
+ *****************************************************************************/
+void printSummaryStatistics(Population *);
 
 /******************************************************************************
  * NAME : determineFitness
@@ -79,7 +87,7 @@ void printPopulation(Population * pop);
  * PURPOSE : Calculate the fitness of all members of a population
  * ARGUMENTS : Population * = the population that you wish evaluate
  *****************************************************************************/
-void determineFitness(Population * pop);
+void determineFitness(Population *);
 
 
 
@@ -87,9 +95,9 @@ void determineFitness(Population * pop);
  * NAME : setCrossoverRate
  * 
  * PURPOSE : a setter for the crossover rate
- * ARGUMENTS : char * = a string that contains a real number between 0 and 1 
+ * ARGUMENTS : char * = a real number between 0 and 1 
  *****************************************************************************/
-void setCrossoverRate(char *);
+void setCrossoverRate(double);
 
 /******************************************************************************
  * NAME : getCrossoverRate
@@ -104,9 +112,9 @@ double getCrossoverRate(void);
  * NAME : setMutationRate
  * 
  * PURPOSE : a setter for the mutation rate
- * ARGUMENTS : char * = a string that contains a real number between 0 and 1 
+ * ARGUMENTS : char * = a real number between 0 and 1 
  *****************************************************************************/
-void setMutationRate(char *);
+void setMutationRate(double);
 
 /******************************************************************************
  * NAME : getMutationRate
@@ -121,9 +129,9 @@ double getMutationRate(void);
  * NAME : setPopSize
  * 
  * PURPOSE : a setter for the population size
- * ARGUMENTS : char * = a string that contains a number between 1 and 10000
+ * ARGUMENTS : int = a number between 1 and 10000
  *****************************************************************************/
-void setPopSize(char *);
+void setPopSize(int);
 
 /******************************************************************************
  * NAME : getCrossoverRate
