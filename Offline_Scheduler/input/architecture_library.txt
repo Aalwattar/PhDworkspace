@@ -1,4 +1,4 @@
-num_impls= 4
+num_impls= 8
 
 #Impl    Colums   Rows  Conf_t    Exec_t   Conf_PWR   Exec_PWR
 
