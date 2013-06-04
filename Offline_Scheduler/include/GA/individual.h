@@ -24,9 +24,12 @@
 typedef struct{
     int * encoding;     // their genotype
     
-    int fitness;        // true fitness value
-    int rfitness;    // fitness relative to population
-    int cfitness;    // cumulative fitness
+    int fitness;
+    int exec_time;
+    int energy;
+    
+    int num_reuse;
+    int prefetch;
 } Individual;
 
 /******************************************************************************
@@ -98,6 +101,8 @@ void mutate(Individual *);
  *****************************************************************************/
 void crossover(Individual *, Individual *);
 
+
+void printIndividual(Individual *);
 
 #endif	/* INDIVIDUAL_H */
 

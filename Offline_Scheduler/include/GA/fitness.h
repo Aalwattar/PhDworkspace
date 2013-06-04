@@ -90,6 +90,8 @@ int getNumArch(int);
 typedef struct{
     int power;    // the power required to execute the schedule
     int runtime;  // the total runtime of the schedule
+    int prefetch;
+    int reuse;
 }GA_Info;         
 
 /******************************************************************************

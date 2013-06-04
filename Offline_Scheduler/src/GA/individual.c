@@ -36,10 +36,6 @@ void initRandIndividual(Individual * ind){
     // FIX
     // TESTING  - right now I restrict the GA from choosing any of the GPPs
     // ORIGINAL - ind->encoding[i] = getNumArch(getTaskType(i)) * randomNumber();
-    
-    ind->fitness = 0;
-    ind->cfitness = 0;
-    ind->rfitness = 0;
 }
 
 void freeIndividual(Individual * i){
@@ -53,10 +49,8 @@ void duplicateIndividual(Individual * copy, Individual * original){
     
     for(i=0; i<getNumGenes(); i++)
         copy->encoding[i] = original->encoding[i];
-    
-    copy->fitness = original->fitness;
-    copy->cfitness = original->cfitness;
-    copy->rfitness = original->rfitness; 
+
+    // FIX - remove copying functions
 }
 
 void mutate(Individual * ind){
@@ -100,4 +94,14 @@ void crossover(Individual * p1, Individual * p2){
         p1->encoding[i] = p2->encoding[i];
         p2->encoding[i] = temp;
     }
+}
+
+void printIndividual(Individual * ind){
+    int i;
+    
+    for (i = 0; i < getNumGenes(); i++)
+        fprintf(stdout, "%d", ind->encoding[i]);
+    
+    fprintf(stdout, "\tfitness = %d\n\truntime = %d\tprefetch = %d\tpower = %d\treuse = %d\n", 
+                ind->fitness, ind->exec_time, ind->prefetch, ind->energy, ind->num_reuse);
 }

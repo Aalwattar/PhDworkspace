@@ -57,16 +57,10 @@ void freePopulation(Population * pop){
 
 
 void printPopulation(Population * pop){
-    int i, j;
+    int i;
     
-    for (i = 0; i < POP_SIZE; i++) {
-        for (j = 0; j < getNumGenes(); j++) {
-            fprintf(stdout, "%d", pop->member[i].encoding[j]);
-        }
-        fprintf(stdout, "\tfitness = %d\truntime = %d\tpower = %d\n", 
-                    pop->member[i].fitness, pop->member[i].rfitness, 
-                    pop->member[i].cfitness );
-    }
+    for (i = 0; i < POP_SIZE; i++)
+        printIndividual(&(pop->member[i]));
     
     printSummaryStatistics(pop);
 }

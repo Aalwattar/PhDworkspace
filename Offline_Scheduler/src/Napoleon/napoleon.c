@@ -727,31 +727,28 @@ GA_Info Napoleon(FILE *grid_strm, int *succ_adj_mat, int num_nodes, t_task *task
     printf("\n");
 #endif
 
-//    int cnt_reuse = 0, cnt_prefetch = 0;
-//    bool prefetch_flag = false;
-//
-//    for(j = 1; j <= num_nodes; j++){
-//        prefetch_flag = false;
-//        for(i = 1; i <= num_nodes; i++){
-//            if(*(succ_adj_mat + (num_nodes + 2) * i + j) == 1){
-//                if((task + j)->reconfig_sched != 0 && (task + j)->reconfig_sched <= ((task + i)->exec_sched + (task + i)->latency - 1)){
-//                    prefetch_flag = true;
-//                }
-//            }
-//        }
-//        if(prefetch_flag)
-//            cnt_prefetch++;
-//    }
-//    
-//    printf("Total Prefetching is %d\n", cnt_prefetch);
-//
-//    
-//    for(i = 1; i <= num_nodes; i++)
-//        if((task + i)->reconfig_sched == 0)
-//            cnt_reuse++;
-//
-//    printf("Total Number of Reuse is %d\n", cnt_reuse);
-//
+    fitness_values.prefetch = 0;
+    bool prefetch_flag = false;
+
+    for(j = 1; j <= num_nodes; j++){
+        prefetch_flag = false;
+        for(i = 1; i <= num_nodes; i++){
+            if(*(succ_adj_mat + (num_nodes + 2) * i + j) == 1){
+                if((task + j)->reconfig_sched != 0 && (task + j)->reconfig_sched <= ((task + i)->exec_sched + (task + i)->latency - 1)){
+                    prefetch_flag = true;
+                }
+            }
+        }
+        if(prefetch_flag)
+            fitness_values.prefetch++;
+    }
+
+    fitness_values.reuse = 0;
+    for(i = 1; i <= num_nodes; i++)
+        if((task + i)->reconfig_sched == 0)
+            fitness_values.reuse++;
+
+    
 //    printf("TaskID\tReconfig At\tExec At\t\tColumn\t\tRow\t\tType\t\tImpl\n");
 //    for(i = 1; i <= num_nodes; i++)
 //        printf("T%d\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n", i, (task + i)->reconfig_sched, (task + i)->exec_sched, (task + i)->leftmost_column, (task + i)->bottommost_row, (task + i)->type, (task + i)->impl);
