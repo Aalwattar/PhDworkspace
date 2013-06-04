@@ -25,6 +25,7 @@
 #include "napoleon.h"
 #include "io.h"
 #include "types.h"
+#include "individual.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -32,8 +33,8 @@
 #include <strings.h>
 
 
-#define RUNTIME_WEIGHT 0.75
-#define POWER_WEIGHT 1 - RUNTIME_WEIGHT
+#define RUNTIME_WEIGHT 0.875
+#define POWER_WEIGHT 0.125
 
 #define BUFF_SIZE 500
 
@@ -308,7 +309,7 @@ void freeNapoleon(void){
 }
 
 // FIX - add error checking
-int evaluateFitness(int * chromosome){
+void evaluateFitness(Individual * ind){
     GA_Info schedule;
     int * succ_adj_mat;
     int * reuse_mat;
@@ -331,7 +332,7 @@ int evaluateFitness(int * chromosome){
         print_error(err);
     
     for (i = 0; i < getNumGenes(); i++) {
-        task[i + 1].impl = chromosome[i];
+        task[i + 1].impl = ind->encoding[i];
 
         task[i + 1].columns = getColumns(i);
         task[i + 1].rows = getRows(i);
@@ -353,7 +354,9 @@ int evaluateFitness(int * chromosome){
     free(reuse_mat);
     free(succ_adj_mat);
     
-    return (schedule.power * POWER_WEIGHT) + (schedule.runtime * RUNTIME_WEIGHT);
+    ind->fitness = (schedule.power * POWER_WEIGHT) + (schedule.runtime * RUNTIME_WEIGHT);
+    ind->cfitness = schedule.power;
+    ind->rfitness = schedule.runtime;
 }
 
 

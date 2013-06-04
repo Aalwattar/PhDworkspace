@@ -17,36 +17,67 @@
 
 #include "selection.h"
 #include "population.h"
+#include "replacement.h"
 
 #include <stdlib.h>
 
 // FIX -  Implement a steady state variant that selects two individuals at a time?
+
 
 Population * tournamentSelection(Population * original){
     Population * mating_pool;
     int pop_size;
     int p1, p2;
     int i;
-    
+
     pop_size = getPopSize();
-    mating_pool = malloc(sizeof(Population));
-    mating_pool->member = malloc(sizeof(Individual) * pop_size);
-    
-    for(i=0; i < pop_size; i++){
+    mating_pool = malloc(sizeof (Population));
+    mating_pool->member = malloc(sizeof (Individual) * pop_size);
+
+    for(i = 0; i < pop_size; i++){
         p1 = randomNumber() * pop_size;
         p2 = randomNumber() * pop_size;
-        
+
         if(original->member[p1].fitness <= original->member[p2].fitness){
             duplicateIndividual(&(mating_pool->member[i]), &(original->member[p1]));
-        }
-        else{
+        }else{
             duplicateIndividual(&(mating_pool->member[i]), &(original->member[p2]));
         }
     }
-    
-    generateNextGeneration(mating_pool);
+
+    generateNextGeneration(mating_pool, pop_size);
     freePopulation(original);
     return mating_pool;
+}
+
+
+
+void steadyStateSelection(Population * original){
+    Population * mating_pool;
+    int pop_size;
+    int randInd;
+    int i;
+
+    pop_size = getPopSize();
+    mating_pool = malloc(sizeof (Population));
+    mating_pool->member = malloc(sizeof (Individual) * 2);
+
+
+    randInd = randomNumber() * pop_size;
+    duplicateIndividual(&(mating_pool->member[0]), &(original->member[randInd]));
+
+    randInd = randomNumber() * pop_size;
+    duplicateIndividual(&(mating_pool->member[1]), &(original->member[randInd]));
+
+    // FIX - make pop_size a variable of that population!
+    generateNextGeneration(mating_pool, 2);
+    evaluateRanks(original);
+
+    replaceWorst(original, mating_pool, 2);
+
+    for(i=0; i<2; i++)
+        freeIndividual(&(mating_pool->member[i])); 
+    free(mating_pool);
 }
 
 
@@ -223,13 +254,13 @@ Population * linearRankingSelection(Population *);
 Population * softTournamentSelection(Population *);
 
 
-//// The compare function for qsort
-//int compare(const void *, const void *);
-//
-//void evaluateRanks(Population * pop){
-//    qsort(pop->member, POP_SIZE, sizeof(Individual), compare);
-//}
-//
-//int compare(const void * p1, const void * p2){
-//    return ((Individual *)p1)->fitness - ((Individual *)p2)->fitness;
-//}
+// The compare function for qsort
+int compare(const void *, const void *);
+
+void evaluateRanks(Population * pop){
+    qsort(pop->member, getPopSize(), sizeof(Individual), compare);
+}
+
+int compare(const void * p1, const void * p2){
+    return ((Individual *)p1)->fitness - ((Individual *)p2)->fitness;
+}

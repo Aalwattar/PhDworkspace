@@ -19,8 +19,9 @@
 #ifndef REPLACEMENT_H
 #define	REPLACEMENT_H
 
+#include "population.h"
 
-
+void replaceWorst(Population *, Population *, int);
 
 
 #endif	/* REPLACEMENT_H */

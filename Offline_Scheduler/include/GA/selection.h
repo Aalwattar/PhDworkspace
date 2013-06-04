@@ -36,7 +36,7 @@
  *****************************************************************************/
 Population * tournamentSelection(Population *);
 
-
+void steadyStateSelection(Population *);
 
 
 Population * rouletteWheelSelection(Population *); //
@@ -58,14 +58,14 @@ Population * softTournamentSelection(Population *);
         // replace worst instead of parents???
 
 
-///******************************************************************************
-// * NAME : evaluateRanks
-// * 
-// * PURPOSE : Orders the individuals in a population in ascending order
-// *              based on fitness
-// * ARGUMENTS : Population * = the Population that you wish to evaluate
-// *****************************************************************************/
-//void evaluateRanks(Population *);
+/******************************************************************************
+ * NAME : evaluateRanks
+ * 
+ * PURPOSE : Orders the individuals in a population in ascending order
+ *              based on fitness
+ * ARGUMENTS : Population * = the Population that you wish to evaluate
+ *****************************************************************************/
+void evaluateRanks(Population *);
 
 
 #endif	/* SELECTION_H */

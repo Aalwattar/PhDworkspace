@@ -20,6 +20,7 @@
 #define	FITNESS_H
 
 #include <stdbool.h>
+#include "individual.h"
 
 /******************************************************************************
  *****************           ARCHITECTURE FILE I/O            *****************
@@ -117,11 +118,11 @@ void freeNapoleon(void);
  * NAME : evaluateFitness
  * 
  * PURPOSE : Evaluate the fitness of one possible solution (a chromosome)
- * ARGUMENTS : int * = the chromosome to be evaluated
+ * ARGUMENTS : Individual * = the possible solution to be evaluated
  * 
  * RETURNS : the fitness of the chromosome argument
  *****************************************************************************/
-int evaluateFitness(int *);
+void evaluateFitness(Individual *);
 
 
 

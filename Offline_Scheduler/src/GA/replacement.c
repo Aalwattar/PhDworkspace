@@ -16,5 +16,17 @@
  ******************************************************************************/
 
 #include "replacement.h"
+#include "individual.h"
 
-int i;
+#include <stdio.h>
+
+void replaceWorst(Population * original, Population * replacements, int num_replaced){
+    int pop_size = getPopSize();
+    int i, j;
+    
+    j=0;
+    for(i = 0 ; i < num_replaced; i++){
+        freeIndividual(&(original->member[pop_size -1 -i]));
+        duplicateIndividual(&(original->member[pop_size -1 -i]), &(replacements->member[j++]));
+    }
+}

@@ -50,7 +50,6 @@ int mainFunction(int argc, char *argv[]) {
     int		*succ_adj_mat;
     int		*reuse_mat;		//aij
     int		T=99;			//upper_bound_total_exec_time
-  char			*fname;
     int i = 0, j = 0;
     int random_num;
 

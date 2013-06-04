@@ -18,13 +18,14 @@
 
 #include "population.h"
 #include "fitness.h"
+#include "selection.h"
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
 
 static double CROSSOVER_RATE = 0.85;
-static double MUTATION_RATE  = 0.001;
+static double MUTATION_RATE  = 0.005;
 
 static int POP_SIZE = 50;
 
@@ -62,7 +63,9 @@ void printPopulation(Population * pop){
         for (j = 0; j < getNumGenes(); j++) {
             fprintf(stdout, "%d", pop->member[i].encoding[j]);
         }
-        fprintf(stdout, "\tfitness = %d\n", pop->member[i].fitness);
+        fprintf(stdout, "\tfitness = %d\truntime = %d\tpower = %d\n", 
+                    pop->member[i].fitness, pop->member[i].rfitness, 
+                    pop->member[i].cfitness );
     }
     
     printSummaryStatistics(pop);
@@ -109,21 +112,20 @@ void printSummaryStatistics(Population * pop){
 void determineFitness(Population * pop){
     int i;
     
-    for (i = 0; i < POP_SIZE; i++) {
-        pop->member[i].fitness = evaluateFitness(pop->member[i].encoding);
-    }
+    for (i = 0; i < POP_SIZE; i++)
+        evaluateFitness(&(pop->member[i]));
 }
 
 
 // a Generational algorithm
-void generateNextGeneration(Population * pop){
+void generateNextGeneration(Population * pop, int pop_size){
     int i;
     
-    for(i=0; i + 1 <POP_SIZE; i = i + 2)
+    for(i=0; i + 1 <pop_size; i = i + 2)
         if(randomNumber() < CROSSOVER_RATE)
                 crossover(&(pop->member[i]), &(pop->member[i + 1]));
     
-    for(i=0; i<POP_SIZE; i++)
+    for(i=0; i<pop_size; i++)
         mutate(&(pop->member[i]));
 }
 

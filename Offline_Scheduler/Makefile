@@ -24,9 +24,9 @@
 ###############################################################################
 
 #compiler options
-DEBUG			= -DDEBUG
+#DEBUG			= -DDEBUG
 CC 			= gcc
-C_FLAGS 		= -Wall -std=c99 -pedantic -g -O0 $(DEBUG)
+C_FLAGS 		= -Wall -std=c99 -pedantic -g -O2 $(DEBUG)
 C_INCLUDES   		= -Iinclude/Napoleon -Iinclude/GA
 L_INCLUDES		= -lm
 

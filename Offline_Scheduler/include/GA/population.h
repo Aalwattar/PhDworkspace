@@ -61,8 +61,9 @@ void freePopulation(Population *);
  * 
  * PURPOSE : Perform recombination and mutation on the provided Population
  * ARGUMENTS : Population * = the population that you wish to transform
+ *             int = the size of that population;
  *****************************************************************************/
-void generateNextGeneration(Population *);
+void generateNextGeneration(Population *, int);
 
 
 /******************************************************************************

@@ -25,8 +25,8 @@ typedef struct{
     int * encoding;     // their genotype
     
     int fitness;        // true fitness value
-    double rfitness;    // fitness relative to population
-    double cfitness;    // cumulative fitness
+    int rfitness;    // fitness relative to population
+    int cfitness;    // cumulative fitness
 } Individual;
 
 /******************************************************************************
