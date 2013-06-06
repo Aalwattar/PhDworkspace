@@ -1,9 +1,12 @@
 /*
  * data.c
+
  *
  *  Created on: Jun 1, 2011
  *      Author: ahmed
  */
+#include <stdlib.h>
+#include <stdio.h>
 #include "data.h"
 #include "PlatformConfig.h"
 /*FIXME */
@@ -16,17 +19,7 @@ struct node *dfg1;
 
 
 
-void initTasksTable( int numberOfTasks)
-{
-	int i;
 
-	for (i=0;i<numberOfTasks;i++)
-	{
-		TasksTable[i].Done=NO;
-		TasksTable[i].Q=NO;
-
-	}
-}
 
 void reinitTasksTable( int numberOfTasks)
 {
@@ -47,10 +40,6 @@ void reinitTasksTable( int numberOfTasks)
 		TasksTable[i].Sim.ExecTime.start=0;
 		TasksTable[i].Sim.ExecTime.end=0;
 
-
-
-		TasksTable[i].Sim.ExecTV.start=0;
-		TasksTable[i].Sim.ExecTV.end=0;
 
 
 	}
@@ -128,30 +117,79 @@ void getTaskSimulation( int ID,struct Simulation *value)
 	value->ExecTime.end=TasksTable[ID].Sim.ExecTime.end;
 
 
+}
 
-	value->ExecTV.start=TasksTable[ID].Sim.ExecTV.start;
-	value->ExecTV.end=TasksTable[ID].Sim.ExecTV.end;
+void setTaskSimExecTimeStart(int ID, unsigned int value )
+{
+	TasksTable[ID].Sim.ExecTime.start=value;
+
+}
+
+void setTaskSimExecTimeEnd(int ID, unsigned int value )
+{
+	TasksTable[ID].Sim.ExecTime.end=value;
+}
+
+void setTaskSimConfTimeStart(int ID, unsigned int value )
+{
+	TasksTable[ID].Sim.ConfigTime.start=value;
+
+
+}
+
+void setTaskSimConfTimeEnd(int ID, unsigned int value )
+{
+		TasksTable[ID].Sim.ConfigTime.end=value;
+
 }
 
 
-void setTaskSimulation (int ID,struct Simulation *value)
+void setTaskSimReused(int ID, unsigned char value )
+{
+	TasksTable[ID].Sim.Reused=value;
+
+
+}
+
+
+void setTaskSimPrrUsed(int ID, enum PRRID value )
 {
 
-		TasksTable[ID].Sim.Reused=value->Reused;
-		TasksTable[ID].Sim.PRRUsed=value->PRRUsed;
+	TasksTable[ID].Sim.PRRUsed=value;
 
-		TasksTable[ID].Sim.ConfigTime.start=value->ConfigTime.start;
-		TasksTable[ID].Sim.ConfigTime.end=value->ConfigTime.end;
-
-
-		TasksTable[ID].Sim.ExecTime.start=value->ExecTime.start;
-		TasksTable[ID].Sim.ExecTime.end=value->ExecTime.end;
-
-
-
-		TasksTable[ID].Sim.ExecTV.start=value->ExecTV.start;
-		TasksTable[ID].Sim.ExecTV.end=value->ExecTV.end;
 }
+
+
+
+//
+///*
+// * This function is so dangerous , use it carefully.
+// * Should not be uses.
+// */
+//void setTaskSimulation (int ID,struct Simulation *value)
+//{ static int lock=0;
+//
+//if (lock){
+//	fprintf(stderr,"ERROR [setTaskSimulation] Trying to access locked data\n");
+//	exit(EXIT_FAILURE);
+//}
+//
+//fprintf(stderr, "WARNING [setTaskSimulation] dangerous function should not be used\n ");
+//		lock=1;
+//
+//		TasksTable[ID].Sim.Reused=value->Reused;
+//		TasksTable[ID].Sim.PRRUsed=value->PRRUsed;
+//
+//		TasksTable[ID].Sim.ConfigTime.start=value->ConfigTime.start;
+//		TasksTable[ID].Sim.ConfigTime.end=value->ConfigTime.end;
+//
+//
+//		TasksTable[ID].Sim.ExecTime.start=value->ExecTime.start;
+//		TasksTable[ID].Sim.ExecTime.end=value->ExecTime.end;
+//
+//		lock=0;
+//
+//}
 
 
 

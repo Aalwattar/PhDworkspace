@@ -29,7 +29,6 @@ struct Simulation
 	unsigned char  Reused;
 	struct TimerTime ConfigTime;
 	struct TimerTime ExecTime;
-	struct TimerTime ExecTV;
 
 };
 
@@ -116,7 +115,6 @@ extern struct DFG DFGArray[];
 extern struct TaskType TasksTypes[];
 
 void Init_TasksTypes(void);
-void initTasksTable( int nubmerOfTasks);
 void reinitTasksTable( int numberOfTasks);
 void freeTasksTable(void);
 inline unsigned char  isTaskDone(int ID);
@@ -132,5 +130,10 @@ inline void setTaskMode (int ID,enum Mode value);
 inline void setTaskCounter(int value);
 inline void decTaskCounter(void);
 inline int getTaskCounter(void);
-
+void setTaskSimExecTimeStart(int ID, unsigned int value );
+void setTaskSimExecTimeEnd(int ID, unsigned int value );
+void setTaskSimConfTimeStart(int ID, unsigned int value );
+void setTaskSimConfTimeEnd(int ID, unsigned int value );
+void setTaskSimReused(int ID, unsigned char value );
+void setTaskSimPrrUsed(int ID, enum PRRID value );
 #endif /* DATA_H_ */
