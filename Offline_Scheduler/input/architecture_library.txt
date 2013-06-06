@@ -3,43 +3,44 @@ num_impls= 8
 #Impl    Colums   Rows  Conf_t    Exec_t   Conf_PWR   Exec_PWR
 
 TASK1    0         0       0        50       0          30
-TASK1    1         1       5        20       5          10
+TASK1    1         1       5        5       5          10
 TASK1    1         2       10       10       10         5 
 TASK1    2         2       20       5        20         3 
 
-TASK2    0         0       0        50       0          50
-TASK2    1         1       5        30       5          20
+TASK2    0         0       0        5       0          50
+TASK2    1         1       5        5       5          20
 TASK2    2         1       10       20       10         15 
 TASK2    2         2       20       10       20         10 
 TASK2    3         2       30       5        30         5  
 
 TASK3    0         0       0        150      0          137
-TASK3    2         2       20       125      20         70 
+TASK3    2         2       20       15      20         70 
 TASK3    3         2       30       75       30         50
 TASK3    4         1       20       20       20         40 
 TASK3    5         3       75       30       75         30 
 TASK3    5         5       125      20       125        25   
 
 TASK4    0         0       0        75       0          126
-TASK4    3         4       75       50       75         80 
+TASK4    3         4       75       40       75         80 
 TASK4    5         5       125      40       125        90
 
 
 TASK5    0         0       0        30       0          30
-TASK5    1         1       5        15       5          10
+TASK5    1         1       5        5       5          10
 TASK5    1         2       10       10       10         5 
 TASK5    2         2       20       5        20         3 
 
 TASK6    0         0       0        60       0          50
-TASK6    1         1       5        40       5          30
+TASK6    1         1       5        15       5          30
 TASK6    2         1       10       30       10         15 
 TASK6    2         2       20       15       20         10 
 
 
 TASK7    0         0       0        100      0          137
-TASK7    2         2       20       125      20         75 
+TASK7    2         2       20       100      20         75 
+TASK7    4         2       40       100      40         50
 
 
 TASK8    0         0       0        75       0          126
-TASK8    3         4       75       40       75         85 
+TASK8    3         4       75       30       75         85 
 TASK8    5         5       125      30       125        95
