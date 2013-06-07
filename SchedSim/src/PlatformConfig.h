@@ -8,16 +8,16 @@
 #ifndef PLATFROMCONFIG_H_
 #define PLATFROMCONFIG_H_
 
-#define NO_OF_DFG_REP 1
-#define NO_OF_DFGS 1
-#define INDEPENDENT_DFGS 0
+#define NO_OF_DFG_REP 3
+#define NO_OF_DFGS 10
+#define INDEPENDENT_DFGS 1
 
 #define RCS_SCHED_I 0
-#define RCS_SCHED_III 1
-#define RCS_SCHED_II 0
+#define RCS_SCHED_III 0
+#define RCS_SCHED_II 1
 
 #define NO_OF_PRRS 5
-#define NO_OF_GPPS 3
+#define NO_OF_GPPS 1
 
 #define MAX_PR_MODULES 5
 #define MAX_TASKS_TYPES 8
@@ -27,7 +27,7 @@
 
 #define MAX_QUEUE_TASKS 256
 
-#define SW_HW_MIG 1
+#define SW_HW_MIG 0
 
 #define EXEC_TIME_LEARNING_RATIO 0.2
 
@@ -69,9 +69,9 @@
  *
  */
 #define PRR_0_CONFIG_TIME 20
-#define PRR_1_CONFIG_TIME 30
-#define PRR_2_CONFIG_TIME 50
-#define PRR_3_CONFIG_TIME 70
+#define PRR_1_CONFIG_TIME 20
+#define PRR_2_CONFIG_TIME 20
+#define PRR_3_CONFIG_TIME 20
 #define PRR_4_CONFIG_TIME 20
 /*
 #define PRR_5_CONFIG_TIME 20

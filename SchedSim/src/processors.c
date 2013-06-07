@@ -76,7 +76,7 @@ void ResetTimer(void)
  	double ratio;
  	if (!orig)
  		return new;
- 	ratio=(((double) (int ) ((int )new- (int )orig)) * EXEC_TIME_LEARNING_RATIO);
+ 	ratio=(((double) (int ) ((int )new - (int )orig)) * EXEC_TIME_LEARNING_RATIO);
  tmp=((int ) orig+ (int ) ratio);
 
  	return tmp;
@@ -114,10 +114,23 @@ void ResetTimer(void)
 
  }
 
+void InitProcessors(struct Processor* processors, int size,enum ProcessorType type) {
+	int i;
+	for (i = 0; i < size; i++) {
+		processors[i].Busy = NO;
+		processors[i].CurrentModule = 0;
+		processors[i].ExecCount = 0;
+		processors[i].ConfigCount = 0;
+		processors[i].ID = 0;
+		processors[i].Type = type;
+		processors[i].ID = i;
 
-struct Processor * InitProcessors( int size, enum ProcessorType type)
+	}
+}
+
+struct Processor * CreateProcessors( int size, enum ProcessorType type)
 {
-	 int i;
+
 struct Processor *processors;
 	processors=(struct Processor *)malloc(sizeof(struct Processor ) *size);
   if (!processors) 
@@ -125,17 +138,7 @@ struct Processor *processors;
     fprintf(stderr, "ERROR [InitProcessors] Allocating memory to processors \n");
     exit(EXIT_FAILURE); 
   }
-	for (i=0; i<size; i++)
-	{
-		processors[i].Busy=NO;
-		processors[i].CurrentModule=0;
-		processors[i].ExecCount=0;
-		processors[i].ConfigCount=0;
-		processors[i].ID=0;
-		processors[i].Type=type;
-		processors[i].ID=i;
-
-	}
+	InitProcessors(processors,size,type);
 
 	return processors;
 }
@@ -264,8 +267,8 @@ void CreateAllPEs(struct PEs *pEs,int noOfPRRs, int noOfGPPs)
 	pEs->SWPE=(struct PE*) malloc(sizeof(struct PE));
 	pEs->HWPE->size=noOfPRRs;
 	pEs->SWPE->size =noOfGPPs;
-	pEs->HWPE->pe=InitProcessors(pEs->HWPE->size,TypeHW );
-	pEs->SWPE->pe=InitProcessors(pEs->SWPE->size, TypeSW);
+	pEs->HWPE->pe=CreateProcessors(pEs->HWPE->size,TypeHW );
+	pEs->SWPE->pe=CreateProcessors(pEs->SWPE->size, TypeSW);
 
 }
 

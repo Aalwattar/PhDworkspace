@@ -53,7 +53,8 @@ int main(void) {
 		fprintf(stdout,"Processing: DFG[%d] with [%d] nodes please wait .....\n", i, DFGArray[i].size);
 		fprintf(stdout,"*******************************************************************************\n");
 #if INDEPENDENT_DFGS
-
+		InitProcessors(pEs.HWPE->pe,pEs.HWPE->size,TypeHW);
+		InitProcessors(pEs.SWPE->pe,pEs.SWPE->size,TypeSW);
 		RstCounters(&counters);
 #endif
 		for (w=0;w<NO_OF_DFG_REP;w++)
@@ -134,7 +135,7 @@ int main(void) {
 
 
 
-			print_DFG( );
+		//	print_DFG( );
 
 			fprintf(stdout,"Process complete in {%d} cycles \n",GetTimer());
 			fprintf (stdout,"Number of configuration= %u SW Busy [%u] HW Busy [%u]\n",GetConfigCount(),counters.busyCounterSW,counters.busyCounterHW);
@@ -147,7 +148,7 @@ int main(void) {
 	/*
 	 * Clean Up
 	 */
-	fprintf(stdout,"Cleaning up .... \n");
+	fprintf(stderr,"Cleaning up .... \n");
 
 	freeTasksTable();
 	CleanAllPEs(&pEs);

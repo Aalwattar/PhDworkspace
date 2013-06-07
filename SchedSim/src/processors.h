@@ -47,7 +47,7 @@ struct PEs
 
 unsigned int GetTimer(void);
 void ResetTimer(void);
-struct Processor * InitProcessors( int , enum ProcessorType );
+struct Processor * CreateProcessors( int , enum ProcessorType );
 int IsProcessorBusy( struct Processor *);
 void SetProcessorBusy( struct Processor *);
 void SetProcessorNotBusy( struct Processor *);
@@ -60,5 +60,5 @@ unsigned int Ticker(struct PEs *);
 void CleanAllProcessor(struct PEs *pEs);
 void CreateAllPEs(struct PEs *pEs,int noOfPRRs, int noOfGPPs);
 void CleanAllPEs(struct PEs *pEs);
-
+void InitProcessors(struct Processor* processors, int size,enum ProcessorType type);
 #endif /* PROCESSORS_H_ */

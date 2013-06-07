@@ -33,8 +33,8 @@
 
 
 
-
-
+ int SearchReuse(Queue readyQ, struct PE *pRRs, int qSize );
+ int RCSchedIIIEn(Queue ReadyQ, struct Counts *counters, struct PEs *pes);
 int RCSchedII(Queue ReadyQ , struct Counts *Counters, struct PEs *pes);
 int RCSchedIII(Queue ReadyQ , struct Counts *Counters, struct PEs *pes);
 int AddTask2Queue(Queue ReadyQ,int size);

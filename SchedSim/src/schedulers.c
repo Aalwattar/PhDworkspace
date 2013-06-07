@@ -21,6 +21,8 @@ inline int CanRun(unsigned int mask, unsigned int prr) {
 int ReusePRR_V2(int module, struct PE *pRRs) {
 
 	int i;
+	if (module<0)
+		return -1;
 	for (i = 0; i < pRRs->size; i++) {
 		if (pRRs->pe[i].CurrentModule == module
 				&& !IsProcessorBusy(&pRRs->pe[i])) {
@@ -168,7 +170,7 @@ int AddTask2Queue(Queue ReadyQ, int size) {
  * Run task SII
  */
 int RCSchedII(Queue ReadyQ, struct Counts *counters, struct PEs *pes) {
-	int task;
+	int task,tmp;
 
 	struct NodeData nd;
 	int freePRR = 0;
@@ -215,10 +217,22 @@ int RCSchedII(Queue ReadyQ, struct Counts *counters, struct PEs *pes) {
 
 	case HybHW:
 	case HWOnly:
-
+		if ((tmp=SearchReuse(ReadyQ,pes->HWPE,MAX_QUEUE_TASKS))>=0)
+		{
+			task=tmp;
+		}
 		nd.ExecCount = (unsigned int) dfg1[task].Emu.HWdelay;
 		nd.Module = dfg1[task].TypeID;
 		nd.TaskID = task;
+
+//		if ((task=SearchReuse(ReadyQ,pes->HWPE,MAX_QUEUE_TASKS))>=0)
+//						{
+//							nd.ExecCount = (unsigned int) dfg1[task].Emu.HWdelay;
+//							nd.Module = dfg1[task].TypeID;
+//							nd.TaskID = task;
+//
+//						}
+
 		if ((freePRR = ReusePRR_V2(nd.Module, pes->HWPE)) < 0) {
 			if (IsReconfiguring()) {
 
@@ -307,7 +321,8 @@ void RstCounters(struct Counts* counters) {
  * Run task SIII
  */
 int RCSchedIII(Queue ReadyQ, struct Counts *counters, struct PEs *pes) {
-	int task;
+	int task,tmp;
+
 
 	struct NodeData nd;
 
@@ -316,6 +331,7 @@ int RCSchedIII(Queue ReadyQ, struct Counts *counters, struct PEs *pes) {
 	if (IsEmpty(ReadyQ))
 		return QEmpty;
 	task = Front(ReadyQ);
+
 
 	switch (getTaskMode(task)) {
 
@@ -372,6 +388,15 @@ int RCSchedIII(Queue ReadyQ, struct Counts *counters, struct PEs *pes) {
 			return EXIT_SUCCESS;
 		}
 #endif
+
+		if ((tmp=SearchReuse(ReadyQ,pes->HWPE,MAX_QUEUE_TASKS))>=0)
+				{task=tmp;
+					nd.ExecCount = (unsigned int) dfg1[task].Emu.HWdelay;
+					nd.Module = dfg1[task].TypeID;
+					nd.TaskID = task;
+
+				}
+
 
 		if ((freePRR = ReusePRR_V2(nd.Module, pes->HWPE)) < 0) {
 			if (IsReconfiguring()) {
@@ -444,3 +469,44 @@ int RCSchedIII(Queue ReadyQ, struct Counts *counters, struct PEs *pes) {
 	return EXIT_SUCCESS;
 }
 
+int SearchReuse(Queue readyQ, struct PE *pRRs, int qSize )
+{
+
+	Queue qtmp;
+	qtmp=CreateQueue(qSize);
+	ElementType tmp,task=-1;
+	int found=NO;
+
+	while(!IsEmpty(readyQ))
+	{
+		tmp=FrontAndDequeue(readyQ);
+		if ( (ReusePRR_V2(dfg1[tmp].TypeID, pRRs)) >=0 && !found)
+		{
+			task=tmp;
+			found=YES;
+		}else
+		{
+			Enqueue(tmp,qtmp);
+		}
+
+
+
+	}
+
+	MakeEmpty(readyQ);
+	if (task>=0){
+		Enqueue(task,readyQ);
+	}
+	while(!IsEmpty(qtmp))
+		{
+			tmp=FrontAndDequeue(qtmp);
+			Enqueue(tmp,readyQ);
+
+		}
+
+	DisposeQueue(qtmp);
+	return task;
+
+
+
+}
