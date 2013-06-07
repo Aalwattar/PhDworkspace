@@ -37,46 +37,127 @@
 #define ARCH_FILENAME "input/architecture_library.txt"
 #define AIF_FILENAME  "input/B1_10_5.aif"
 
-int STOP_CONDITION = 1000;
-int generation_num = 0;
+int STOP_CONDITION = 500;
+int POP_SIZE = 50;
 
 
 void initParameters(int, char **);
-bool populationConverged(Population * pop);
-void freeParameters(Population *);
+void freeParameters(void);
 
-void bruteForce();
+void generationalGA(void);
+void elitestGA(void);
+
+
+// FUTURE - implement this
+bool populationConverged(Population * pop);
 
 
 int main(int argc, char * argv[]){
-    Population * pop;
-
     initParameters(argc, argv);
-    pop = genRandPopulation();
-    determineFitness(pop);
+    
+    // change this to the preferred algorithm
+    elitestGA();
+    
+    freeParameters();
+    return EXIT_SUCCESS;
+}
 
+
+void elitestGA(void){
+    Population * pop, * selected;
+    Individual * best_solution;
+    int half_pop;
+    int generation_num = 0;
+
+    half_pop = POP_SIZE / 2;
+    if(POP_SIZE % 2 == 1)
+        half_pop++;
+    
+    pop = genRandPopulation(POP_SIZE);
+
+#ifdef VERBOSE
     fprintf(stdout, "\n----------------------------------------------------------\n\n");
     fprintf(stdout, "Starting Population:\n");
+    determineFitness(pop);
     printPopulation(pop);
+#endif
 
     while(generation_num < STOP_CONDITION){
-        #ifdef DEBUG
+        determineFitness(pop);
+
+#ifdef VERBOSE
+        fprintf(stdout, "\n-----------------   GENERATION %d   -----------------\n", generation_num + 1);
+        printPopulation(pop);
+#endif
+
+        selected = tournamentSelection(pop, pop->size);
+        evolvePopulation(selected);
+        determineFitness(selected);
+
+        replaceWorst(pop, selected, half_pop);
+        freePopulation(selected);
+
+        generation_num++;
+    }
+
+#ifdef VERBOSE
+    fprintf(stdout, "\nFinal Population:\n");
+    determineFitness(pop);
+    printPopulation(pop);
+#endif
+
+    best_solution = findBest(pop);
+    evaluateFitness(best_solution);
+    printIndividual(best_solution);
+
+    freePopulation(pop);
+}
+
+
+
+void generationalGA(void){
+    Population * pop, * selected;
+    Individual * best_solution;
+    int generation_num = 0;
+    
+    pop = genRandPopulation(POP_SIZE);
+
+    #ifdef VERBOSE
+        fprintf(stdout, "\n----------------------------------------------------------\n\n");
+        fprintf(stdout, "Starting Population:\n");
+        determineFitness(pop);
+        printPopulation(pop);
+    #endif
+
+    while(generation_num < STOP_CONDITION){
+        determineFitness(pop);
+        
+        #ifdef VERBOSE
             fprintf(stdout, "\n-----------------   GENERATION %d   -----------------\n", generation_num + 1);
             printPopulation(pop);
         #endif
         
-        determineFitness(pop);
-        steadyStateSelection(pop);
+        selected = tournamentSelection(pop, pop->size);
+        evolvePopulation(selected);
+        
+        freePopulation(pop);
+        pop = selected;
+        
         generation_num++;
     }
 
-    fprintf(stdout, "\nFinal Population:\n");
-    printPopulation(pop);
-
-    freeParameters(pop);
-    return EXIT_SUCCESS;
+    #ifdef VERBOSE
+        fprintf(stdout, "\nFinal Population:\n");
+        determineFitness(pop);
+        printPopulation(pop);
+    #endif
+    
+    determineFitness(pop);
+    best_solution = findBest(pop);
+    printIndividual(best_solution);
+    
+    freePopulation(pop);
 }
-
 
 void initParameters(int argc, char ** argv){
     char * arch_filename = ARCH_FILENAME;
@@ -103,13 +184,18 @@ void initParameters(int argc, char ** argv){
                 setMutationRate(atof(optarg));
                 break;
             case 'p':
-                setPopSize(atoi(optarg));
+                // FIX - ensure that the population size is between 1 and 10000
+                POP_SIZE = atoi(optarg);
                 break;
             case 'r':
-                seed = atoi(optarg);
+                // REPLACEMENT METHOD
                 break;
             case 's':
                 // SELECTION METHOD
+                break;
+                
+            case 't':
+                seed = atoi(optarg);
                 break;
                 
             case ':':   
@@ -134,71 +220,18 @@ void initParameters(int argc, char ** argv){
 
     fprintf(stdout, "Parameters:\n");
     fprintf(stdout, "\tSeed = %d\n\n", seed);
-    fprintf(stdout, "\tPopulation Size       = %d\n", getPopSize());
+    // FIX
+    fprintf(stdout, "\tPopulation Size       = %d\n", POP_SIZE);
     fprintf(stdout, "\tNumber of Generations = %d\n\n", STOP_CONDITION);
     fprintf(stdout, "\tMutation Rate  = %.4lf\n", getMutationRate());
-    fprintf(stdout, "\tCrossover Rate = %.4lf\n\n\t", getCrossoverRate());
+    fprintf(stdout, "\tCrossover Rate = %.4lf\n\n", getCrossoverRate());
 }
 
 
-void freeParameters(Population * pop){
-    freePopulation(pop);
+void freeParameters(void){
     freeArchLibrary();
     freeNapoleon();
 }
-
-
-
-//// a testing function for B1_10_5.aif
-//void bruteForce(void){
-//    int solution[10];
-//    int bestFitness = 100000;
-//    int fitness;
-//
-//    for(int a = 1; a <= 5; a++){
-//        solution[0] = a;
-//        for(int b = 1; b <= 2; b++){
-//            solution[1] = b;
-//            for(int c = 1; c <= 4; c++){
-//                solution[2] = c;
-//                for(int d = 1; d <= 5; d++){
-//                    solution[3] = d;
-//                    for(int e = 1; e <= 4; e++){
-//                        solution[4] = e;
-//                        for(int f = 1; f <= 3; f++){
-//                            solution[5] = f;
-//                            for(int g = 1; g <= 5; g++){
-//                                solution[6] = g;
-//                                for(int h = 1; h <= 4; h++){
-//                                    solution[7] = h;
-//                                    for(int i = 1; i <= 3; i++){
-//                                        solution[8] = i;
-//                                        for(int j = 1; j <= 4; j++){
-//                                            solution[9] = j;
-//
-//                                            fitness = evaluateFitness(solution);
-//
-//                                            if(fitness <= bestFitness){
-//                                                for(int ind = 0; ind < 10; ind++){
-//                                                    printf("%d", solution[ind]);
-//                                                }
-//                                                //                                                printf("%d%d%d%d%d%d%d%d%d%d", a, b, c, d, e, f, g, h, i, j);
-//                                                printf("\t Fitness = %d\n", fitness);
-//
-//                                                bestFitness = fitness;
-//                                            }
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}
-
 
 // COMMENTING TEMPLATE
 /******************************************************************************

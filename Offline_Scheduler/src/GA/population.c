@@ -23,23 +23,22 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <limits.h>
 
 static double CROSSOVER_RATE = 0.85;
 static double MUTATION_RATE  = 0.005;
 
-static int POP_SIZE = 50;
-
-
-Population * genRandPopulation(){
+Population * genRandPopulation(int pop_size){
     Population * pop;
     int i;
-
+    
     pop = malloc(sizeof(Population));
-    pop->member = malloc(sizeof(Individual) * POP_SIZE);
-    pop->total_fitness = 0;
+    pop->member = malloc(sizeof(Individual) * pop_size);
 
-    for(i=0; i < POP_SIZE; i++)
+    for(i=0; i < pop_size; i++)
         initRandIndividual(&(pop->member[i]));
+    
+    pop->size = pop_size;
     
     return pop;
 }
@@ -47,7 +46,7 @@ Population * genRandPopulation(){
 void freePopulation(Population * pop){
     int i;
     
-    for(i=0; i<POP_SIZE; i++)
+    for(i = 0; i < pop->size; i++)
         freeIndividual(&(pop->member[i]));
     
     free(pop->member);
@@ -56,10 +55,76 @@ void freePopulation(Population * pop){
 
 
 
+void determineFitness(Population * pop){
+    int i;
+    
+    for (i = 0; i < pop->size; i++)
+        evaluateFitness(&(pop->member[i]));
+}
+
+
+// The compare function for qsort
+int compare(const void * p1, const void * p2){
+    return ((Individual *)p1)->fitness - ((Individual *)p2)->fitness;
+}
+
+void sortByFitness(Population * pop){
+    qsort(pop->member, pop->size, sizeof(Individual), compare);
+}
+
+
+
+void evolvePopulation(Population * pop){
+    int i;
+    
+    for(i=0; i + 1 < pop->size; i = i + 2)
+        if(randomNumber() < CROSSOVER_RATE)
+                crossover(&(pop->member[i]), &(pop->member[i + 1]));
+    
+    for(i=0; i < pop->size; i++)
+        mutate(&(pop->member[i]));
+}
+
+
+
+void setCrossoverRate(double rate){
+    if(0 <= rate && rate <= 1){
+        CROSSOVER_RATE = rate;
+        return;
+    }
+    
+    fprintf(stderr, "Invalid crossover rate %.3lf.\n", rate);
+    fprintf(stderr, "The crossover rate must be a decimal number between 0 and 1\n");
+    
+    exit(1);
+}
+
+double getCrossoverRate(void){
+    return CROSSOVER_RATE;
+}
+
+
+void setMutationRate(double rate){
+    if(0 <= rate && rate <= 1){
+        MUTATION_RATE = rate;
+        return;
+    }
+    
+    fprintf(stderr, "Invalid mutation rate %.3lf.\n", rate);
+    fprintf(stderr, "The mutation rate must be a decimal number between 0 and 1\n");
+    
+    exit(1);
+}
+
+double getMutationRate(void){
+    return MUTATION_RATE;
+}
+
+
 void printPopulation(Population * pop){
     int i;
     
-    for (i = 0; i < POP_SIZE; i++)
+    for (i = 0; i < pop->size; i++)
         printIndividual(&(pop->member[i]));
     
     printSummaryStatistics(pop);
@@ -71,12 +136,12 @@ void printSummaryStatistics(Population * pop){
     double sd;
     
     int max = 0;
-    int min = 1000000;
+    int min = INT_MAX;
     int fitnessSum;
     int i;
     
     fitnessSum = 0;
-    for(i=0; i<POP_SIZE; i++){
+    for(i = 0; i < pop->size; i++){
         
         fitnessSum = fitnessSum + pop->member[i].fitness;
         
@@ -87,66 +152,18 @@ void printSummaryStatistics(Population * pop){
             min = pop->member[i].fitness;
     }
     
-    mean = (double) fitnessSum / POP_SIZE;
+    mean = (double) fitnessSum / pop->size;
     
     differenceSum = 0;
-    for(i=0; i<POP_SIZE; i++)
+    for(i = 0; i < pop->size; i++)
         differenceSum = differenceSum + pow(mean - pop->member[i].fitness, 2);
     
-    sd = sqrt(differenceSum / POP_SIZE);
+    sd = sqrt(differenceSum / pop->size);
     
+//    fprintf(stdout, "\nAverage = %.3lf\n", mean);
+//    fprintf(stdout, "SD      = %.3lf\n", sd);
+//    fprintf(stdout, "Min     = %d\n", min);
+//    fprintf(stdout, "Max     = %d\n", max);
     
-    fprintf(stdout, "\nAverage = %.3lf\n", mean);
-    fprintf(stdout, "SD      = %.3lf\n", sd);
-    fprintf(stdout, "Min     = %d\n", min);
-    fprintf(stdout, "Max     = %d\n", max);
-}
-
-
-void determineFitness(Population * pop){
-    int i;
-    
-    for (i = 0; i < POP_SIZE; i++)
-        evaluateFitness(&(pop->member[i]));
-}
-
-
-// a Generational algorithm
-void generateNextGeneration(Population * pop, int pop_size){
-    int i;
-    
-    for(i=0; i + 1 <pop_size; i = i + 2)
-        if(randomNumber() < CROSSOVER_RATE)
-                crossover(&(pop->member[i]), &(pop->member[i + 1]));
-    
-    for(i=0; i<pop_size; i++)
-        mutate(&(pop->member[i]));
-}
-
-
-// FIX - ensure that the crossover rate is between 0 and 1 
-void setCrossoverRate(double rate){
-    CROSSOVER_RATE = rate;
-}
-
-double getCrossoverRate(void){
-    return CROSSOVER_RATE;
-}
-
-// FIX - ensure that the mutation rate is between 0 and 1 
-void setMutationRate(double rate){
-    MUTATION_RATE = rate;
-}
-
-double getMutationRate(void){
-    return MUTATION_RATE;
-}
-
-// FIX - ensure that the population size is between 1 and 10000
-void setPopSize(int size){
-    POP_SIZE = size;
-}
-
-int getPopSize(void){
-    return POP_SIZE;
+    fprintf(stdout, "Stats : %.5lf,\t%.5lf,\t%d,\t%d\n", mean, sd, min, max);
 }

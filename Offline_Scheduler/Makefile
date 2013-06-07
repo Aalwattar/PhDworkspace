@@ -6,7 +6,7 @@
 # AUTHOR : Ziad Abuowaimer & Jennifer Winer
 #
 # CREATED : May 21, 2013
-# LAST MODIFIED : May 22, 2013
+# LAST MODIFIED : June 6, 2013
 ###############################################################################
 
 ###############################################################################
@@ -24,9 +24,15 @@
 ###############################################################################
 
 #compiler options
-DEBUG			= -DDEBUG
+
 CC 			= gcc
-C_FLAGS 		= -Wall -std=c99 -pedantic -g -O2 $(DEBUG)
+C_FLAGS 		= -std=c99 -Wall -pedantic
+
+DEBUG_FLAGS		= -g -DDEBUG -O0
+VERBOSE_FLAGS		= -DVERBOSE
+EXE_FLAGS		= -O2
+
+
 C_INCLUDES   		= -Iinclude/Napoleon -Iinclude/GA
 L_INCLUDES		= -lm
 
@@ -70,8 +76,18 @@ all : $(PROG_NAME)
 	
 	
 .PHONY : $(PROG_NAME) 
+	
+	
+debug   : C_FLAGS += $(DEBUG_FLAGS)
+debug   : $(PROG_NAME)
+	
+verbose : C_FLAGS += $(VERBOSE_FLAGS)
+verbose : $(PROG_NAME)
+	
+exe     : C_FLAGS += $(EXE_FLAGS)
+exe     : $(PROG_NAME)
 
-# FIX -  make the following targets more descriptive
+
 $(PROG_NAME) : $(OBJS)
 	$(CC) $(OBJS) $(L_INCLUDES) -o $(PROG_NAME)
 
@@ -93,9 +109,5 @@ clean :
 	rm -f $(OBJ_DIR)/$(GA_DIR)/*
 
 
-
 run: 
 	./$(PROG_NAME)
-			
-debug :
-	$(DBGR) $(DBG_OPTS) $(PROG_NAME)

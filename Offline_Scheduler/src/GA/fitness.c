@@ -6,7 +6,7 @@
  *                  for each task's operation
  * 
  * Created  : May 16, 2013
- * Modified : May 31, 2013
+ * Modified : June 6, 2013
  ******************************************************************************/
 
 /*******************************************************************************
@@ -25,14 +25,13 @@
 #include "napoleon.h"
 #include "io.h"
 #include "types.h"
-#include "individual.h"
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <strings.h>
 
-
+// FIX - normalize power + runtime to make them 75:25 instead
 #define RUNTIME_WEIGHT 0.875
 #define POWER_WEIGHT 0.125
 
@@ -44,8 +43,6 @@
  *****************************************************************************/
 
 // represents one architecture's implementation
-
-
 typedef struct{
     int columns;
     int rows;
@@ -58,8 +55,6 @@ typedef struct{
 
 
 // contains all of the architectures of an task
-
-
 typedef struct{
     int num_impl; // the number of architectures for this task
     Implementation * impl; // the properties of each architecture

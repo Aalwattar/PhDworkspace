@@ -6,7 +6,7 @@
  *                  for each task's operation
  * 
  * Created  : May 7, 2013
- * Modified : May 31, 2013
+ * Modified : June 6, 2013
  ******************************************************************************/
 
 /*******************************************************************************
@@ -24,7 +24,7 @@
 
 typedef struct{
     Individual * member;
-    double total_fitness;
+    int         size;
 }Population;
 
 /******************************************************************************
@@ -36,12 +36,14 @@ typedef struct{
  * 
  * PURPOSE : Creates a population of individuals. Each individual will
  *              contain randomly generated genes, but is still a valid solution
+ * ARGUMENTS : int = the number of individuals in the population
+ * 
  * RETURNS : A population of randomly generated individuals
  * 
  * NOTE : the population that is returned should eventually be freed through
  *              the usage of freePopulation();
  *****************************************************************************/
-Population * genRandPopulation(void);
+Population * genRandPopulation(int);
 
 /******************************************************************************
  * NAME : freePopulation
@@ -57,30 +59,14 @@ void freePopulation(Population *);
 
 
 /******************************************************************************
- * NAME : generateNextGeneration
+ * NAME : evolvePopulation
  * 
  * PURPOSE : Perform recombination and mutation on the provided Population
  * ARGUMENTS : Population * = the population that you wish to transform
  *             int = the size of that population;
  *****************************************************************************/
-void generateNextGeneration(Population *, int);
+void evolvePopulation(Population *);
 
-
-/******************************************************************************
- * NAME : printPopulation
- * 
- * PURPOSE : Print all chromosomes with their fitness values
- * ARGUMENTS : Population * = the population that you wish visualize
- *****************************************************************************/
-void printPopulation(Population *);
-
-/******************************************************************************
- * NAME : printSummaryStatistics
- * 
- * PURPOSE : Statistical information about a population. 
- * ARGUMENTS : Population * = the population that you wish visualize
- *****************************************************************************/
-void printSummaryStatistics(Population *);
 
 /******************************************************************************
  * NAME : determineFitness
@@ -89,6 +75,17 @@ void printSummaryStatistics(Population *);
  * ARGUMENTS : Population * = the population that you wish evaluate
  *****************************************************************************/
 void determineFitness(Population *);
+
+
+
+/******************************************************************************
+ * NAME : evaluateRanks
+ * 
+ * PURPOSE : Orders the individuals in a population in ascending order
+ *              based on fitness
+ * ARGUMENTS : Population * = the Population that you wish to evaluate
+ *****************************************************************************/
+void sortByFitness(Population *);
 
 
 
@@ -126,31 +123,23 @@ void setMutationRate(double);
 double getMutationRate(void);
 
 
-/******************************************************************************
- * NAME : setPopSize
- * 
- * PURPOSE : a setter for the population size
- * ARGUMENTS : int = a number between 1 and 10000
- *****************************************************************************/
-void setPopSize(int);
 
 /******************************************************************************
- * NAME : getCrossoverRate
+ * NAME : printPopulation
  * 
- * PURPOSE : getter for the population size
- * RETURNS : the number of individuals in the population
+ * PURPOSE : Print all chromosomes with their fitness values
+ * ARGUMENTS : Population * = the population that you wish visualize
  *****************************************************************************/
-int getPopSize(void);
+void printPopulation(Population *);
 
+/******************************************************************************
+ * NAME : printSummaryStatistics
+ * 
+ * PURPOSE : Statistical information about a population. 
+ * ARGUMENTS : Population * = the population that you wish visualize
+ *****************************************************************************/
+void printSummaryStatistics(Population *);
 
-
-// FIX - incomplete!!!
-// REPLACEMENT ALGORITHM - generational, steady state?, replace worst?
-        // FIX - I AM ASSUMING THAT THE ENTIRE GENERATION IS REPLACED FOR NOW
-
-// FIND THE BEST INDIVIDUAL - when the algorithm ends
-
-// TERMINATION CONDITION
 
 #endif	/* POPULATION_H */
 

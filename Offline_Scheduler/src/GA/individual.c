@@ -6,7 +6,7 @@
  *                  for each task's operation
  * 
  * Created  : May 7, 2013
- * Modified : May 30, 2013
+ * Modified : June 6, 2013
  ******************************************************************************/
 
 /*******************************************************************************
@@ -33,8 +33,7 @@ void initRandIndividual(Individual * ind){
     for(i=0; i<getNumGenes(); i++)
         ind->encoding[i] = (getNumArch(getTaskType(i)) - 1) * randomNumber() + 1;
     
-    // FIX
-    // TESTING  - right now I restrict the GA from choosing any of the GPPs
+    // DOCUMENT  - right now I restrict the GA from choosing any of the GPPs
     // ORIGINAL - ind->encoding[i] = getNumArch(getTaskType(i)) * randomNumber();
 }
 
@@ -49,8 +48,6 @@ void duplicateIndividual(Individual * copy, Individual * original){
     
     for(i=0; i<getNumGenes(); i++)
         copy->encoding[i] = original->encoding[i];
-
-    // FIX - remove copying functions
 }
 
 void mutate(Individual * ind){
@@ -60,8 +57,7 @@ void mutate(Individual * ind){
         if(randomNumber() < getMutationRate())
             ind->encoding[i] = (getNumArch(getTaskType(i)) - 1) * randomNumber() + 1;
     
-    // FIX
-    // TESTING  - right now I restrict the GA from choosing any of the GPPs
+    // DOCUMENT  - right now I restrict the GA from choosing any of the GPPs
     // ORIGINAL - ind->encoding[i] = getNumArch(getTaskType(i)) * randomNumber();
 }                              
 
@@ -102,6 +98,11 @@ void printIndividual(Individual * ind){
     for (i = 0; i < getNumGenes(); i++)
         fprintf(stdout, "%d", ind->encoding[i]);
     
-    fprintf(stdout, "\tfitness = %d\n\truntime = %d\tprefetch = %d\tpower = %d\treuse = %d\n", 
-                ind->fitness, ind->exec_time, ind->prefetch, ind->energy, ind->num_reuse);
+    // GA fitness info
+    fprintf(stdout, "\tfitness = %d\truntime = %d\tpower = %d\n", 
+                        ind->fitness, ind->exec_time, ind->energy);
+    
+    // More Napoleon information
+//    fprintf(stdout, "\tfitness = %d\truntime = %d\tprefetch = %d\tpower = %d\treuse = %d\n", 
+//                ind->fitness, ind->exec_time, ind->prefetch, ind->energy, ind->num_reuse);
 }

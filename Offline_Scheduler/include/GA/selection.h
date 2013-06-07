@@ -6,7 +6,7 @@
  *                  for each task's operation
  * 
  * Created  : May 16, 2013
- * Modified : May 30, 2013
+ * Modified : June 6, 2013
  ******************************************************************************/
 
 /*******************************************************************************
@@ -25,47 +25,39 @@
 /******************************************************************************
  * NAME : tournamentSelection
  * 
- * PURPOSE : To create the next generation by selecting individuals from
- *               a population via hard tournament selection
+ * PURPOSE : Select individuals from a population based on the the hard
+ *              tournament selection algorithm
  * ARGUMENTS : Population * = The population that you wish to select from 
+ *             int = the number of individuals that you wish to select
  * 
- * RETURNS : The next generation
- * 
- * NOTE : This algorithms is presently generational (replaces all individuals
- *          in a population at once.)
+ * RETURNS : A Population that contains deep copies of all of the winners from 
+ *              the requested number of tournaments. 
  *****************************************************************************/
-Population * tournamentSelection(Population *);
-
-void steadyStateSelection(Population *);
-
-
-Population * rouletteWheelSelection(Population *); //
-
-Population * linearRankingSelection(Population *);
-
-//Population * linearScalingSelection(Population *); //
-
-Population * sigmaScalingSelection(Population *);
-
-Population * powerScalingSelection(Population *);
-
-Population * softTournamentSelection(Population *);
-
-// implement a form of elitism?
-        // this can mean only reproducing with 2 individuals at a time
-// Boltzmann selection
-// steady state algorithms
-        // replace worst instead of parents???
+Population * tournamentSelection(Population *, int);
 
 
 /******************************************************************************
- * NAME : evaluateRanks
+ * NAME : randomSelection
  * 
- * PURPOSE : Orders the individuals in a population in ascending order
- *              based on fitness
- * ARGUMENTS : Population * = the Population that you wish to evaluate
+ * PURPOSE : Randomly selects individuals from a population.
+ * ARGUMENTS : Population * = The population that you wish to select from 
+ *             int = the number of individuals that you wish to select
+ * 
+ * RETURNS : A Population that contains deep copies of all of the winners from 
+ *              the requested number of tournaments. 
  *****************************************************************************/
-void evaluateRanks(Population *);
+Population * randomSelection(Population *, int);
+
+
+/******************************************************************************
+ * NAME : findBest
+ * 
+ * PURPOSE : Finds the individual with the best fitness
+ * ARGUMENTS : Population * = the population that you wish to search
+ * 
+ * RETURNS : a pointer to the individual with the best fitness
+ *****************************************************************************/
+Individual * findBest(Population *);
 
 
 #endif	/* SELECTION_H */
