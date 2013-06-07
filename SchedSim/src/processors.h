@@ -5,7 +5,7 @@
 #define YES 1
 #define NO 0
 
-enum ProcessorType {HW, SW};
+enum ProcessorType {TypeHW, TypeSW};
 
 
 
@@ -40,8 +40,8 @@ struct PE
 
 struct PEs
 {
-	struct PE * HW;
-	struct PE * SW;
+	struct PE * HWPE;
+	struct PE * SWPE;
 };
 
 

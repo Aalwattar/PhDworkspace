@@ -16,7 +16,7 @@
 #include "PlatformConfig.h"
 #include "queue.h"
 #include "schedulers.h"
-
+#include "displayResults.h"
 
 
 int main(void) {
@@ -54,7 +54,7 @@ int main(void) {
 		fprintf(stdout,"*******************************************************************************\n");
 #if INDEPENDENT_DFGS
 
-		rstCounters(&counters);
+		RstCounters(&counters);
 #endif
 		for (w=0;w<NO_OF_DFG_REP;w++)
 		{
@@ -74,7 +74,7 @@ int main(void) {
 			setTaskCounter(DFGArray[i].size);
 			reinitTasksTable(DFGArray[i].size);
 			ResetTimer();
-			rstCounters(&counters);
+			RstCounters(&counters);
 			/*init seed*/
 			//srand(totalTV.Value);
 
@@ -90,11 +90,11 @@ int main(void) {
 				switch(State)
 				{
 				case CfgDone:
-#if  SCHED_I_EN
+#if  RCS_SCHED_I
 					RunTaskSI(ReadyQ,&counters;
-#elif SCHED_III_EN
-					RunTaskSIII(ReadyQ,&counters);
-#elif SIMPLE_SCHED_II
+#elif RCS_SCHED_III
+					RCSchedIII(ReadyQ,&counters, &pEs);
+#elif RCS_SCHED_II
 					RCSchedII(ReadyQ,&counters, &pEs);
 #endif
 					Ticker(&pEs);
@@ -104,12 +104,12 @@ int main(void) {
 						AddTask2Queue(ReadyQ,DFGArray[i].size);
 
 
-#if  SCHED_I_EN
+#if  RCS_SCHED_I
 						RunTaskSI(ReadyQ,&counters);
-#elif SCHED_III_EN
+#elif RCS_SCHED_III
 
-						RunTaskSIII(ReadyQ,&counters);
-#elif SIMPLE_SCHED_II
+						RCSchedIII(ReadyQ,&counters, &pEs);
+#elif RCS_SCHED_II
 
 						RCSchedII(ReadyQ,&counters, &pEs);
 #endif
@@ -134,7 +134,7 @@ int main(void) {
 
 
 
-			//	print_DFG( );
+			print_DFG( );
 
 			fprintf(stdout,"Process complete in {%d} cycles \n",GetTimer());
 			fprintf (stdout,"Number of configuration= %u SW Busy [%u] HW Busy [%u]\n",GetConfigCount(),counters.busyCounterSW,counters.busyCounterHW);

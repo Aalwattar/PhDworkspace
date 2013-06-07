@@ -69,6 +69,52 @@ void ResetTimer(void)
 
 
 
+
+
+ inline unsigned int  CalcuateExecTime(unsigned int  orig,unsigned int  new)
+ {unsigned int  tmp;
+ 	double ratio;
+ 	if (!orig)
+ 		return new;
+ 	ratio=(((double) (int ) ((int )new- (int )orig)) * EXEC_TIME_LEARNING_RATIO);
+ tmp=((int ) orig+ (int ) ratio);
+
+ 	return tmp;
+ }
+
+
+ /* TODO ADD Config time to the PRR instead of to the taskstypes it would be faster
+  * This if the SW task ET is shorter than MATH0+Config but longer than MATH0 alone*/
+ void CalcSWPrio(unsigned int ID,struct Processor *processor, int size )
+ { int i;
+ 	if(TasksTypes[ID].SWET==0 || TasksTypes[ID].HWET==0 ) return;
+
+ 	if(TasksTypes[ID].SWET<TasksTypes[ID].HWET)
+ 	{
+ 		TasksTypes[ID].SWPriority =0;
+ 		return;
+ 	}
+
+
+ 	for (i=0 ; i<size ;i++)
+ 	{
+
+ 		if(processor[i].ConfigCount==0) continue;
+ 		if (TasksTypes[ID].SWET <= (TasksTypes[ID].HWET+processor[i].ConfigCount))
+ 		{
+ 			TasksTypes[ID].SWPriority=i;
+ 			return;
+ 		} else if(TasksTypes[ID].SWPriority <i)
+ 		{
+ 			TasksTypes[ID].SWPriority=i;
+ 		}
+
+
+ 	}
+
+ }
+
+
 struct Processor * InitProcessors( int size, enum ProcessorType type)
 {
 	 int i;
@@ -124,12 +170,10 @@ int TickProcessor( struct Processor *processor)
 {
 
 	if (processor->Busy && processor->ExecCount)
-	{//fprintf(stderr,"exec Time for task [%d], is [%lu]\n", processor->ID, processor->ExecCount);
-
+	{
 		if(!(--processor->ExecCount))
 		{
-		 //fprintf(stderr,"Task Done %d !!\n", processor->ExecCount);
-		processor->Busy=NO;
+			processor->Busy=NO;
 		}
 		return (int) processor->ExecCount;
 
@@ -145,6 +189,8 @@ int LoadProcessor( struct Processor *processor, struct NodeData node )
 		fprintf(stderr,"ERROR[LoadProcessor] Processor is busy\n");
 		return 1;
 	}
+	setTaskSimExecTimeStart(node.TaskID,GetTimer());
+
 	processor->Busy=YES;
 	processor->CurrentModule=node.Module; /*TODO fix this */
 	processor->ExecCount=node.ExecCount;
@@ -172,6 +218,28 @@ int TickAllProcessors(struct Processor *processor, int size)
 				State=TaskDone;
 				taskDone(processor[i].CurrentTaskID);
 				decTaskCounter();
+				setTaskSimExecTimeEnd(processor[i].CurrentTaskID,GetTimer());
+
+				/*
+				 * FIXME change the calculation functions for Rcsched_III
+				 * they simply does not make any sense.
+				 */
+#if RCS_SCHED_III
+				if (processor[i].Type==TypeHW)
+				{
+					TasksTypes[processor[i].CurrentModule].HWET= \
+									CalcuateExecTime(TasksTypes[processor[i].CurrentModule].HWET,dfg1[processor[i].CurrentModule].Emu.HWdelay);
+
+				}else
+				{
+					TasksTypes[processor[i].CurrentModule].SWET= \
+									CalcuateExecTime(TasksTypes[processor[i].CurrentModule].SWET,dfg1[processor[i].CurrentModule].Emu.SWdelay);
+
+				}
+				CalcSWPrio(processor[i].CurrentModule,processor,size);
+
+#endif
+
 		//	task completed TODO call a function that represent the complete of this task
 			}
 
@@ -183,30 +251,30 @@ int TickAllProcessors(struct Processor *processor, int size)
 
 unsigned int Ticker(struct PEs *pEs)
 {
-	TickAllProcessors(pEs->HW->pe, pEs->HW->size);
-	TickAllProcessors(pEs->SW->pe, pEs->SW->size);
-	TickConfig(pEs->HW->pe);
+	TickAllProcessors(pEs->HWPE->pe, pEs->HWPE->size);
+	TickAllProcessors(pEs->SWPE->pe, pEs->SWPE->size);
+	TickConfig(pEs->HWPE->pe);
 	IncTimer();
 	return GetTimer();
 }
 
 void CreateAllPEs(struct PEs *pEs,int noOfPRRs, int noOfGPPs)
 {
-	pEs->HW=(struct PE*) malloc(sizeof(struct PE));
-	pEs->SW=(struct PE*) malloc(sizeof(struct PE));
-	pEs->HW->size=noOfPRRs;
-	pEs->SW->size =noOfGPPs;
-	pEs->HW->pe=InitProcessors(pEs->HW->size,HW );
-	pEs->SW->pe=InitProcessors(pEs->SW->size, SW);
+	pEs->HWPE=(struct PE*) malloc(sizeof(struct PE));
+	pEs->SWPE=(struct PE*) malloc(sizeof(struct PE));
+	pEs->HWPE->size=noOfPRRs;
+	pEs->SWPE->size =noOfGPPs;
+	pEs->HWPE->pe=InitProcessors(pEs->HWPE->size,TypeHW );
+	pEs->SWPE->pe=InitProcessors(pEs->SWPE->size, TypeSW);
 
 }
 
 void CleanAllPEs(struct PEs *pEs)
 {
-	FreeProcessors(pEs->HW->pe);
-	FreeProcessors(pEs->SW->pe);
-    free(pEs->HW);
-	free(pEs->SW);
+	FreeProcessors(pEs->HWPE->pe);
+	FreeProcessors(pEs->SWPE->pe);
+    free(pEs->HWPE);
+	free(pEs->SWPE);
 
 }
 

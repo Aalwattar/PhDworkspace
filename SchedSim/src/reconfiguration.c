@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include "processors.h"
 #include "PlatformConfig.h"
-
+#include "data.h"
 static int Reconfiguring =NO;
 static int ReconfigPRRID=0;
 static struct NodeData ND;
@@ -81,12 +81,13 @@ int IsReconfiguring(void)
 
 int Reconfigure(struct Processor *processor, int PRRID, unsigned long time)
 {
+
 	if ( Reconfiguring )
 	{
 		fprintf(stderr,"ERROR [Reconfigure] .. Reconfiguration is in process (ONLY one reconfiguration at a time is allowed) \n");
 		return -1;
 	}
-	if ( processor->Type!=HW )
+	if ( processor->Type!=TypeHW )
 	{
 		fprintf(stderr,"ERROR [Reconfigure] You cannot reconfigure a GPP (Are  you sure you know what you are doing !!!)  \n");
 		return -2;
@@ -98,6 +99,8 @@ int Reconfigure(struct Processor *processor, int PRRID, unsigned long time)
 		fprintf(stderr,"WARNING [Reconfigure]  the PRR is currently Busy  \n");
 		return -3;
 	}
+
+
 
 
 	ReconfigPRRID=PRRID;
@@ -122,6 +125,8 @@ int ReconfignLoad(struct Processor *processor, int PRRID, unsigned long time, st
 #if DEBUG_PRINT
 	fprintf(stderr,"reconfiguring Task [%d] on PRR[%d]\n",nd.TaskID,PRRID);
 #endif
+
+
 	PE=processor;
 	ND.ExecCount=nd.ExecCount;
 	ND.Module=nd.Module;
@@ -135,7 +140,8 @@ int ReconfignLoad(struct Processor *processor, int PRRID, unsigned long time, st
 
 int TickConfiguration( struct Processor *processor)
 {
-		if ( processor->Type !=HW)
+
+		if ( processor->Type !=TypeHW)
 	{
 		fprintf(stderr,"ERROR[TickReconfiguration] You cannot reconfigure a GPP (Are  you sure you know what  you are  doing !!!) %d  \n", processor->Type);
 		return -2;
@@ -153,7 +159,10 @@ int TickConfiguration( struct Processor *processor)
 			if (LoadTask)
 			{
 				LoadTask=NO;
+				setTaskSimConfTimeEnd(ND.TaskID, GetTimer());
+				setTaskSimPrrUsed(ND.TaskID,processor->ID);
 				LoadProcessor(PE,ND);
+
 			}
 
 		}
