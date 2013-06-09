@@ -28,17 +28,13 @@
 CC 			= gcc
 C_FLAGS 		= -std=c99 -Wall -pedantic
 
-DEBUG_FLAGS		= -g -DDEBUG -O0
+DEBUG_FLAGS		= -DDEBUG -pg -O0
 VERBOSE_FLAGS		= -DVERBOSE
-EXE_FLAGS		= -O2
+EXE_FLAGS		= -DEXE -O2
 
 
 C_INCLUDES   		= -Iinclude/Napoleon -Iinclude/GA
-L_INCLUDES		= -lm
-
-#debugger options
-DBGR 			= gdb
-DBG_OPTS 		= 
+L_INCLUDES		= -lm -pg
 
 #directory names
 SRC_DIR			= src
@@ -74,10 +70,19 @@ PROG_NAME		= OfflineScheduler.exe
 all : $(PROG_NAME)
 	@ echo "Build updated"
 	
+clean : 
+	rm -f $(BIN_DIR)/$(PROG_NAME)
+	rm -f $(OBJ_DIR)/$(NAPOLEON_DIR)/*
+	rm -f $(OBJ_DIR)/$(GA_DIR)/*
+
+run: 
+	./$(PROG_NAME)
 	
+###############################################################################
+
 .PHONY : $(PROG_NAME) 
 	
-	
+# Creates different versions of the code
 debug   : C_FLAGS += $(DEBUG_FLAGS)
 debug   : $(PROG_NAME)
 	
@@ -87,6 +92,7 @@ verbose : $(PROG_NAME)
 exe     : C_FLAGS += $(EXE_FLAGS)
 exe     : $(PROG_NAME)
 
+###############################################################################
 
 $(PROG_NAME) : $(OBJS)
 	$(CC) $(OBJS) $(L_INCLUDES) -o $(PROG_NAME)
@@ -102,12 +108,3 @@ $(OBJ_DIR) :
 	mkdir -p $(OBJ_DIR)
 	mkdir -p $(OBJ_DIR)/GA
 	mkdir -p $(OBJ_DIR)/Napoleon
-
-clean : 
-	rm -f $(BIN_DIR)/$(PROG_NAME)
-	rm -f $(OBJ_DIR)/$(NAPOLEON_DIR)/*
-	rm -f $(OBJ_DIR)/$(GA_DIR)/*
-
-
-run: 
-	./$(PROG_NAME)

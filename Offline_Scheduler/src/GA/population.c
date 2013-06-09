@@ -160,10 +160,11 @@ void printSummaryStatistics(Population * pop){
     
     sd = sqrt(differenceSum / pop->size);
     
-//    fprintf(stdout, "\nAverage = %.3lf\n", mean);
-//    fprintf(stdout, "SD      = %.3lf\n", sd);
-//    fprintf(stdout, "Min     = %d\n", min);
-//    fprintf(stdout, "Max     = %d\n", max);
+    fprintf(stdout, "\nAverage = %.3lf\n", mean);
+    fprintf(stdout, "SD      = %.3lf\n", sd);
+    fprintf(stdout, "Min     = %d\n", min);
+    fprintf(stdout, "Max     = %d\n", max);
     
-    fprintf(stdout, "Stats : %.5lf,\t%.5lf,\t%d,\t%d\n", mean, sd, min, max);
+//    // concise version
+//    fprintf(stdout, "Stats : %.5lf,\t%.5lf,\t%d,\t%d\n", mean, sd, min, max);
 }

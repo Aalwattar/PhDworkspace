@@ -37,16 +37,16 @@
 #define ARCH_FILENAME "input/architecture_library.txt"
 #define AIF_FILENAME  "input/B1_10_5.aif"
 
-int STOP_CONDITION = 500;
-int POP_SIZE = 50;
+static int STOP_CONDITION = 500;
+static int POP_SIZE = 50;
 
 
 void initParameters(int, char **);
 void freeParameters(void);
+void setPopSize(int);
 
 void generationalGA(void);
 void elitestGA(void);
-
 
 // FUTURE - implement this
 bool populationConverged(Population * pop);
@@ -55,7 +55,7 @@ bool populationConverged(Population * pop);
 int main(int argc, char * argv[]){
     initParameters(argc, argv);
     
-    // change this to the preferred algorithm
+    // FIX - for now, change this to the preferred algorithm
     elitestGA();
     
     freeParameters();
@@ -85,7 +85,7 @@ void elitestGA(void){
     while(generation_num < STOP_CONDITION){
         determineFitness(pop);
 
-#ifdef VERBOSE
+#if (defined VERBOSE || defined EXE)
         fprintf(stdout, "\n-----------------   GENERATION %d   -----------------\n", generation_num + 1);
         printPopulation(pop);
 #endif
@@ -132,7 +132,7 @@ void generationalGA(void){
     while(generation_num < STOP_CONDITION){
         determineFitness(pop);
         
-        #ifdef VERBOSE
+        #if  (defined VERBOSE || defined EXE)
             fprintf(stdout, "\n-----------------   GENERATION %d   -----------------\n", generation_num + 1);
             printPopulation(pop);
         #endif
@@ -167,7 +167,7 @@ void initParameters(int argc, char ** argv){
 
     opterr = 0;
 
-    while((c = getopt(argc, argv, "a:c:d:g:m:p:r:s:")) != -1){
+    while((c = getopt(argc, argv, "a:c:d:g:m:p:r:s:t:")) != -1){
         switch(c){
             case 'a':
                 arch_filename = optarg;
@@ -184,14 +184,13 @@ void initParameters(int argc, char ** argv){
                 setMutationRate(atof(optarg));
                 break;
             case 'p':
-                // FIX - ensure that the population size is between 1 and 10000
-                POP_SIZE = atoi(optarg);
+                setPopSize(atoi(optarg));
                 break;
             case 'r':
-                // REPLACEMENT METHOD
+                // FIX - REPLACEMENT METHOD = generatinoal or replaceWorst with varying parameters
                 break;
             case 's':
-                // SELECTION METHOD
+                // FIX - SELECTION METHOD = tournament selection or random
                 break;
                 
             case 't':
@@ -214,13 +213,13 @@ void initParameters(int argc, char ** argv){
         exit(1);
     }
     
+    // FIX - Check the return values
     seedRandGenerator(seed);
     initArchLibrary(arch_filename);
     initNapoleon(aif_filename);
 
     fprintf(stdout, "Parameters:\n");
     fprintf(stdout, "\tSeed = %d\n\n", seed);
-    // FIX
     fprintf(stdout, "\tPopulation Size       = %d\n", POP_SIZE);
     fprintf(stdout, "\tNumber of Generations = %d\n\n", STOP_CONDITION);
     fprintf(stdout, "\tMutation Rate  = %.4lf\n", getMutationRate());
@@ -231,6 +230,18 @@ void initParameters(int argc, char ** argv){
 void freeParameters(void){
     freeArchLibrary();
     freeNapoleon();
+}
+
+void setPopSize(int size){
+    if(2 <= size && size <= 10000){
+        POP_SIZE = size;
+        return;
+    }
+    
+    fprintf(stderr, "Invalid population size %d.\n", size);
+    fprintf(stderr, "The population size must be an integer between 0 and 1\n");
+    
+    exit(1);
 }
 
 // COMMENTING TEMPLATE

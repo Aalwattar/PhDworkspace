@@ -93,16 +93,13 @@ void crossover(Individual * p1, Individual * p2){
 }
 
 void printIndividual(Individual * ind){
-    int i;
+//    int i;
+//    
+//    // print the chromosome
+//    for (i = 0; i < getNumGenes(); i++)
+//        fprintf(stdout, "%d", ind->encoding[i]);
     
-    for (i = 0; i < getNumGenes(); i++)
-        fprintf(stdout, "%d", ind->encoding[i]);
-    
-    // GA fitness info
-    fprintf(stdout, "\tfitness = %d\truntime = %d\tpower = %d\n", 
-                        ind->fitness, ind->exec_time, ind->energy);
-    
-    // More Napoleon information
-//    fprintf(stdout, "\tfitness = %d\truntime = %d\tprefetch = %d\tpower = %d\treuse = %d\n", 
-//                ind->fitness, ind->exec_time, ind->prefetch, ind->energy, ind->num_reuse);
+    // Napoleon information
+    fprintf(stdout, "fitness = %d\truntime = %d\tprefetch = %d\tpower = %d\treuse = %d\n", 
+                ind->fitness, ind->exec_time, ind->prefetch, ind->energy, ind->num_reuse);
 }
