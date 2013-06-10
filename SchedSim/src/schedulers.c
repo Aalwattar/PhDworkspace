@@ -11,6 +11,8 @@
 #include "processors.h"
 #include "data.h"
 
+static int st[200];
+
 static unsigned long ConfigTime[] = { PRR_0_CONFIG_TIME, PRR_1_CONFIG_TIME,
 		PRR_2_CONFIG_TIME, PRR_3_CONFIG_TIME, PRR_4_CONFIG_TIME };
 
@@ -119,6 +121,73 @@ int IsNodeReady(unsigned int id) {
 	return isTaskDone(dfg1[id].D.op2);
 }
 
+int MoveDependentTask2TheFront(Queue readyQ,int qSize , int t)
+{
+
+	Queue qtmp;
+	qtmp = CreateQueue(qSize);
+	ElementType tmp, task1 = -1, task2 = -1;
+	int found1 = NO;
+	int found2 = NO;
+	int NoAdd1 = NO;
+	int NoAdd2 = NO;
+
+	if (st[t])
+		return 0;
+	while (!IsEmpty(readyQ)) {
+		tmp = FrontAndDequeue(readyQ);
+		NoAdd1 = NoAdd2 = NO;
+		if (!found1) {
+			if (dfg1[t].D.isAdd_op1 && !isTaskDone(dfg1[dfg1[t].D.op1].D.op1)) {
+				if (tmp == dfg1[t].D.op1) {
+					st[t] = 1;
+					task1 = tmp;
+					found1 = YES;
+					NoAdd1 = YES;
+
+				}
+			}
+		}
+
+		if (!found2) {
+			if (dfg1[t].D.isAdd_op2 && !isTaskDone(dfg1[dfg1[t].D.op2].D.op2)) {
+				if (tmp == dfg1[t].D.op2) {
+					st[t] = 1;
+					//	fprintf(stderr,"FoundTask_2 [%d] is dependent on task [%d] \n",t,dfg1[dfg1[t].D.op2].D.op2);
+					task2 = tmp;
+					found2 = YES;
+					NoAdd2 = YES;
+
+				}
+			}
+		}
+
+		if (!NoAdd1 && !NoAdd2) {
+			Enqueue(tmp, qtmp);
+		}
+
+	}
+
+	MakeEmpty(readyQ);
+	if (task1 >= 0) {
+		Enqueue(task1, readyQ);
+	}
+	if (task2 >= 0) {
+		Enqueue(task2, readyQ);
+	}
+	while (!IsEmpty(qtmp)) {
+		tmp = FrontAndDequeue(qtmp);
+		Enqueue(tmp, readyQ);
+
+	}
+
+	DisposeQueue(qtmp);
+	return found1 || found2;
+
+}
+
+
+
 /*
  * AddTask2Queue
  */
@@ -126,7 +195,12 @@ int AddTask2Queue(Queue ReadyQ, int size) {
 	int i = 0;
 
 	do {
+		if(IsFull(ReadyQ)){
+		//fprintf(stderr,"Q is Full \n");
+			break;
+		}
 		if (IsNodeReady(i) == NO || isTaskQed(i) == YES) {
+		//	MoveDependentTask2TheFront(ReadyQ,MAX_QUEUE_TASKS,i);
 			i++;
 			continue;
 		}

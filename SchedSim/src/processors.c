@@ -254,10 +254,11 @@ int TickAllProcessors(struct Processor *processor, int size)
 
 unsigned int Ticker(struct PEs *pEs)
 {
+	IncTimer();
 	TickAllProcessors(pEs->HWPE->pe, pEs->HWPE->size);
 	TickAllProcessors(pEs->SWPE->pe, pEs->SWPE->size);
 	TickConfig(pEs->HWPE->pe);
-	IncTimer();
+
 	return GetTimer();
 }
 

@@ -8,8 +8,10 @@
 #ifndef PLATFROMCONFIG_H_
 #define PLATFROMCONFIG_H_
 
-#define NO_OF_DFG_REP 3
-#define NO_OF_DFGS 10
+#define GRAPH_FILE "./graph"
+
+#define NO_OF_DFG_REP 1
+#define NO_OF_DFGS 1
 #define INDEPENDENT_DFGS 1
 
 #define RCS_SCHED_I 0
@@ -17,7 +19,7 @@
 #define RCS_SCHED_II 1
 
 #define NO_OF_PRRS 5
-#define NO_OF_GPPS 1
+#define NO_OF_GPPS 0
 
 #define MAX_PR_MODULES 5
 #define MAX_TASKS_TYPES 8
@@ -25,7 +27,7 @@
 #define YES 1
 #define NO 0
 
-#define MAX_QUEUE_TASKS 256
+#define MAX_QUEUE_TASKS 25
 
 #define SW_HW_MIG 0
 
@@ -34,7 +36,7 @@
 
 #define DEBUG_PRINT 0
 
-
+#define SCALING 5
 
 
 

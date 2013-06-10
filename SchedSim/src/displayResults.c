@@ -26,7 +26,7 @@ void print_DFG(void)
 				sprintf(tmpstr,"%u",Sim.ConfigTime.start);
                 fprintf (stdout,"Node [%3d] -->T[%5u] R[%5s]  %s Config %4d Exec %4d %s[%d] Reuse[%3s] Prio[%d] Type[%d] \n",
 								DFG[i].id,
-								Sim.ExecTime.start,Sim.PRRUsed>=NO_OF_PRRS?tmpstr:"-",
+								Sim.ExecTime.start,Sim.PRRUsed<NO_OF_PRRS?tmpstr:"-",
 								Sim.PRRUsed<NO_OF_PRRS?"RECONF": "SW COM",
 								Sim.ConfigTime.end-Sim.ConfigTime.start,
 								Sim.ExecTime.end-Sim.ExecTime.start,
