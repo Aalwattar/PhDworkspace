@@ -87,26 +87,27 @@ void ResetTimer(void)
   * This if the SW task ET is shorter than MATH0+Config but longer than MATH0 alone*/
  void CalcSWPrio(unsigned int ID,struct Processor *processor, int size )
  { int i;
- 	if(TasksTypes[ID].SWET==0 || TasksTypes[ID].HWET==0 ) return;
+ 	if(getTaskTypeSWET(ID)==0 || getTaskTypeHWET(ID)==0 ) return;
 
- 	if(TasksTypes[ID].SWET<TasksTypes[ID].HWET)
+ 	if(getTaskTypeSWET(ID)<getTaskTypeHWET(ID))
  	{
- 		TasksTypes[ID].SWPriority =0;
+ 		setTaskTypeSWPrio(ID,0);
  		return;
  	}
+
 
 
  	for (i=0 ; i<size ;i++)
  	{
 
  		if(processor[i].ConfigCount==0) continue;
- 		if (TasksTypes[ID].SWET <= (TasksTypes[ID].HWET+processor[i].ConfigCount))
+ 		if (getTaskTypeSWET(ID) <= (getTaskTypeHWET(ID)+processor[i].ConfigCount))
  		{
- 			TasksTypes[ID].SWPriority=i;
+ 			setTaskTypeSWPrio(ID,i);
  			return;
- 		} else if(TasksTypes[ID].SWPriority <i)
+ 		} else if(getTaskTypeSWPrio(ID) <i)
  		{
- 			TasksTypes[ID].SWPriority=i;
+ 			setTaskTypeSWPrio(ID,i);
  		}
 
 
@@ -230,13 +231,13 @@ int TickAllProcessors(struct Processor *processor, int size)
 #if RCS_SCHED_III
 				if (processor[i].Type==TypeHW)
 				{
-					TasksTypes[processor[i].CurrentModule].HWET= \
-									CalcuateExecTime(TasksTypes[processor[i].CurrentModule].HWET,dfg1[processor[i].CurrentModule].Emu.HWdelay);
+					setTaskTypeHWET(processor[i].CurrentModule, \
+									CalcuateExecTime(getTaskTypeHWET(processor[i].CurrentModule) ,dfg1[processor[i].CurrentModule].Emu.HWdelay));
 
 				}else
 				{
-					TasksTypes[processor[i].CurrentModule].SWET= \
-									CalcuateExecTime(TasksTypes[processor[i].CurrentModule].SWET,dfg1[processor[i].CurrentModule].Emu.SWdelay);
+					setTaskTypeSWET(processor[i].CurrentModule,\
+							CalcuateExecTime(getTaskTypeSWET(processor[i].CurrentModule),dfg1[processor[i].CurrentModule].Emu.SWdelay));
 
 				}
 				CalcSWPrio(processor[i].CurrentModule,processor,size);

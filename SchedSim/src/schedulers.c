@@ -220,7 +220,8 @@ int AddTask2Queue(Queue ReadyQ, int size) {
 			taskQed(i);
 			/*TODO add some error checking here */
 
-			TasksTypes[dfg1[i].TypeID].CanRun = dfg1[i].CanRun;
+ setTaskTypeCanRun(dfg1[i].TypeID,dfg1[i].CanRun);
+
 #if DEBUG_PRINT
 			fprintf(stderr,"Enqueue %d \r\n",i);
 #endif
@@ -318,7 +319,7 @@ int RCSchedII(Queue ReadyQ, struct Counts *counters, struct PEs *pes) {
 			if((freePRR=FindFreePRR(PRR_T.CanRun))<0)
 #else
 			if ((freePRR = FindFreePRRBestCase(
-					TasksTypes[dfg1[task].TypeID].CanRun, pes->HWPE)) < 0)
+					getTaskTypeCanRun(dfg1[task].TypeID), pes->HWPE)) < 0)
 #endif
 					{
 #if SW_HW_MIG
@@ -477,7 +478,7 @@ int RCSchedIII(Queue ReadyQ, struct Counts *counters, struct PEs *pes) {
 				return 5;
 			}
 			if ((freePRR = FindFreePRRPrio(
-					TasksTypes[dfg1[task].TypeID].CanRun, pes->HWPE)) < 0) {
+					getTaskTypeCanRun(dfg1[task].TypeID), pes->HWPE)) < 0) {
 #if SW_HW_MIG
 				if (FindFreeGPP(0xFF,pes->SWPE)>=0
 						&& getTaskMode(task) == HybHW) {

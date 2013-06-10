@@ -94,6 +94,7 @@ struct TaskType{
 	enum PRModules Module;
 
 };
+
 struct tasksTableToken
 {
 	struct node *dfg;
@@ -112,7 +113,7 @@ enum SystemStates {Start,CfgDone,TaskDone,None};
 extern enum SystemStates State;
 extern struct node *dfg1;
 extern struct DFG DFGArray[];
-extern struct TaskType TasksTypes[];
+//extern struct TaskType TasksTypes[];
 
 void Init_TasksTypes(void);
 void reinitTasksTable( int numberOfTasks);
@@ -136,4 +137,13 @@ void setTaskSimConfTimeStart(int ID, unsigned int value );
 void setTaskSimConfTimeEnd(int ID, unsigned int value );
 void setTaskSimReused(int ID, unsigned char value );
 void setTaskSimPrrUsed(int ID, enum PRRID value );
+inline unsigned int getTaskTypeHWET( int ID);
+inline void setTaskTypeHWET (int ID,unsigned int  value);
+inline unsigned int getTaskTypeSWET( int ID);
+inline void setTaskTypeSWET (int ID,unsigned int value);
+inline  int getTaskTypeSWPrio( int ID);
+inline void setTaskTypeSWPrio (int ID,int value);
+inline unsigned  int getTaskTypeCanRun( int ID);
+inline void setTaskTypeCanRun (int ID,unsigned int value);
+
 #endif /* DATA_H_ */

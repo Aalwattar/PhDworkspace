@@ -12,7 +12,7 @@
 /*FIXME */
 static struct nodeData TasksTable[MAX_NO_OF_NODES];
 static int TaskCounter=0;
-struct TaskType TasksTypes[MAX_TASKS_TYPES];
+static struct TaskType TasksTypes[MAX_TASKS_TYPES];
 enum SystemStates State=Start;
 
 struct node *dfg1;
@@ -92,6 +92,96 @@ inline void setTaskResult (int ID,int value)
 	TasksTable[ID].result=value;
 }
 
+/*
+ * TaskType set/ get functions
+ * TODO check the ID range and throw an error
+ */
+
+inline unsigned int getTaskTypeHWET( int ID)
+{
+	if(ID <=0 || ID>= MAX_TASKS_TYPES)
+	{
+		fprintf(stderr,"ERROR [TasksTypes] Index out of range 1\n");
+		exit(EXIT_FAILURE);
+	}
+	return TasksTypes[ID].HWET;
+}
+
+inline void setTaskTypeHWET (int ID,unsigned int  value)
+{
+	if(ID <=0 || ID>= MAX_TASKS_TYPES)
+	{
+		fprintf(stderr,"ERROR [TasksTypes] Index out of range 2\n");
+		exit(EXIT_FAILURE);
+	}
+	TasksTypes[ID].HWET=value;
+}
+
+
+inline unsigned int getTaskTypeSWET( int ID)
+{
+	if(ID <=0 || ID>= MAX_TASKS_TYPES)
+	{
+		fprintf(stderr,"ERROR [TasksTypes] Index out of range 3\n");
+		exit(EXIT_FAILURE);
+	}
+	return TasksTypes[ID].SWET;
+}
+
+inline void setTaskTypeSWET (int ID,unsigned int value)
+{
+	if(ID <=0 || ID>= MAX_TASKS_TYPES)
+	{
+		fprintf(stderr,"ERROR [TasksTypes] Index out of range 4\n");
+		exit(EXIT_FAILURE);
+	}
+	TasksTypes[ID].SWET=value;
+}
+
+
+inline  int getTaskTypeSWPrio( int ID)
+{
+	if(ID <=0 || ID>= MAX_TASKS_TYPES)
+	{
+		fprintf(stderr,"ERROR [TasksTypes] Index out of range 5\n");
+		exit(EXIT_FAILURE);
+	}
+	return TasksTypes[ID].SWPriority;
+}
+
+inline void setTaskTypeSWPrio (int ID,int value)
+{
+	if(ID <=0 || ID>= MAX_TASKS_TYPES)
+	{
+		fprintf(stderr,"ERROR [TasksTypes] Index out of range 6\n");
+		exit(EXIT_FAILURE);
+	}
+	TasksTypes[ID].SWPriority=value;
+}
+
+inline unsigned  int getTaskTypeCanRun( int ID)
+{
+	if(ID <=0 || ID>= MAX_TASKS_TYPES)
+	{
+		fprintf(stderr,"ERROR [TasksTypes] Index out of range 7\n");
+		exit(EXIT_FAILURE);
+	}
+	return TasksTypes[ID].CanRun;
+}
+
+inline void setTaskTypeCanRun (int ID,unsigned int value)
+{
+	if(ID <=0 || ID>= MAX_TASKS_TYPES)
+	{
+		fprintf(stderr,"ERROR [TasksTypes] Index out of range [%d] 8\n",ID);
+		exit(EXIT_FAILURE);
+	}
+	TasksTypes[ID].CanRun=value;
+}
+
+/*
+ *  Task Table
+ */
 
 
 inline enum Mode getTaskMode( int ID)
@@ -158,7 +248,6 @@ void setTaskSimPrrUsed(int ID, enum PRRID value )
 	TasksTable[ID].Sim.PRRUsed=value;
 
 }
-
 
 
 //

@@ -30,11 +30,11 @@ struct DFG DFGArray[NO_OF_DFGS] = {
 //#include "templates/dfgTemplate100_150_2.txt"
 //#include "templates/dfgTemplate150_200_2.txt"
 //
-//#include "templates/dfgTemplateB2_25_40_2.txt"
+#include "templates/dfgTemplateB2_25_40_2.txt"
 //#include "templates/dfgTemplateB2_50_60_2.txt"
 //#include "templates/dfgTemplateB2_100_120_2.txt"
 //#include "templates/dfgTemplateB2_150_200_2.txt"
-#include "templates/dfgTemplateB2_200_60_2.txt"
+//#include "templates/dfgTemplateB2_200_60_2.txt"
 
 		};
 

@@ -15,14 +15,14 @@
 #define INDEPENDENT_DFGS 1
 
 #define RCS_SCHED_I 0
-#define RCS_SCHED_III 0
-#define RCS_SCHED_II 1
+#define RCS_SCHED_III 1
+#define RCS_SCHED_II 0
 
 #define NO_OF_PRRS 5
 #define NO_OF_GPPS 0
 
 #define MAX_PR_MODULES 5
-#define MAX_TASKS_TYPES 8
+#define MAX_TASKS_TYPES 8+1
 #define MAX_NO_OF_NODES 200
 #define YES 1
 #define NO 0

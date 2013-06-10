@@ -140,14 +140,14 @@ int main(void) {
 				fprintf(stderr,"ERROR[main] Cannot open File %s\n",fileNameST);
 				exit(EXIT_FAILURE);
 			}
-			graphtime = GetTimer() / SCALING;
-			graph = CreateDraw(graphtime+1, pEs.HWPE->size + pEs.SWPE->size);
-			GenerateGraph(graph, dfg1, SCALING);
-			DrawGraph(graph, graphtime, fdGraph, pEs.HWPE->size, pEs.SWPE->size);
-			CleanDraw(graph, graphtime+1);
-			fclose(fdGraph);
+//			graphtime = GetTimer() / SCALING;
+//			graph = CreateDraw(graphtime+1, pEs.HWPE->size + pEs.SWPE->size);
+//			GenerateGraph(graph, dfg1, SCALING);
+//			DrawGraph(graph, graphtime, fdGraph, pEs.HWPE->size, pEs.SWPE->size);
+//			CleanDraw(graph, graphtime+1);
+//			fclose(fdGraph);
 
-//				print_DFG( );
+				print_DFG( );
 
 			fprintf(stdout, "Process complete in {%d} cycles \n", GetTimer());
 			fprintf(stdout,

@@ -33,7 +33,7 @@ void print_DFG(void)
 								Sim.PRRUsed<NO_OF_PRRS?"PRR":"GPP",
 								Sim.PRRUsed<NO_OF_PRRS?Sim.PRRUsed:Sim.PRRUsed-NO_OF_PRRS,
                         		Sim.Reused?"YES":"NO",
-                        		TasksTypes[DFG[i].TypeID].SWPriority,
+                        		getTaskTypeSWPrio(DFG[i].TypeID),
                         		DFG[i].TypeID	);
 
                 totalConfT+=Sim.ConfigTime.end-Sim.ConfigTime.start;
