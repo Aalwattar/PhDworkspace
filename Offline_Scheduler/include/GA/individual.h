@@ -23,6 +23,9 @@
 
 typedef struct{
     int * encoding;     // their genotype
+                        // This is 2 longer then the number of tasks
+                                // The second last integer = The areas distribution of PRRs
+                                // The last integer = the number of PRRs
     
     int fitness;
     int exec_time;

@@ -333,7 +333,7 @@ void evaluateFitness(Individual * ind){
     if((err = create_reuse_mat(task, reuse_mat)))
         print_error(err);
 
-    for(i = 0; i < getNumGenes(); i++){
+    for(i = 0; i < task[0].width; i++){
         task[i + 1].impl = ind->encoding[i];
 
         task[i + 1].columns = getColumns(i);
