@@ -43,6 +43,8 @@
  *****************************************************************************/
 
 // represents one architecture's implementation
+
+
 typedef struct{
     int columns;
     int rows;
@@ -55,6 +57,8 @@ typedef struct{
 
 
 // contains all of the architectures of an task
+
+
 typedef struct{
     int num_impl; // the number of architectures for this task
     Implementation * impl; // the properties of each architecture
@@ -146,8 +150,7 @@ static bool parseArchLibrary(FILE * fp){
         if(strncmp(buffer, "TASK", 4) == 0){
             if(parseArch(buffer) != true)
                 return false;
-        }
-        else{
+        }else{
             fprintf(stderr, "GA parseArchLibrary Failed!\n");
             fprintf(stderr, "Unable to understand the line :\n\t%s", buffer);
             return false;
@@ -469,4 +472,72 @@ static int getConfigPower(int task_num){
  *****************************************************************************/
 static int getExecPower(int task_num){
     return ((arch_library[getTaskType(task_num)]).impl[task[task_num + 1].impl]).exec_p;
+}
+
+
+#define NO 0
+#define YES 1
+
+struct File{
+    FILE * fp;
+    int lock;
+    int caller;
+};
+
+
+void InitFile(struct File *f, int size){
+    int i;
+    
+    for(i = 0; i < size; i++){
+        f[i].fp = malloc(sizeof (FILE));
+        f[i].caller = 0;
+        f[i].lock = NO;
+        f[i].fp = NULL;
+    }
+}
+
+void pipeTest(void){
+    struct File files[10];
+    char buffer[1024];
+    char message[1024];
+    int timeArray[100];
+    
+    int i, j;
+    
+    for(i=0; i<100; i++){
+        for(j = 0; j < 10; j++){
+
+            //    if (filestruct[j].lock)
+            //	   continue;
+
+            files[j].caller = i + j;
+            sprintf(message, "sleep %d ; echo \"Time [%d] Speed [15] food [55]\"", (i) % 1, i);
+            if(!(files[j].fp = (FILE*)popen(message, "r"))){ 
+                // If fpipe is NULL
+                perror("Problems with pipe");
+                exit(1);
+            }
+            i++;
+            //  filestruct[j].lock=YES;
+        }
+
+        for(j = 0; j < 10; j++){
+            while(fgets(buffer, sizeof buffer, files[j].fp)){
+                int time;
+                int speed;
+                int food;
+                
+                sscanf(buffer, "Time [%d] Speed [%d] food [%d]", &time, &speed, &food);
+                printf("%d -> %d speed %d food %d \n%s\n", i, time, speed, food, buffer);
+                timeArray[time] = time;
+
+            }
+            pclose(files[j].fp);
+        }
+    };
+
+    for(i = 0; i < 100; i++)
+        fprintf(stderr, " %d->[%d] ", i, timeArray[i]);
+    
+    puts("!!!Hello World!!!");
 }

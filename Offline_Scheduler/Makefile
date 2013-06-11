@@ -26,7 +26,7 @@
 #compiler options
 
 CC 			= gcc
-C_FLAGS 		= -std=c99 -Wall -pedantic
+C_FLAGS 		= -std=gnu99 -Wall -pedantic
 
 DEBUG_FLAGS		= -DDEBUG -g -p -O0
 VERBOSE_FLAGS		= -DVERBOSE

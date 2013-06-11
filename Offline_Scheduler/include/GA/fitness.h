@@ -153,6 +153,8 @@ int getNumGenes(void);
 int getTaskType(int);
 
 
+void pipeTest(void);
+
 
 #endif	/* FITNESS_H */
 

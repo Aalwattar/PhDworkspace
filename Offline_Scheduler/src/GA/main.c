@@ -56,7 +56,9 @@ int main(int argc, char * argv[]){
     initParameters(argc, argv);
     
     // FIX - for now, change this to the preferred algorithm
-    generationalGA();
+//    generationalGA();
+    
+    pipeTest();
     
     freeParameters();
     return EXIT_SUCCESS;
