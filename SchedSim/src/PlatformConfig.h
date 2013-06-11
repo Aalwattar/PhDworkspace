@@ -11,7 +11,7 @@
 #define GRAPH_FILE "./graph"
 
 #define NO_OF_DFG_REP 1
-#define NO_OF_DFGS 1
+#define NO_OF_DFGS 10
 #define INDEPENDENT_DFGS 1
 
 #define RCS_SCHED_I 0
@@ -37,7 +37,7 @@
 #define DEBUG_PRINT 0
 
 #define SCALING 5
-
+#define COMMAND_LINE_READ 1
 
 
 /*

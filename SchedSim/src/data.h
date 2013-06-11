@@ -78,10 +78,11 @@ struct node {
 	const struct data D;
 	const unsigned int  initPrio; // initial priority to start with
 	const unsigned int  CanRun;
-	const int TypeID;
+	      int TypeID; /* FIXME Change it back to const.  */
 	const struct Emulation Emu;
 
 };
+
 
 struct TaskType{
 	int ID;
@@ -145,5 +146,5 @@ inline  int getTaskTypeSWPrio( int ID);
 inline void setTaskTypeSWPrio (int ID,int value);
 inline unsigned  int getTaskTypeCanRun( int ID);
 inline void setTaskTypeCanRun (int ID,unsigned int value);
-
+void setNodeTaskType(struct node *dFG, int taskID, int NewTypeID);
 #endif /* DATA_H_ */
