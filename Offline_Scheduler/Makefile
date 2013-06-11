@@ -26,15 +26,15 @@
 #compiler options
 
 CC 			= gcc
-C_FLAGS 		= -std=c99 -Wall -pedantic
+C_FLAGS 		= -std=gnu99 -Wall -pedantic
 
-DEBUG_FLAGS		= -DDEBUG -pg -O0
+DEBUG_FLAGS		= -DDEBUG -g -p -O0
 VERBOSE_FLAGS		= -DVERBOSE
 EXE_FLAGS		= -DEXE -O2
 
 
 C_INCLUDES   		= -Iinclude/Napoleon -Iinclude/GA
-L_INCLUDES		= -lm -pg
+L_INCLUDES		= -lm
 
 #directory names
 SRC_DIR			= src

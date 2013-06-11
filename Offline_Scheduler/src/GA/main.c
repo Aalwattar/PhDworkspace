@@ -56,7 +56,9 @@ int main(int argc, char * argv[]){
     initParameters(argc, argv);
     
     // FIX - for now, change this to the preferred algorithm
-    elitestGA();
+//    generationalGA();
+    
+    pipeTest();
     
     freeParameters();
     return EXIT_SUCCESS;
@@ -106,6 +108,7 @@ void elitestGA(void){
     printPopulation(pop);
 #endif
 
+    fprintf(stdout, "\n-----------------   FINAL RESULT   -----------------\n");
     best_solution = findBest(pop);
     evaluateFitness(best_solution);
     printIndividual(best_solution);
@@ -152,6 +155,7 @@ void generationalGA(void){
         printPopulation(pop);
     #endif
     
+    fprintf(stdout, "\n-----------------   FINAL RESULT   -----------------\n");
     determineFitness(pop);
     best_solution = findBest(pop);
     printIndividual(best_solution);
@@ -180,6 +184,7 @@ void initParameters(int argc, char ** argv){
                 break;
             case 'g':
                 STOP_CONDITION = atoi(optarg);
+                break;
             case 'm':
                 setMutationRate(atof(optarg));
                 break;

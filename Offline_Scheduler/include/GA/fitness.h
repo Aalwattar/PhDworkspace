@@ -126,8 +126,6 @@ void freeNapoleon(void);
  *****************************************************************************/
 void evaluateFitness(Individual *);
 
-
-
 /******************************************************************************
  * NAME : getNumGenes
  * 
@@ -154,6 +152,8 @@ int getNumGenes(void);
  *****************************************************************************/
 int getTaskType(int);
 
+
+void pipeTest(void);
 
 
 #endif	/* FITNESS_H */
