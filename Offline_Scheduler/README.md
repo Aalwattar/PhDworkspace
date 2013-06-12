@@ -9,26 +9,26 @@ TO RUN:
 OfflineScheduler.exe [options]
 
 [options]
-    -a FILE
+-a FILE
         Use FILE as library of architectures (please see bellow for formatting 
-            restrictions)
+        restrictions)
 
-    -c DECIMAL_NUM
+-c DECIMAL_NUM
         Set the crossover rate to DECIMAL_NUM
-        
-    -d FILE
+    
+-d FILE
         Use FILE as the DFG file (usually contains a .aif extention)
 
-    -g INTEGER
+-g INTEGER
         Run the genetic algorithm for INTEGER generations
 
-    -m DECIMAL_NUM
+-m DECIMAL_NUM
         Set the mutation rate to DECIMAL_NUM
 
-    -p INTEGER
+-p INTEGER
         Set the Population size to INTEGER individuals
 
-    -t INTEGER
+-t INTEGER
         Seed the random number generator with INTEGER
 
 
@@ -39,19 +39,19 @@ OfflineScheduler.exe [options]
 DEFAULT VALUES:
 --------------------------------------------------------------------------------
 Default Values
-    - Architecture Library file = input/architecture_library.txt
-    - DFG = input/B1_10_5.aif
+- Architecture Library file = input/architecture_library.txt
+- DFG = input/B1_10_5.aif
 
-    - Crossover rate = 0.85
-    - Mutation rate = 0.005
+- Crossover rate = 0.85
+- Mutation rate = 0.005
 
-    - Population size = 50
-    - Number of Generations = 500
+- Population size = 50
+- Number of Generations = 500
 
 
 Program Output
-    - Error messages are currently being printed to stderr
-    - All other program output is printed to stdout
+- Error messages are currently being printed to stderr
+- All other program output is printed to stdout
 
 
 CONSTRAINTS
@@ -72,15 +72,27 @@ The very first line in the file MUST be as follows:
         # = the number different tasks that this file contains  
 
 The properties of each task must be entered in the following order:  
-    <NAME> <COLUMNS> <ROWS> <CONFIGURATION_TIME> <EXECUTION_TIME> <CONFIGURATION_POWER> <EXECUTION_POWER>
+<NAME> <COLUMNS> <ROWS> <CONFIGURATION_TIME> <EXECUTION_TIME> <CONFIGURATION_POWER> <EXECUTION_POWER>
 
-    - each property must be an integer separated by one or more whitespaces
+- each property must be an integer separated by one or more whitespaces
 
 Lines beginning with # are ignored by the parser  
 
 All implementations of the same task MUST have the exact same name (eg. TASK2)
+- I assume that there is only one GPP architecture, and it always appears in the
+    architecture library file before all hardware implementations of that same
+    type.
 
 
 FUTURE IMPLEMENTATION IDEAS
 --------------------------------------------------------------------------------
-Please see the tag \\ FUTURE in the source code
+###Migration of software tasks to hardware
+- The GA and architecture files currently have the potential to support the
+    migration of software tasks to hardware. 
+- I currently assume that the GPP architecture exists, but simply never choose
+    it when creating individuals or using the generational operators
+
+- Napoleon on the other had does not. 
+- Please search for the tag // RESTRICTION for more information
+
+Please see the // FUTURE tags in the source code

@@ -122,12 +122,15 @@ double getMutationRate(void){
 
 
 void printPopulation(Population * pop){
-//    int i;
-//    
-//    for (i = 0; i < pop->size; i++)
-//        printIndividual(&(pop->member[i]));
+    #ifdef VERBOSE
+        int i;
+
+        for (i = 0; i < pop->size; i++)
+            printIndividual(&(pop->member[i]));
+    #endif
     
     printSummaryStatistics(pop);
+    
 }
 
 void printSummaryStatistics(Population * pop){

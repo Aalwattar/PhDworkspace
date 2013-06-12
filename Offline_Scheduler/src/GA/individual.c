@@ -33,7 +33,7 @@ void initRandIndividual(Individual * ind){
     for(i=0; i<getNumGenes(); i++)
         ind->encoding[i] = (getNumArch(getTaskType(i)) - 1) * randomNumber() + 1;
     
-    // DOCUMENT  - right now I restrict the GA from choosing any of the GPPs
+    // RESTRICTION - right now I restrict the GA from choosing any of the GPPs
     // ORIGINAL - ind->encoding[i] = getNumArch(getTaskType(i)) * randomNumber();
 }
 
@@ -57,7 +57,7 @@ void mutate(Individual * ind){
         if(randomNumber() < getMutationRate())
             ind->encoding[i] = (getNumArch(getTaskType(i)) - 1) * randomNumber() + 1;
     
-    // DOCUMENT  - right now I restrict the GA from choosing any of the GPPs
+    // RESTRICTION - right now I restrict the GA from choosing any of the GPPs
     // ORIGINAL - ind->encoding[i] = getNumArch(getTaskType(i)) * randomNumber();
 }                              
 
@@ -93,11 +93,11 @@ void crossover(Individual * p1, Individual * p2){
 }
 
 void printIndividual(Individual * ind){
-//    int i;
-//    
-//    // print the chromosome
-//    for (i = 0; i < getNumGenes(); i++)
-//        fprintf(stdout, "%d", ind->encoding[i]);
+    int i;
+    
+    // print the chromosome
+    for (i = 0; i < getNumGenes(); i++)
+        fprintf(stdout, "%d", ind->encoding[i]);
     
     // Napoleon information
     fprintf(stdout, "fitness = %d\truntime = %d\tprefetch = %d\tpower = %d\treuse = %d\n", 
