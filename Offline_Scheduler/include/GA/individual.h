@@ -90,7 +90,7 @@ void freeIndividual(Individual *);
 void mutate(Individual *);
 
 /******************************************************************************
- * NAME : crossover
+ * NAME : onePointCrossover
  * 
  * PURPOSE : Perform crossover on the two individuals provided. The probability
  *       of mutating one individual gene (CROSSOVER_RATE) is pre-determined by
@@ -102,7 +102,22 @@ void mutate(Individual *);
  *      previously created either through initRandIndividual() or 
  *      duplicateIndividual().
  *****************************************************************************/
-void crossover(Individual *, Individual *);
+void onePointCrossover(Individual *, Individual *);
+
+/******************************************************************************
+ * NAME : twoPointCrossover
+ * 
+ * PURPOSE : Perform crossover on the two individuals provided. The probability
+ *       of mutating one individual gene (CROSSOVER_RATE) is pre-determined by
+ *       the user.
+ * ARGUMENTS : Individual * = the first individual that will undergo crossover
+ *             Individual * = the second individual that will undergo crossover
+ * 
+ * PRECONDITIONS : the Individuals passed in as a parameter must have been
+ *      previously created either through initRandIndividual() or 
+ *      duplicateIndividual().
+ *****************************************************************************/
+void twoPointCrossover(Individual *, Individual *);
 
 
 void printIndividual(Individual *);

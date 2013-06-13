@@ -79,7 +79,7 @@ void evolvePopulation(Population * pop){
     
     for(i=0; i + 1 < pop->size; i = i + 2)
         if(randomNumber() < CROSSOVER_RATE)
-                crossover(&(pop->member[i]), &(pop->member[i + 1]));
+                onePointCrossover(&(pop->member[i]), &(pop->member[i + 1]));
     
     for(i=0; i < pop->size; i++)
         mutate(&(pop->member[i]));
@@ -122,7 +122,7 @@ double getMutationRate(void){
 
 
 void printPopulation(Population * pop){
-    #ifdef VERBOSE
+    #if (defined VERBOSE || defined DEBUG)
         int i;
 
         for (i = 0; i < pop->size; i++)

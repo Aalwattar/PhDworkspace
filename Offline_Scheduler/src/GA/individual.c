@@ -51,17 +51,42 @@ void duplicateIndividual(Individual * copy, Individual * original){
 }
 
 void mutate(Individual * ind){
+    int new_gene;
     int i;
     
     for(i=0; i<getNumGenes(); i++)
-        if(randomNumber() < getMutationRate())
-            ind->encoding[i] = (getNumArch(getTaskType(i)) - 1) * randomNumber() + 1;
+        if(randomNumber() < getMutationRate()){
+            new_gene = (getNumArch(getTaskType(i)) - 1) * randomNumber() + 1;
+            
+            while(new_gene == ind->encoding[i])
+                new_gene = (getNumArch(getTaskType(i)) - 1) * randomNumber() + 1;
+                
+            ind->encoding[i] = new_gene;
+        }
+    
     
     // RESTRICTION - right now I restrict the GA from choosing any of the GPPs
     // ORIGINAL - ind->encoding[i] = getNumArch(getTaskType(i)) * randomNumber();
 }                              
 
-void crossover(Individual * p1, Individual * p2){
+void onePointCrossover(Individual * p1, Individual * p2){
+    int cross_point;
+    int temp;
+    int i;
+    
+    cross_point = getNumGenes() * randomNumber();
+    
+    while(cross_point == 0 || cross_point == getNumGenes())
+        cross_point = getNumGenes() * randomNumber();
+    
+    for(i=cross_point; i < getNumGenes(); i++){
+        temp = p1->encoding[i];
+        p1->encoding[i] = p2->encoding[i];
+        p2->encoding[i] = temp;
+    }
+}
+
+void twoPointCrossover(Individual * p1, Individual * p2){
     int cross1, cross2;
     int temp;
     int i;
@@ -100,6 +125,6 @@ void printIndividual(Individual * ind){
         fprintf(stdout, "%d", ind->encoding[i]);
     
     // Napoleon information
-    fprintf(stdout, "fitness = %d\truntime = %d\tprefetch = %d\tpower = %d\treuse = %d\n", 
+    fprintf(stdout, "\tfitness = %d\truntime = %d\tprefetch = %d\tpower = %d\treuse = %d\n", 
                 ind->fitness, ind->exec_time, ind->prefetch, ind->energy, ind->num_reuse);
 }
