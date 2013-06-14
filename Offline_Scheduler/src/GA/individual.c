@@ -56,7 +56,7 @@ void duplicateIndividual(Individual * copy, Individual * original){
     }
 }
 
-void mutate(Individual * ind){
+void mutateRotationally(Individual * ind){
     int i;
     
     for(i=0; i<getNumGenes(); i++)
@@ -67,7 +67,26 @@ void mutate(Individual * ind){
     
     // RESTRICTION - right now I restrict the GA from choosing any of the GPPs
     // ORIGINAL - ind->encoding[i] = getNumArch(getTaskType(i)) * randomNumber();
-}                              
+}              
+
+void mutateRandomly(Individual * ind){
+    int new_gene;
+    int i;
+    
+    for(i=0; i<getNumGenes(); i++)
+        if(randomNumber() < getMutationRate()){
+            new_gene = (getNumArch(getTaskType(i)) - 1) * randomNumber() + 1;
+            
+            while(new_gene == ind->encoding[i])
+                new_gene = (getNumArch(getTaskType(i)) - 1) * randomNumber() + 1;
+                
+            ind->encoding[i] = new_gene;
+        }
+    
+    
+    // RESTRICTION - right now I restrict the GA from choosing any of the GPPs
+    // ORIGINAL - ind->encoding[i] = getNumArch(getTaskType(i)) * randomNumber();
+}  
 
 void onePointCrossover(Individual * p1, Individual * p2){
     int cross_point;

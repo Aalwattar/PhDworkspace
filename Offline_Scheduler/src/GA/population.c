@@ -82,7 +82,7 @@ void evolvePopulation(Population * pop){
                 onePointCrossover(&(pop->member[i]), &(pop->member[i + 1]));
     
     for(i=0; i < pop->size; i++)
-        mutate(&(pop->member[i]));
+        mutateRotationally(&(pop->member[i]));
 }
 
 

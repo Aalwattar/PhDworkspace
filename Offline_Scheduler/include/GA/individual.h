@@ -77,7 +77,7 @@ void freeIndividual(Individual *);
 
 
 /******************************************************************************
- * NAME : mutate
+ * NAME : mutateRotationally
  * 
  * PURPOSE : Perform mutation on an Individual. The probability of mutating one
  *      individual gene (MUTATION_RATE) is pre-determined by the user.
@@ -87,7 +87,7 @@ void freeIndividual(Individual *);
  *      previously created either through initRandIndividual() or 
  *      duplicateIndividual().
  *****************************************************************************/
-void mutate(Individual *);
+void mutateRotationally(Individual *);
 
 /******************************************************************************
  * NAME : onePointCrossover
