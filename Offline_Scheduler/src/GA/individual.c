@@ -46,22 +46,22 @@ void duplicateIndividual(Individual * copy, Individual * original){
     
     copy->encoding = malloc(sizeof(int) * getNumGenes());
     
-    for(i=0; i<getNumGenes(); i++)
+    for(i=0; i<getNumGenes(); i++){
         copy->encoding[i] = original->encoding[i];
+        copy->energy = original->energy;
+        copy->exec_time = original->exec_time;
+        copy->fitness = original->fitness;
+        copy->num_reuse = original->num_reuse;
+        copy->prefetch = original->prefetch;
+    }
 }
 
 void mutate(Individual * ind){
-    int new_gene;
     int i;
     
     for(i=0; i<getNumGenes(); i++)
         if(randomNumber() < getMutationRate()){
-            new_gene = (getNumArch(getTaskType(i)) - 1) * randomNumber() + 1;
-            
-            while(new_gene == ind->encoding[i])
-                new_gene = (getNumArch(getTaskType(i)) - 1) * randomNumber() + 1;
-                
-            ind->encoding[i] = new_gene;
+            ind->encoding[i] = ((ind->encoding[i]) % (getNumArch(getTaskType(i)) - 1)) + 1;
         }
     
     

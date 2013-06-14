@@ -45,94 +45,27 @@ void initParameters(int, char **);
 void freeParameters(void);
 void setPopSize(int);
 
-void generationalGA(void);
-void elitestGA(void);
-
 // FUTURE - implement this
 bool populationConverged(Population * pop);
 
-
+// a generational keep-best approach
 int main(int argc, char * argv[]){
+    Population * pop, * selected;
+    Individual * best_solution;
+    int generation_num = 0;
+    
     initParameters(argc, argv);
-    
-    // FIX - for now, change this to the preferred algorithm
-    generationalGA();
-
-    freeParameters();
-    return EXIT_SUCCESS;
-}
-
-
-void elitestGA(void){
-    Population * pop, * selected;
-    Individual * best_solution;
-    int half_pop;
-    int generation_num = 0;
-
-    half_pop = POP_SIZE / 2;
-    if(POP_SIZE % 2 == 1)
-        half_pop++;
-    
     pop = genRandPopulation(POP_SIZE);
-
-#ifdef VERBOSE
-    fprintf(stdout, "\n----------------------------------------------------------\n\n");
-    fprintf(stdout, "Starting Population:\n");
     determineFitness(pop);
-    printPopulation(pop);
-#endif
-
-    while(generation_num < STOP_CONDITION){
-        determineFitness(pop);
-
-#if (defined VERBOSE || defined EXE)
-        fprintf(stdout, "\n-----------------   GENERATION %d   -----------------\n", generation_num + 1);
-        printPopulation(pop);
-#endif
-
-        selected = tournamentSelection(pop, pop->size);
-        evolvePopulation(selected);
-        determineFitness(selected);
-
-        replaceWorst(pop, selected, half_pop);
-        freePopulation(selected);
-
-        generation_num++;
-    }
-
-#ifdef VERBOSE
-    fprintf(stdout, "\nFinal Population:\n");
-    determineFitness(pop);
-    printPopulation(pop);
-#endif
-
-    fprintf(stdout, "\n-----------------   FINAL RESULT   -----------------\n");
-    best_solution = findBest(pop);
-    evaluateFitness(best_solution);
-    printIndividual(best_solution);
-
-    freePopulation(pop);
-}
-
-
-
-void generationalGA(void){
-    Population * pop, * selected;
-    Individual * best_solution;
-    int generation_num = 0;
-    
-    pop = genRandPopulation(POP_SIZE);
+    sortByFitness(pop);
 
     #ifdef VERBOSE
         fprintf(stdout, "\n----------------------------------------------------------\n\n");
         fprintf(stdout, "Starting Population:\n");
-        determineFitness(pop);
         printPopulation(pop);
     #endif
 
     while(generation_num < STOP_CONDITION){
-        determineFitness(pop);
-        
         #if  (defined VERBOSE || defined EXE)
             fprintf(stdout, "\n-----------------   GENERATION %d   -----------------\n", generation_num + 1);
             printPopulation(pop);
@@ -140,25 +73,25 @@ void generationalGA(void){
         
         selected = tournamentSelection(pop, pop->size);
         evolvePopulation(selected);
+        determineFitness(selected);
         
-        freePopulation(pop);
-        pop = selected;
-        
+        pop = retainBest(pop, selected);
+
         generation_num++;
     }
 
     #ifdef VERBOSE
         fprintf(stdout, "\nFinal Population:\n");
-        determineFitness(pop);
         printPopulation(pop);
     #endif
     
     fprintf(stdout, "\n-----------------   FINAL RESULT   -----------------\n");
-    determineFitness(pop);
     best_solution = findBest(pop);
     printIndividual(best_solution);
     
     freePopulation(pop);
+    freeParameters();
+    return EXIT_SUCCESS;
 }
 
 void initParameters(int argc, char ** argv){

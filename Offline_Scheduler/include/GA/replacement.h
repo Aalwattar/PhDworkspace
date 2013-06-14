@@ -38,5 +38,9 @@
  *****************************************************************************/
 void replaceWorst(Population *, Population *, int);
 
+void replaceAll(Population *, Population *);
+
+Population * retainBest(Population *, Population *);
+
 #endif	/* REPLACEMENT_H */
 
