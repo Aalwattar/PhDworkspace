@@ -29,7 +29,7 @@ void initRandIndividual(Individual * ind){
     int i;
     
     ind->encoding = malloc(sizeof(int) * getNumGenes());
-    
+        
     for(i=0; i<getNumGenes(); i++)
         ind->encoding[i] = (getNumArch(getTaskType(i)) - 1) * randomNumber() + 1;
     
