@@ -14,7 +14,7 @@
  * 
  * Purpose  : Contains main and executes the GA
  ******************************************************************************/
-
+#include "config.h"
 #include "fitness.h"
 #include "selection.h"
 #include "replacement.h"
@@ -25,20 +25,9 @@
 #include <stdbool.h>
 #include <getopt.h>
 
-#include <bounds.h>
-#include <types.h>
-#include <ecodes.h>
-#include <napoleon.h>
-#include <io.h>
-#include <ilp.h>
-#include <functions.h>
-#include <main.h>
 
-#define ARCH_FILENAME "input/architecture_library.txt"
-#define AIF_FILENAME  "input/B1_10_5.aif"
-
-static int STOP_CONDITION = 500;
-static int POP_SIZE = 50;
+static int STOP_CONDITION = DEFAULT_STOP_CONDITION;
+static int POP_SIZE = DEFAULT_POP_SIZE;
 
 
 void initParameters(int, char **);
@@ -95,8 +84,8 @@ int main(int argc, char * argv[]){
 }
 
 void initParameters(int argc, char ** argv){
-    char * arch_filename = ARCH_FILENAME;
-    char * aif_filename = AIF_FILENAME;
+    char * arch_filename = DEFAULT_ARCH_FILENAME;
+    char * aif_filename = DEFAULT_AIF_FILENAME;
     int seed = randSeed();
     int c;
 

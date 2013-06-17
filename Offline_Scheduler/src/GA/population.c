@@ -16,6 +16,7 @@
  *              of individuals
  ******************************************************************************/
 
+#include "config.h"
 #include "population.h"
 #include "fitness.h"
 #include "selection.h"
@@ -25,8 +26,9 @@
 #include <math.h>
 #include <limits.h>
 
-static double CROSSOVER_RATE = 0.85;
-static double MUTATION_RATE  = 0.005;
+// FIX
+static double CROSSOVER_RATE = DEFAULT_CROSSOVER_RATE;
+static double MUTATION_RATE  = DEFAULT_MUTATION_RATE;
 
 Population * genRandPopulation(int pop_size){
     Population * pop;

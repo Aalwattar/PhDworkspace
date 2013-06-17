@@ -19,6 +19,7 @@
  *              and power required for that schedule as a fitness function
  ******************************************************************************/
 
+#include "config.h"
 #include "fitness.h"
 #include "ecodes.h"
 #include "functions.h"
@@ -30,12 +31,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <strings.h>
-
-// FIX - normalize power + runtime to make them 75:25 instead
-#define RUNTIME_WEIGHT 0.875
-#define POWER_WEIGHT 0.125
-
-#define BUFF_SIZE 500
 
 
 /******************************************************************************
