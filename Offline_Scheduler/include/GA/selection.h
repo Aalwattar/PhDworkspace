@@ -32,7 +32,7 @@
  * RETURNS : A Population that contains deep copies of all of the winners from 
  *              the requested number of tournaments. 
  *****************************************************************************/
-Population * tournamentSelection(Population *, int);
+Population * tournamentSelection(Population *);
 
 
 /******************************************************************************
@@ -45,7 +45,7 @@ Population * tournamentSelection(Population *, int);
  * RETURNS : A Population that contains deep copies of all of the winners from 
  *              the requested number of tournaments. 
  *****************************************************************************/
-Population * randomSelection(Population *, int);
+Population * randomSelection(Population *);
 
 
 /******************************************************************************

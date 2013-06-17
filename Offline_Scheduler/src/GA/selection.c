@@ -23,8 +23,9 @@
 
 
 
-Population * tournamentSelection(Population * original, int pop_size){
+Population * tournamentSelection(Population * original){
     Population * mating_pool;
+    int pop_size = original->size;
     int p1, p2;
     int i;
 
@@ -46,8 +47,9 @@ Population * tournamentSelection(Population * original, int pop_size){
 }
 
 
-Population * randomSelection(Population * original, int pop_size){
+Population * randomSelection(Population * original){
     Population * mating_pool;
+    int pop_size = original->size;
     int randInd;
     int i;
 

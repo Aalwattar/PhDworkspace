@@ -13,6 +13,11 @@ OfflineScheduler.exe [options]
         Use FILE as library of architectures (please see bellow for formatting 
         restrictions)
 
+-b NAME
+        Use the algorithm NAME to perform crossover. Current options are:
+            one-point
+            two-point
+
 -c DECIMAL_NUM
         Set the crossover rate to DECIMAL_NUM
     
@@ -25,8 +30,23 @@ OfflineScheduler.exe [options]
 -m DECIMAL_NUM
         Set the mutation rate to DECIMAL_NUM
 
+-n NAME 
+        Use the algorithm NAME to perform mutation. Current options are:
+            random
+            rotationally
+
 -p INTEGER
         Set the Population size to INTEGER individuals
+
+-r NAME
+        Use the algorithm NAME to perform replacement. Current options are:
+            all
+            keep_best
+
+-s NAME
+        Use the algorithm NAME to perform selection. Current options are:
+            random
+            tournament
 
 -t INTEGER
         Seed the random number generator with INTEGER
@@ -47,11 +67,15 @@ Default Values
 - DFG = input/B1_10_5.aif
 
 - Crossover rate = 0.85
+- Crossover Algorithm = one point crossover
 - Mutation rate = 0.005
+- Mutation Algorithm = rotational mutation
 
 - Population size = 50
 - Number of Generations = 500
 
+- Selection Algorithm = Tournament selection
+- Replacement Algorithm = Keep best
 
 Program Output
 - Error messages are currently being printed to stderr

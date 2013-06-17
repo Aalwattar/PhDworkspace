@@ -74,7 +74,8 @@ void duplicateIndividual(Individual *, Individual *);
  *****************************************************************************/
 void freeIndividual(Individual *);
 
-
+// FIX
+void mutateRandomly(Individual * ind);
 
 /******************************************************************************
  * NAME : mutateRotationally

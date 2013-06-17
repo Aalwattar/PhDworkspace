@@ -21,29 +21,37 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void replaceWorst(Population * original, Population * replacements, int num_replaced){
-    int pop_size = original->size;
-    int i, j;
-    
-    // FUTURE - should only have 1 sort ?? 
-    sortByFitness(original);
-    sortByFitness(replacements);
-    
-    j=0;
-    for(i = 0 ; i < num_replaced; i++){
-        freeIndividual(&(original->member[pop_size -1 -i]));
-        duplicateIndividual(&(original->member[pop_size -1 -i]), &(replacements->member[j++]));
-    }
-}
+// FIX - requires thorough testing before implementation
+//Population * replaceWorst(Population * original, Population * replacements, int num_replaced){
+//    Population * pop;
+//    int pop_size = original->size;
+//    int i, j;
+//    
+//    pop = malloc(sizeof(Population));
+//    pop->size = pop_size;
+//    pop->member = malloc(sizeof(Individual) * pop_size);
+//    
+//    // FIX - should only have 1 sort ?? 
+//    sortByFitness(original);
+//    sortByFitness(replacements);
+//    
+//    j=0;
+//    for(i = 0 ; i < num_replaced; i++)
+//        duplicateIndividual(&(pop->member[i]), &(replacements->member[j++]));
+//
+//    for(; i < pop_size; i++)
+//        duplicateIndividual(&(pop->member[i]), &(original->member[i - num_replaced]));
+//    
+//    freePopulation(original);
+//    freePopulation(replacements);
+//    
+//    return pop;
+//}
 
-void replaceAll(Population * original, Population * replacements){
-    int pop_size = original->size;
-    int i;
-    
-    for(i = 0 ; i < pop_size; i++){
-        freeIndividual(&(original->member[i]));
-        duplicateIndividual(&(original->member[i]), &(replacements->member[i]));
-    }
+
+Population * replaceAll(Population * original, Population * replacements){
+    freePopulation(original);
+    return replacements;
 }
 
 Population * retainBest(Population * original, Population * next_gen){

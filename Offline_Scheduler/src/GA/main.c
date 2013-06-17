@@ -22,12 +22,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <stdbool.h>
 #include <getopt.h>
 
 // FIX
 static int STOP_CONDITION = DEFAULT_STOP_CONDITION;
 static int POP_SIZE = DEFAULT_POP_SIZE;
+
+// FIX 
+int crossover_type = 1;
+int mutation_type = 1;
+int replacement_type = 1;
+int selection_type = 1;
 
 
 void initParameters(int, char **);
@@ -60,11 +67,21 @@ int main(int argc, char * argv[]){
             printPopulation(pop);
         #endif
         
-        selected = tournamentSelection(pop, pop->size);
-        evolvePopulation(selected);
+        // FIX
+        if(selection_type == 1)
+            selected = tournamentSelection(pop);
+        else 
+            selected = randomSelection(pop);
+            
+        // FIX
+        evolvePopulation(selected, crossover_type, mutation_type);
         determineFitness(selected);
         
-        pop = retainBest(pop, selected);
+        // FIX
+        if(replacement_type == 1)
+            pop = retainBest(pop, selected);
+        else
+            pop = replaceAll(pop, selected);
 
         generation_num++;
     }
@@ -83,6 +100,8 @@ int main(int argc, char * argv[]){
     return EXIT_SUCCESS;
 }
 
+// FIX - too long
+// FIX - print out every parameter selected
 void initParameters(int argc, char ** argv){
     char * arch_filename = DEFAULT_ARCH_FILENAME;
     char * aif_filename = DEFAULT_AIF_FILENAME;
@@ -91,10 +110,22 @@ void initParameters(int argc, char ** argv){
 
     opterr = 0;
 
-    while((c = getopt(argc, argv, "a:c:d:g:m:p:r:s:t:w:")) != -1){
+    while((c = getopt(argc, argv, "a:b:c:d:g:m:n:p:r:s:t:w:")) != -1){
         switch(c){
             case 'a':
                 arch_filename = optarg;
+                break;
+            case 'b':
+                if(strncasecmp("two-point", optarg, strlen(optarg))  == 0 || 
+                    strncasecmp("two_point", optarg, strlen(optarg)) == 0 ||
+                    strncasecmp("two point", optarg, strlen(optarg)) == 0 )
+                    crossover_type = 2;
+                else if(strncasecmp("one-point", optarg, strlen(optarg)) != 0 &&
+                        strncasecmp("one_point", optarg, strlen(optarg)) != 0 &&
+                        strncasecmp("one point", optarg, strlen(optarg)) != 0 ){
+                    fprintf(stderr, "Unknown crossover option : %s\n", optarg);
+                    exit(1);
+                }
                 break;
             case 'c':
                 setCrossoverRate(atof(optarg));
@@ -108,14 +139,35 @@ void initParameters(int argc, char ** argv){
             case 'm':
                 setMutationRate(atof(optarg));
                 break;
+            case 'n':
+               if(strncasecmp("random", optarg, strlen(optarg)) == 0)
+                    mutation_type = 2;
+                else if(strncasecmp("rotationally", optarg, strlen(optarg)) != 0){ 
+                    fprintf(stderr, "Unknown mutation option : %s\n", optarg);
+                    exit(1);
+                }
+                break;
             case 'p':
                 setPopSize(atoi(optarg));
                 break;
             case 'r':
-                // FIX - REPLACEMENT METHOD = generatinoal or replaceWorst with varying parameters
+                if(strncasecmp("all", optarg, strlen(optarg)) == 0)
+                    replacement_type = 2;
+                else if(strncasecmp("keep-best", optarg, strlen(optarg)) != 0 &&
+                        strncasecmp("keep_best", optarg, strlen(optarg)) != 0 &&
+                        strncasecmp("keep best", optarg, strlen(optarg)) != 0 ){
+                    fprintf(stderr, "Unknown replacement option : %s\n", optarg);
+                    exit(1);
+                }
                 break;
+
             case 's':
-                // FIX - SELECTION METHOD = tournament selection or random
+                if(strncasecmp("random", optarg, strlen(optarg)) == 0)
+                    selection_type = 2;
+                else if(strncasecmp("tournament", optarg, strlen(optarg)) != 0){ 
+                    fprintf(stderr, "Unknown selection option : %s\n", optarg);
+                    exit(1);
+                }
                 break;
                 
             case 't':
@@ -158,6 +210,26 @@ void initParameters(int argc, char ** argv){
     fprintf(stdout, "\tCrossover Rate = %.4lf\n", getCrossoverRate());
     fprintf(stdout, "\tRuntime Weight = %.4lf\n", getRuntimeWeight());
     fprintf(stdout, "\tPower Weight   = %.4lf\n\n", 1.0 - getRuntimeWeight());
+    
+    if(crossover_type == 1)
+        fprintf(stdout, "\tCrossover Algorithm   = One point Crossover\n");
+    else
+        fprintf(stdout, "\tCrossover Algorithm   = Two point Crossover\n");
+    
+    if(mutation_type == 1)
+        fprintf(stdout, "\tMutation Algorithm    = Rotational Mutation\n");
+    else
+        fprintf(stdout, "\tMutation Algorithm    = Random Mutation\n");
+    
+    if(selection_type == 1)
+        fprintf(stdout, "\tSelection Algorithm   = Tournament Selection\n");
+    else
+        fprintf(stdout, "\tSelection Algorithm   = Random Selection\n");
+    
+    if(replacement_type == 1)
+        fprintf(stdout, "\tReplacement Algorithm = Keep Best\n");
+    else
+        fprintf(stdout, "\tReplacement Algorithm = Replace All\n\n");
 }
 
 

@@ -76,15 +76,23 @@ void sortByFitness(Population * pop){
 
 
 
-void evolvePopulation(Population * pop){
+void evolvePopulation(Population * pop, int crossover_type, int mutation_type){
     int i;
     
     for(i=0; i + 1 < pop->size; i = i + 2)
-        if(randomNumber() < CROSSOVER_RATE)
+        if(randomNumber() < CROSSOVER_RATE){
+            if(crossover_type == 1)
                 onePointCrossover(&(pop->member[i]), &(pop->member[i + 1]));
-    
-    for(i=0; i < pop->size; i++)
-        mutateRotationally(&(pop->member[i]));
+            else
+                twoPointCrossover(&(pop->member[i]), &(pop->member[i + 1]));
+        }
+                
+    if(mutation_type == 1)
+        for(i=0; i < pop->size; i++)
+            mutateRotationally(&(pop->member[i]));
+    else
+        for(i=0; i < pop->size; i++)
+            mutateRandomly(&(pop->member[i]));
 }
 
 

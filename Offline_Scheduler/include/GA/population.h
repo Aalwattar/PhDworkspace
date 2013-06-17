@@ -57,7 +57,7 @@ Population * genRandPopulation(int);
 void freePopulation(Population *);
 
 
-
+// FIX
 /******************************************************************************
  * NAME : evolvePopulation
  * 
@@ -65,7 +65,7 @@ void freePopulation(Population *);
  * ARGUMENTS : Population * = the population that you wish to transform
  *             int = the size of that population;
  *****************************************************************************/
-void evolvePopulation(Population *);
+void evolvePopulation(Population *, int, int);
 
 
 /******************************************************************************

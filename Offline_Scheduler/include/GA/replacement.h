@@ -36,9 +36,9 @@
  * 
  * NOTE : This algorithm sorts each of the populations according to fitness
  *****************************************************************************/
-void replaceWorst(Population *, Population *, int);
+Population * replaceWorst(Population *, Population *, int);
 
-void replaceAll(Population *, Population *);
+Population * replaceAll(Population *, Population *);
 
 Population * retainBest(Population *, Population *);
 

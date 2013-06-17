@@ -237,6 +237,8 @@ void printArchLibrary(void){
 // FIX 
 static double RUNTIME_WEIGHT = DEFAULT_RUNTIME_WEIGHT;
 
+
+// FIX
 void setRuntimeWeight(double weight){
     if(0 <= weight && weight <= 1){
         RUNTIME_WEIGHT = weight;
