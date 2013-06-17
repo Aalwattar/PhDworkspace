@@ -151,7 +151,10 @@ void initParameters(int argc, char ** argv){
     
     // FIX - Check the return values
     seedRandGenerator(seed);
-    initArchLibrary(arch_filename);
+    
+    if(initArchLibrary(arch_filename) != true)
+        exit(1);
+    
     initNapoleon(aif_filename);
 
     fprintf(stdout, "Parameters:\n");

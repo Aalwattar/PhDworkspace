@@ -43,8 +43,6 @@
  *****************************************************************************/
 
 // represents one architecture's implementation
-
-
 typedef struct{
     int columns;
     int rows;
@@ -60,8 +58,8 @@ typedef struct{
 
 
 typedef struct{
-    int num_impl; // the number of architectures for this task
-    Implementation * impl; // the properties of each architecture
+    int num_impl;           // the number of architectures for this task
+    Implementation * impl;  // the properties of each architecture
 } Operation;
 
 
@@ -131,7 +129,13 @@ static bool parseArchLibrary(FILE * fp){
     int i;
 
     // read in the number of task types
-    fscanf(fp, "%*s %d", &num_ops);
+    if(fscanf(fp, "%*s %d", &num_ops) == 0){
+        fprintf(stderr, "GA parseArchLibrary Failed!\n");
+        fprintf(stderr, "Unable to understand the first line in the file.\n");
+        fprintf(stderr, "Please see the the README file for how the architecture" \
+                        "library file should be structured\n");
+        return false;
+    }
 
     // create and clear data structures
     arch_library = malloc(sizeof (Operation) * (num_ops + 1));
@@ -148,11 +152,20 @@ static bool parseArchLibrary(FILE * fp){
             continue;
 
         if(strncmp(buffer, "TASK", 4) == 0){
-            if(parseArch(buffer) != true)
+            if(parseArch(buffer) != true){
+                for(i = 0; i < num_ops + 1; i++)
+                    free((arch_library[i]).impl);
+                free(arch_library);
+                
                 return false;
+            }
         }else{
             fprintf(stderr, "GA parseArchLibrary Failed!\n");
             fprintf(stderr, "Unable to understand the line :\n\t%s", buffer);
+            for(i = 0; i < num_ops + 1; i++)
+                    free((arch_library[i]).impl);
+            free(arch_library);
+            
             return false;
         }
     }
@@ -249,8 +262,8 @@ static int getConfigPower(int);
 static int getExecPower(int);
 
 // FIX - MAKE NON GLOBAL!!!
-static t_task_interface *task_interface; //
-static t_task *task; //
+t_task_interface *task_interface; //
+t_task *task; //
 
 
 // FIX - make smaller
