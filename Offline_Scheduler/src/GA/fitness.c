@@ -234,6 +234,25 @@ void printArchLibrary(void){
  **********        FITNESS FUNCTION (INTERFACE WITH NAPOLEON)        **********
  *****************************************************************************/
 
+// FIX 
+static double RUNTIME_WEIGHT = DEFAULT_RUNTIME_WEIGHT;
+
+void setRuntimeWeight(double weight){
+    if(0 <= weight && weight <= 1){
+        RUNTIME_WEIGHT = weight;
+        return;
+    }
+    
+    fprintf(stderr, "Invalid runtime weight %.3lf.\n", weight);
+    fprintf(stderr, "The runtime rate must be a decimal number between 0 and 1\n");
+    
+    exit(1);
+}
+
+double getRuntimeWeight(void){
+    return RUNTIME_WEIGHT;
+}
+
 /******************************************************************************
  * NAME : getColumns
  * 
@@ -367,7 +386,7 @@ void evaluateFitness(Individual * ind){
     free(reuse_mat);
     free(succ_adj_mat);
 
-    ind->fitness = (schedule.power * POWER_WEIGHT) + (schedule.runtime * RUNTIME_WEIGHT);
+    ind->fitness = (schedule.runtime * RUNTIME_WEIGHT) + (schedule.power * (1.0 - RUNTIME_WEIGHT));
     ind->energy = schedule.power;
     ind->exec_time = schedule.runtime;
     ind->num_reuse = schedule.reuse;

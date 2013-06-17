@@ -94,6 +94,10 @@ typedef struct{
     int reuse;
 }GA_Info;         
 
+// FIX
+void setRuntimeWeight(double);
+double getRuntimeWeight(void);
+
 /******************************************************************************
  * NAME : initNapoleon
  * 

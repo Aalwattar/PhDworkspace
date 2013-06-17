@@ -27,8 +27,7 @@
 
 // FIX - normalize power + runtime to make them 75:25 instead
 // Fitness weights
-#define RUNTIME_WEIGHT 0.875
-#define POWER_WEIGHT (1.0 - RUNTIME_WEIGHT)
+#define DEFAULT_RUNTIME_WEIGHT 0.875
 
 
 // Population Parameters

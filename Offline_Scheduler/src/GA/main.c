@@ -25,7 +25,7 @@
 #include <stdbool.h>
 #include <getopt.h>
 
-
+// FIX
 static int STOP_CONDITION = DEFAULT_STOP_CONDITION;
 static int POP_SIZE = DEFAULT_POP_SIZE;
 
@@ -91,7 +91,7 @@ void initParameters(int argc, char ** argv){
 
     opterr = 0;
 
-    while((c = getopt(argc, argv, "a:c:d:g:m:p:r:s:t:")) != -1){
+    while((c = getopt(argc, argv, "a:c:d:g:m:p:r:s:t:w:")) != -1){
         switch(c){
             case 'a':
                 arch_filename = optarg;
@@ -120,6 +120,10 @@ void initParameters(int argc, char ** argv){
                 
             case 't':
                 seed = atoi(optarg);
+                break;
+                
+            case 'w':
+                setRuntimeWeight(atof(optarg));
                 break;
                 
             case ':':   
@@ -151,7 +155,9 @@ void initParameters(int argc, char ** argv){
     fprintf(stdout, "\tPopulation Size       = %d\n", POP_SIZE);
     fprintf(stdout, "\tNumber of Generations = %d\n\n", STOP_CONDITION);
     fprintf(stdout, "\tMutation Rate  = %.4lf\n", getMutationRate());
-    fprintf(stdout, "\tCrossover Rate = %.4lf\n\n", getCrossoverRate());
+    fprintf(stdout, "\tCrossover Rate = %.4lf\n", getCrossoverRate());
+    fprintf(stdout, "\tRuntime Weight = %.4lf\n", getRuntimeWeight());
+    fprintf(stdout, "\tPower Weight   = %.4lf\n\n", 1.0 - getRuntimeWeight());
 }
 
 

@@ -31,6 +31,10 @@ OfflineScheduler.exe [options]
 -t INTEGER
         Seed the random number generator with INTEGER
 
+-w DECIMAL_NUM
+        Set the weighting of the schedule's runtime in the fitness function
+        (The power weight is automatically calculated to be (1.0 - runtime weight) )
+
 
 - These arguments are all optional and can be entered in any order.
 - more options are currently in development
