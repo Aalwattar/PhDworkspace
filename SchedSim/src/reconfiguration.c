@@ -187,7 +187,7 @@ int TickConfig(struct Processor *processor)
 				fprintf(stderr,"Task Reconfiguration on PRR[%d] is completed \n", ReconfigPRRID);
 #endif
 				return ReconfigPRRID;
-		//	task completed TODO call a function that represent the complete of this task
+		/*	TODO task completed  call a function that represent the complete of this task*/
 			}
 
 

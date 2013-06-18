@@ -29,15 +29,18 @@
 
 
 
+// int CreatePRRConfigTimeArray(int noPRR);
+ void CleanConfigTimeArray(void);
+ int InitPRRConfigTime(int id, unsigned int value );
 
 
 
 
- int SearchReuse(Queue readyQ, struct PE *pRRs, int qSize );
- int RCSchedIIIEn(Queue ReadyQ, struct Counts *counters, struct PEs *pes);
-int RCSchedII(Queue ReadyQ , struct Counts *Counters, struct PEs *pes);
-int RCSchedIII(Queue ReadyQ , struct Counts *Counters, struct PEs *pes);
-int AddTask2Queue(Queue ReadyQ,int size);
+ int SearchReuse(Queue readyQ, struct PE *pRRs, int qSize , struct node *);
+ int RCSchedIIIEn(Queue ReadyQ, struct Counts *counters, struct PEs *pes, struct node *);
+int RCSchedII(Queue ReadyQ , struct Counts *Counters, struct PEs *pes, struct node *);
+int RCSchedIII(Queue ReadyQ , struct Counts *Counters, struct PEs *pes, struct node *);
+int AddTask2Queue(Queue ReadyQ, struct node *,int size);
 void RstCounters(struct Counts* counters);
 
 #endif /* SCHEDULERS_H_ */

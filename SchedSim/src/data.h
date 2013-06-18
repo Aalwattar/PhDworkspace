@@ -36,18 +36,8 @@ struct Simulation
  * store time delay for software and hardware
  * TODO delete this
  */
-struct Emulation
-{
-	unsigned int  HWdelay;
-	unsigned int  SWdelay;
-};
-struct data {
-	int op1;
-	int op2;
-	unsigned  isAdd_op1 : 1;
-	unsigned  isAdd_op2: 1;
-	unsigned :0 ;
-};
+
+
 struct PRRProcess {
 	int No;
 	enum PRRID PRR_ID[MAX_PR_MODULES];
@@ -61,6 +51,31 @@ struct PRRProcess {
  *
  * */
 
+struct Emulation
+{
+	unsigned int  HWdelay;
+	unsigned int  SWdelay;
+};
+struct data {
+	int op1;
+	int op2;
+	unsigned  isAdd_op1 : 1;
+	unsigned  isAdd_op2: 1;
+	unsigned :0 ;
+};
+struct node {
+	 unsigned int  id;
+	 unsigned char  operation;
+	 enum Mode mode;
+	 unsigned int next;
+	 struct data D;
+	 unsigned int  initPrio; // initial priority to start with
+	 unsigned int  CanRun;
+	 int TypeID; /* FIXME Change it back to const.  */
+	 struct Emulation Emu;
+
+};
+
 struct nodeData
 {
 	enum Mode mode;
@@ -70,20 +85,6 @@ struct nodeData
 	struct Simulation Sim; // move to a separate struct
 
 };
-struct node {
-	const unsigned int  id;
-	const unsigned char  operation;
-	const enum Mode mode;
-	const unsigned int next;
-	const struct data D;
-	const unsigned int  initPrio; // initial priority to start with
-	const unsigned int  CanRun;
-	      int TypeID; /* FIXME Change it back to const.  */
-	const struct Emulation Emu;
-
-};
-
-
 struct TaskType{
 	int ID;
 	char * name;
@@ -109,16 +110,23 @@ struct DFG {
 	struct node dfg[MAX_NO_OF_NODES];
 };
 
+
+
+
+// extern struct node node;
+ //struct DFG DFG;
+
+
+
 enum SystemStates {Start,CfgDone,TaskDone,None};
 
 extern enum SystemStates State;
-extern struct node *dfg1;
 extern struct DFG DFGArray[];
 //extern struct TaskType TasksTypes[];
 
 void Init_TasksTypes(void);
 void reinitTasksTable( int numberOfTasks);
-void freeTasksTable(void);
+void CleanTasksTable(void);
 inline unsigned char  isTaskDone(int ID);
 inline void taskDone(int ID);
 inline unsigned char  isTaskQed(int ID);
@@ -146,5 +154,25 @@ inline  int getTaskTypeSWPrio( int ID);
 inline void setTaskTypeSWPrio (int ID,int value);
 inline unsigned  int getTaskTypeCanRun( int ID);
 inline void setTaskTypeCanRun (int ID,unsigned int value);
-void setNodeTaskType(struct node *dFG, int taskID, int NewTypeID);
+void SetNodeTaskType(struct node *dFG, int taskID, int NewTypeID);
+
+
+struct node * CreateDFG(int size);
+void CleanDFG(struct node * dfg);
+void CopyDFG(struct node *dst, struct node *src,int size);
+unsigned int IsNodeOp1Address(struct node * dfg , int id);
+unsigned int IsNodeOp2Address(struct node * dfg , int id);
+int GetNodeOp1Value(struct node * dfg , int id);
+int GetNodeOp2Value(struct node * dfg , int id);
+unsigned int GetNodeEmulationHWdelay(struct node * dfg , int id);
+unsigned int GetNodeEmulationSWdelay(struct node * dfg , int id);
+void SetNodeEmulationHWdelay(struct node * dfg , int id, unsigned int newValue);
+void SetNodeEmulationSWdelay(struct node * dfg , int id,unsigned int newValue);
+unsigned int  GetNodeID(struct node * dfg , int id);
+enum Mode  GetNodeMode(struct node * dfg , int id);
+unsigned int  GetNodeNextNode(struct node * dfg , int id);
+unsigned int  GetNodeInitPrio(struct node * dfg , int id);
+unsigned int  GetNodeCanRun(struct node * dfg , int id);
+int  GetNodeTaskType(struct node *dFG, int taskID);
+
 #endif /* DATA_H_ */

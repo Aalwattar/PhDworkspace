@@ -8,6 +8,9 @@
 #ifndef PLATFROMCONFIG_H_
 #define PLATFROMCONFIG_H_
 
+
+#define VERSION_NUMBER "0.2.0"
+
 #define GRAPH_FILE "./graph"
 
 #define NO_OF_DFG_REP 1
@@ -75,6 +78,7 @@
 #define PRR_2_CONFIG_TIME 20
 #define PRR_3_CONFIG_TIME 20
 #define PRR_4_CONFIG_TIME 20
+
 /*
 #define PRR_5_CONFIG_TIME 20
 #define PRR_6_CONFIG_TIME 20

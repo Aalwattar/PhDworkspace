@@ -82,7 +82,7 @@ unsigned int CheckMaxSize(struct node *dFG) {
 			max = sim.ExecTime.end;
 		}
 
-	} while (dFG[i++].next);
+	} while (GetNodeNextNode(dFG,i++));
 
 	return max;
 }
@@ -155,7 +155,7 @@ void GenerateGraph(struct Draw **graph, struct node *dFG, int scale) {
 			for (j = lroundf((float)sim.ConfigTime.start / scale);
 					j <lroundf((float)(sim.ConfigTime.start + tmpConfigTime) / scale); j++) {
 				graph[j][sim.PRRUsed].ID = i;
-				graph[j][sim.PRRUsed].Type = dFG[i].TypeID;
+				graph[j][sim.PRRUsed].Type = GetNodeTaskType(dFG,i);
 				graph[j][sim.PRRUsed].mode = Reconfig;
 
 			}
@@ -165,11 +165,11 @@ void GenerateGraph(struct Draw **graph, struct node *dFG, int scale) {
 		for (j = lroundf((float)sim.ExecTime.start / scale);
 				j <lroundf((float)(sim.ExecTime.start + tmpExecTime) / scale); j++) {
 			graph[j][sim.PRRUsed].ID = i;
-			graph[j][sim.PRRUsed].Type = dFG[i].TypeID;
+			graph[j][sim.PRRUsed].Type = GetNodeTaskType(dFG,i);
 			graph[j][sim.PRRUsed].mode = Exec;
 		}
 
-	} while (dFG[i++].next);
+	} while (GetNodeNextNode(dFG,i++));
 
 }
 
