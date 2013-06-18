@@ -1,6 +1,7 @@
 # #!/bin/bash
 
 # run this file with the directory large_pop_tests
+CROSS_RATE=0.90
 
 if [ -z "$1" ] ; then 
     echo "Incorrect usage of $0."
@@ -11,7 +12,7 @@ fi
 mkdir .toGraph
 for dir in $(ls "$1") ; do
     echo "# Generation_#  Average  Min" > .toGraph/$dir.dat
-    cat $1/$dir/output/cross_0.90.dat | grep "Aver\|Min\|-----------" | \
+    cat $1/$dir/output/cross_$CROSS_RATE.dat | grep "Aver\|Min\|-----------" | \
     awk '{if(NR % 3 == 1) printf "%d\t", $3 ; 
             else if(NR % 3 == 2) printf "%f\t", $3 ;
             else print $3; }' >> .toGraph/$dir.dat
