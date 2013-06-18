@@ -1,0 +1,10 @@
+./keep_best_tests/test_suite.sh
+./keep_best_tests_1/test_suite.sh
+./keep_best_tests_2/test_suite.sh
+./keep_best_tests_3/test_suite.sh
+./keep_best_tests_4/test_suite.sh
+./keep_best_tests_5/test_suite.sh
+./keep_best_tests_6/test_suite.sh
+./keep_best_tests_7/test_suite.sh
+./keep_best_tests_8/test_suite.sh
+./keep_best_tests_9/test_suite.sh
