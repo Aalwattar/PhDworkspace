@@ -206,7 +206,7 @@ int LoadProcessor( struct Processor *processor, struct NodeData node )
 	return 0;
 }
 
-int TickAllProcessors(struct Processor *processor, int size)
+int TickAllProcessors(struct Processor *processor, int size, struct node *dFG)
 {
 	int i;
 
@@ -232,12 +232,12 @@ int TickAllProcessors(struct Processor *processor, int size)
 				if (processor[i].Type==TypeHW)
 				{
 					setTaskTypeHWET(processor[i].CurrentModule, \
-									CalcuateExecTime(getTaskTypeHWET(processor[i].CurrentModule) ,dfg1[processor[i].CurrentModule].Emu.HWdelay));
+									CalcuateExecTime(getTaskTypeHWET(processor[i].CurrentModule) , GetNodeEmulationHWdelay(dFG,processor[i].CurrentModule) ));
 
 				}else
 				{
 					setTaskTypeSWET(processor[i].CurrentModule,\
-							CalcuateExecTime(getTaskTypeSWET(processor[i].CurrentModule),dfg1[processor[i].CurrentModule].Emu.SWdelay));
+							CalcuateExecTime(getTaskTypeSWET(processor[i].CurrentModule),GetNodeEmulationSWdelay(dFG,processor[i].CurrentModule)));
 
 				}
 				CalcSWPrio(processor[i].CurrentModule,processor,size);
@@ -253,11 +253,11 @@ int TickAllProcessors(struct Processor *processor, int size)
 }
 
 
-unsigned int Ticker(struct PEs *pEs)
+unsigned int Ticker(struct PEs *pEs, struct node * dFG)
 {
 	IncTimer();
-	TickAllProcessors(pEs->HWPE->pe, pEs->HWPE->size);
-	TickAllProcessors(pEs->SWPE->pe, pEs->SWPE->size);
+	TickAllProcessors(pEs->HWPE->pe, pEs->HWPE->size,dFG);
+	TickAllProcessors(pEs->SWPE->pe, pEs->SWPE->size,dFG);
 	TickConfig(pEs->HWPE->pe);
 
 	return GetTimer();

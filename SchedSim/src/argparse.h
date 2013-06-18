@@ -20,6 +20,6 @@ struct ArgData {
 
 };
 
-
+void InitArgdatar(struct ArgData *arg);
 int  parseArgs(int argc, char *argv[],struct ArgData * argdatar);
 #endif /* ARGPARSE_H_ */

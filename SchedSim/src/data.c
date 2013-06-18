@@ -10,16 +10,21 @@
 #include "data.h"
 #include "PlatformConfig.h"
 /*FIXME */
+
+
+
+
+
 static struct nodeData TasksTable[MAX_NO_OF_NODES];
 static int TaskCounter=0;
 static struct TaskType TasksTypes[MAX_TASKS_TYPES];
 enum SystemStates State=Start;
 
-struct node *dfg1;
 
 
-
-
+/*
+ * TaskTable Struct functions
+ */
 
 void reinitTasksTable( int numberOfTasks)
 {
@@ -57,8 +62,13 @@ inline int getTaskCounter(void)
 	return TaskCounter;
 }
 
-inline void freeTasksTable(void)
+inline void CleanTasksTable(void)
 {
+	/*
+	 * FIXME Init and clean taskTable
+	 */
+
+
 	//free(TasksTable);
 }
 
@@ -90,6 +100,94 @@ inline int getTaskResult( int ID)
 inline void setTaskResult (int ID,int value)
 {
 	TasksTable[ID].result=value;
+}
+
+
+inline enum Mode getTaskMode( int ID)
+{
+	return TasksTable[ID].mode;
+}
+
+inline void setTaskMode (int ID,enum Mode value)
+{
+	TasksTable[ID].mode=value;
+}
+
+void getTaskSimulation( int ID,struct Simulation *value)
+{
+	value->Reused=TasksTable[ID].Sim.Reused ;
+	value->PRRUsed=TasksTable[ID].Sim.PRRUsed ;
+
+	value->ConfigTime.start=TasksTable[ID].Sim.ConfigTime.start;
+	value->ConfigTime.end=TasksTable[ID].Sim.ConfigTime.end;
+
+
+	value->ExecTime.start=TasksTable[ID].Sim.ExecTime.start;
+	value->ExecTime.end=TasksTable[ID].Sim.ExecTime.end;
+
+
+}
+
+void setTaskSimExecTimeStart(int ID, unsigned int value )
+{
+	TasksTable[ID].Sim.ExecTime.start=value;
+
+}
+
+void setTaskSimExecTimeEnd(int ID, unsigned int value )
+{
+	TasksTable[ID].Sim.ExecTime.end=value;
+}
+
+void setTaskSimConfTimeStart(int ID, unsigned int value )
+{
+	TasksTable[ID].Sim.ConfigTime.start=value;
+
+
+}
+
+void setTaskSimConfTimeEnd(int ID, unsigned int value )
+{
+		TasksTable[ID].Sim.ConfigTime.end=value;
+
+}
+
+
+void setTaskSimReused(int ID, unsigned char value )
+{
+	TasksTable[ID].Sim.Reused=value;
+
+
+}
+
+
+void setTaskSimPrrUsed(int ID, enum PRRID value )
+{
+
+	TasksTable[ID].Sim.PRRUsed=value;
+
+}
+
+
+
+void Init_TasksTypes(void)
+{
+	int i,k;
+	for (i =0;i<MAX_TASKS_TYPES;i++)
+	{
+		TasksTypes[i].ID=i;
+		TasksTypes[i].name=0;
+		TasksTypes[i].SWET=0;
+		TasksTypes[i].HWET=0;
+		TasksTypes[i].SWPriority=MAX_PR_MODULES/2 ;
+		for (k=0;k<MAX_PR_MODULES;k++)
+		{
+			TasksTypes[i].ConfigTime[k]=0;
+		}
+		TasksTypes[i].CanRun=0XFF;
+		TasksTypes[i].Module=1;
+
+	}
 }
 
 /*
@@ -179,131 +277,120 @@ inline void setTaskTypeCanRun (int ID,unsigned int value)
 	TasksTypes[ID].CanRun=value;
 }
 
+
+
+
+
 /*
- *  Task Table
+ * Node task functions
  */
 
 
-inline enum Mode getTaskMode( int ID)
+struct node * CreateDFG(int size)
 {
-	return TasksTable[ID].mode;
+	struct node *dfg;
+	dfg=malloc(sizeof (struct node) * size);
+	return dfg;
 }
 
-inline void setTaskMode (int ID,enum Mode value)
+void CleanDFG(struct node * dfg)
 {
-	TasksTable[ID].mode=value;
+	free(dfg);
 }
 
-void getTaskSimulation( int ID,struct Simulation *value)
-{
-	value->Reused=TasksTable[ID].Sim.Reused ;
-	value->PRRUsed=TasksTable[ID].Sim.PRRUsed ;
-
-	value->ConfigTime.start=TasksTable[ID].Sim.ConfigTime.start;
-	value->ConfigTime.end=TasksTable[ID].Sim.ConfigTime.end;
-
-
-	value->ExecTime.start=TasksTable[ID].Sim.ExecTime.start;
-	value->ExecTime.end=TasksTable[ID].Sim.ExecTime.end;
-
-
-}
-
-void setTaskSimExecTimeStart(int ID, unsigned int value )
-{
-	TasksTable[ID].Sim.ExecTime.start=value;
-
-}
-
-void setTaskSimExecTimeEnd(int ID, unsigned int value )
-{
-	TasksTable[ID].Sim.ExecTime.end=value;
-}
-
-void setTaskSimConfTimeStart(int ID, unsigned int value )
-{
-	TasksTable[ID].Sim.ConfigTime.start=value;
-
-
-}
-
-void setTaskSimConfTimeEnd(int ID, unsigned int value )
-{
-		TasksTable[ID].Sim.ConfigTime.end=value;
-
-}
-
-
-void setTaskSimReused(int ID, unsigned char value )
-{
-	TasksTable[ID].Sim.Reused=value;
-
-
-}
-
-
-void setTaskSimPrrUsed(int ID, enum PRRID value )
+void CopyDFG(struct node *dst, struct node *src,int size)
 {
 
-	TasksTable[ID].Sim.PRRUsed=value;
-
-}
-
-
-//
-///*
-// * This function is so dangerous , use it carefully.
-// * Should not be uses.
-// */
-//void setTaskSimulation (int ID,struct Simulation *value)
-//{ static int lock=0;
-//
-//if (lock){
-//	fprintf(stderr,"ERROR [setTaskSimulation] Trying to access locked data\n");
-//	exit(EXIT_FAILURE);
-//}
-//
-//fprintf(stderr, "WARNING [setTaskSimulation] dangerous function should not be used\n ");
-//		lock=1;
-//
-//		TasksTable[ID].Sim.Reused=value->Reused;
-//		TasksTable[ID].Sim.PRRUsed=value->PRRUsed;
-//
-//		TasksTable[ID].Sim.ConfigTime.start=value->ConfigTime.start;
-//		TasksTable[ID].Sim.ConfigTime.end=value->ConfigTime.end;
-//
-//
-//		TasksTable[ID].Sim.ExecTime.start=value->ExecTime.start;
-//		TasksTable[ID].Sim.ExecTime.end=value->ExecTime.end;
-//
-//		lock=0;
-//
-//}
-
-
-
-void Init_TasksTypes(void)
-{
-	int i,k;
-	for (i =0;i<MAX_TASKS_TYPES;i++)
+	int i;
+	for(i=0;i<size;i++)
 	{
-		TasksTypes[i].ID=i;
-		TasksTypes[i].name=0;
-		TasksTypes[i].SWET=0;
-		TasksTypes[i].HWET=0;
-		TasksTypes[i].SWPriority=MAX_PR_MODULES/2 ;
-		for (k=0;k<MAX_PR_MODULES;k++)
-		{
-			TasksTypes[i].ConfigTime[k]=0;
-		}
-		TasksTypes[i].CanRun=0XFF;
-		TasksTypes[i].Module=1;
-
+		dst[i]=src[i];
 	}
 }
 
+unsigned int IsNodeOp1Address(struct node * dfg , int id){
+	return dfg[id].D.isAdd_op1;
+}
 
-void setNodeTaskType(struct node *dFG, int taskID, int NewTypeID)
+unsigned int IsNodeOp2Address(struct node * dfg , int id){
+	return dfg[id].D.isAdd_op2;
+}
+
+int GetNodeOp1Value(struct node * dfg , int id){
+	return dfg[id].D.op1;
+}
+
+int GetNodeOp2Value(struct node * dfg , int id){
+	return dfg[id].D.op2;
+}
+
+unsigned int GetNodeEmulationHWdelay(struct node * dfg , int id){
+	return dfg[id].Emu.HWdelay;
+}
+unsigned int GetNodeEmulationSWdelay(struct node * dfg , int id){
+	return dfg[id].Emu.SWdelay;
+}
+
+void SetNodeEmulationHWdelay(struct node * dfg , int id, unsigned int newValue){
+	if(newValue <=0 )
+		{
+			fprintf(stderr,"ERROR [SetNodeEmulationHWdelay] NEgative number \n");
+			exit(EXIT_FAILURE);
+		}
+	dfg[id].Emu.HWdelay=newValue;
+}
+void SetNodeEmulationSWdelay(struct node * dfg , int id,unsigned int newValue){
+	if(newValue <=0 )
+		{
+		fprintf(stderr,"ERROR [SetNodeEmulationSWdelay] NEgative number \n");
+			exit(EXIT_FAILURE);
+		}
+	dfg[id].Emu.SWdelay=newValue;
+}
+
+//enum PRRID  GetNodeSimPrrUSed(struct node * dfg , int id){
+//	return dfg[id].;
+//}
+//unsigned char IsNodeSimReusd(struct node * dfg , int id){
+//	return dfg[id].D.op1;
+//}
+//struct TimerTime GetNodeSimConfigTime(struct node * dfg , int id){
+//	return dfg[id].D.op1;
+//}
+//struct TimerTime GetNodeSimExecTime(struct node * dfg , int id){
+//	return dfg[id].D.op1;
+//}
+
+
+unsigned int  GetNodeID(struct node * dfg , int id){
+	return dfg[id].id;
+}
+
+enum Mode  GetNodeMode(struct node * dfg , int id){
+	return dfg[id].mode;
+}
+
+unsigned int  GetNodeNextNode(struct node * dfg , int id){
+	return dfg[id].next;
+}
+
+unsigned int  GetNodeInitPrio(struct node * dfg , int id){
+	return dfg[id].initPrio;
+}
+
+unsigned int  GetNodeCanRun(struct node * dfg , int id){
+	return dfg[id].CanRun;
+}
+
+
+
+int  GetNodeTaskType(struct node *dFG, int taskID)
+{
+
+	return dFG[taskID].TypeID;
+
+}
+void SetNodeTaskType(struct node *dFG, int taskID, int NewTypeID)
 {
 	if(NewTypeID <=0 || NewTypeID>= MAX_TASKS_TYPES)
 	{
@@ -313,3 +400,6 @@ void setNodeTaskType(struct node *dFG, int taskID, int NewTypeID)
 	dFG[taskID].TypeID=NewTypeID;
 
 }
+
+
+

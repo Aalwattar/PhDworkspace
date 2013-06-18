@@ -13,8 +13,41 @@
 
 static int st[200];
 
-static unsigned long ConfigTime[] = { PRR_0_CONFIG_TIME, PRR_1_CONFIG_TIME,
-		PRR_2_CONFIG_TIME, PRR_3_CONFIG_TIME, PRR_4_CONFIG_TIME };
+static unsigned long ConfigTime[50];
+
+//int CreatePRRConfigTimeArray(int noPRR)
+//{
+//	if(noPRR<0)
+//	{
+//		fprintf(stderr,"ERROR [CreatePRRConfigTimeArray] size is negative \n");
+//		exit(EXIT_FAILURE);
+//	}
+//	ConfigTime=malloc(sizeof(unsigned int) * noPRR);
+//
+//	if (!ConfigTime)
+//	{
+//		fprintf(stderr,"ERROR [CreatePRRConfigTimeArray] Cannot allocate Memroy  \n");
+//		exit(EXIT_FAILURE);
+//	}
+//	return EXIT_SUCCESS;
+//
+//}
+//void CleanConfigTimeArray(void)
+//{
+//	free(ConfigTime);
+//
+//}
+int InitPRRConfigTime(int id, unsigned int value )
+{
+	if(value<0)
+	{
+		fprintf(stderr,"ERROR [InitPRRConfigTime] Configuration time cannot be  negative \n");
+		exit(EXIT_FAILURE);
+	}
+
+	ConfigTime[id]=value;
+	return id;
+}
 
 inline int CanRun(unsigned int mask, unsigned int prr) {
 	return (mask & (((unsigned int) 1) << prr));
@@ -106,22 +139,22 @@ int FindFreePRRBestCase(unsigned int mask, struct PE *pRRs) {
  * @note		None.
  *
  ******************************************************************************/
-int IsNodeReady(unsigned int id) {
-	if (dfg1[id].D.isAdd_op1 == NO && dfg1[id].D.isAdd_op2 == NO) {
+int IsNodeReady(unsigned int id, struct node *dFG) {
+	if (IsNodeOp1Address(dFG,id) == NO && IsNodeOp2Address(dFG,id) == NO) {
 		return YES;
 	}
 
-	if (dfg1[id].D.isAdd_op1 == YES && dfg1[id].D.isAdd_op2 == YES) {
-		return (isTaskDone(dfg1[id].D.op1) && isTaskDone(dfg1[id].D.op2));
+	if (IsNodeOp1Address(dFG,id) == YES &&   IsNodeOp2Address(dFG,id) == YES) {
+		return (isTaskDone(GetNodeOp1Value(dFG,id)) && isTaskDone(GetNodeOp2Value(dFG,id)));
 	}
 
-	if (dfg1[id].D.isAdd_op1 == YES) {
-		return isTaskDone(dfg1[id].D.op1);
+	if (IsNodeOp1Address(dFG,id)== YES) {
+		return isTaskDone(GetNodeOp1Value(dFG,id));
 	}
-	return isTaskDone(dfg1[id].D.op2);
+	return isTaskDone(GetNodeOp2Value(dFG,id));
 }
 
-int MoveDependentTask2TheFront(Queue readyQ,int qSize , int t)
+int MoveDependentTask2TheFront(Queue readyQ,struct node *dFG, int qSize , int t)
 {
 
 	Queue qtmp;
@@ -138,8 +171,8 @@ int MoveDependentTask2TheFront(Queue readyQ,int qSize , int t)
 		tmp = FrontAndDequeue(readyQ);
 		NoAdd1 = NoAdd2 = NO;
 		if (!found1) {
-			if (dfg1[t].D.isAdd_op1 && !isTaskDone(dfg1[dfg1[t].D.op1].D.op1)) {
-				if (tmp == dfg1[t].D.op1) {
+			if (IsNodeOp1Address(dFG,t) && !isTaskDone(GetNodeOp1Value(dFG,GetNodeOp1Value(dFG,t)))) {
+				if (tmp == GetNodeOp1Value(dFG,t)) {
 					st[t] = 1;
 					task1 = tmp;
 					found1 = YES;
@@ -150,10 +183,9 @@ int MoveDependentTask2TheFront(Queue readyQ,int qSize , int t)
 		}
 
 		if (!found2) {
-			if (dfg1[t].D.isAdd_op2 && !isTaskDone(dfg1[dfg1[t].D.op2].D.op2)) {
-				if (tmp == dfg1[t].D.op2) {
+			if (IsNodeOp2Address(dFG,t)&& !isTaskDone(GetNodeOp2Value(dFG,GetNodeOp2Value(dFG,t)))) {
+				if (tmp == GetNodeOp2Value(dFG,t) ){
 					st[t] = 1;
-					//	fprintf(stderr,"FoundTask_2 [%d] is dependent on task [%d] \n",t,dfg1[dfg1[t].D.op2].D.op2);
 					task2 = tmp;
 					found2 = YES;
 					NoAdd2 = YES;
@@ -191,20 +223,20 @@ int MoveDependentTask2TheFront(Queue readyQ,int qSize , int t)
 /*
  * AddTask2Queue
  */
-int AddTask2Queue(Queue ReadyQ, int size) {
+int AddTask2Queue(Queue ReadyQ,struct node *dFG, int size) {
 	int i = 0;
 
 	do {
 		if(IsFull(ReadyQ)){
-		//fprintf(stderr,"Q is Full \n");
+
 			break;
 		}
-		if (IsNodeReady(i) == NO || isTaskQed(i) == YES) {
+		if (IsNodeReady(i,dFG) == NO || isTaskQed(i) == YES) {
 		//	MoveDependentTask2TheFront(ReadyQ,MAX_QUEUE_TASKS,i);
 			i++;
 			continue;
 		}
-		setTaskMode(i, dfg1[i].mode);
+		setTaskMode(i, GetNodeMode(dFG,i));
 		switch (getTaskMode(i)) {
 
 		case HybSW:
@@ -220,7 +252,7 @@ int AddTask2Queue(Queue ReadyQ, int size) {
 			taskQed(i);
 			/*TODO add some error checking here */
 
- setTaskTypeCanRun(dfg1[i].TypeID,dfg1[i].CanRun);
+ setTaskTypeCanRun( GetNodeTaskType(dFG,i) ,GetNodeCanRun(dFG,i));
 
 #if DEBUG_PRINT
 			fprintf(stderr,"Enqueue %d \r\n",i);
@@ -232,11 +264,13 @@ int AddTask2Queue(Queue ReadyQ, int size) {
 		default:
 			fprintf(stderr, "ERROR [SchedSimple] Unsupported mode[%d] "
 					"for task [%d] check you DFG file .. Exiting\n",
-					dfg1[i].mode, i);
+					GetNodeMode(dFG,i) , i);
 			return EXIT_FAILURE;
 		}
 		i++;
-	} while (i < size);
+
+	} while (i<size);
+
 	return EXIT_SUCCESS;
 }
 ;
@@ -244,7 +278,7 @@ int AddTask2Queue(Queue ReadyQ, int size) {
 /*
  * Run task SII
  */
-int RCSchedII(Queue ReadyQ, struct Counts *counters, struct PEs *pes) {
+int RCSchedII(Queue ReadyQ, struct Counts *counters, struct PEs *pes, struct node *dFG) {
 	int task,tmp;
 
 	struct NodeData nd;
@@ -282,8 +316,8 @@ int RCSchedII(Queue ReadyQ, struct Counts *counters, struct PEs *pes) {
 #endif
 		Dequeue(ReadyQ);
 
-		nd.ExecCount = (unsigned int) dfg1[task].Emu.SWdelay;
-		nd.Module = dfg1[task].TypeID;
+		nd.ExecCount = (unsigned int) GetNodeEmulationSWdelay(dFG,task);
+		nd.Module = GetNodeTaskType(dFG,task);
 		nd.TaskID = task;
 		 setTaskSimPrrUsed(task,freeGPP+pes->HWPE->size);
 		LoadProcessor(pes->SWPE->pe+freeGPP, nd);
@@ -292,18 +326,18 @@ int RCSchedII(Queue ReadyQ, struct Counts *counters, struct PEs *pes) {
 
 	case HybHW:
 	case HWOnly:
-		if ((tmp=SearchReuse(ReadyQ,pes->HWPE,MAX_QUEUE_TASKS))>=0)
+		if ((tmp=SearchReuse(ReadyQ,pes->HWPE,MAX_QUEUE_TASKS,dFG))>=0)
 		{
 			task=tmp;
 		}
-		nd.ExecCount = (unsigned int) dfg1[task].Emu.HWdelay;
-		nd.Module = dfg1[task].TypeID;
+		nd.ExecCount = (unsigned int) GetNodeEmulationHWdelay(dFG,task);
+		nd.Module = GetNodeTaskType(dFG,task);
 		nd.TaskID = task;
 
 //		if ((task=SearchReuse(ReadyQ,pes->HWPE,MAX_QUEUE_TASKS))>=0)
 //						{
-//							nd.ExecCount = (unsigned int) dfg1[task].Emu.HWdelay;
-//							nd.Module = dfg1[task].TypeID;
+//							nd.ExecCount = (unsigned int) GetNodeEmulHWDelay(dFG,task);
+//							nd.Module = GetNodeType(dFG,task);
 //							nd.TaskID = task;
 //
 //						}
@@ -319,7 +353,7 @@ int RCSchedII(Queue ReadyQ, struct Counts *counters, struct PEs *pes) {
 			if((freePRR=FindFreePRR(PRR_T.CanRun))<0)
 #else
 			if ((freePRR = FindFreePRRBestCase(
-					getTaskTypeCanRun(dfg1[task].TypeID), pes->HWPE)) < 0)
+					getTaskTypeCanRun(GetNodeTaskType(dFG,task)), pes->HWPE)) < 0)
 #endif
 					{
 #if SW_HW_MIG
@@ -395,7 +429,7 @@ void RstCounters(struct Counts* counters) {
 /*
  * Run task SIII
  */
-int RCSchedIII(Queue ReadyQ, struct Counts *counters, struct PEs *pes) {
+int RCSchedIII(Queue ReadyQ, struct Counts *counters, struct PEs *pes, struct node *dFG) {
 	int task,tmp;
 
 
@@ -436,8 +470,8 @@ int RCSchedIII(Queue ReadyQ, struct Counts *counters, struct PEs *pes) {
 #endif
 		Dequeue(ReadyQ);
 
-		nd.ExecCount = (unsigned int) dfg1[task].Emu.SWdelay;
-		nd.Module = dfg1[task].TypeID;
+		nd.ExecCount = (unsigned int) GetNodeEmulationSWdelay(dFG,task);
+		nd.Module = GetNodeTaskType(dFG,task);
 		nd.TaskID = task;
 		 setTaskSimPrrUsed(task,freeGPP+pes->HWPE->size);
 		LoadProcessor(pes->SWPE->pe+freeGPP, nd);
@@ -447,12 +481,12 @@ int RCSchedIII(Queue ReadyQ, struct Counts *counters, struct PEs *pes) {
 	case HybHW:
 	case HWOnly:
 
-		nd.ExecCount = (unsigned int) dfg1[task].Emu.HWdelay;
-		nd.Module = dfg1[task].TypeID;
+		nd.ExecCount = (unsigned int) GetNodeEmulationHWdelay(dFG,task);
+		nd.Module = GetNodeTaskType(dFG,task);
 		nd.TaskID = task;
 
 #if SW_HW_MIG
-		if (TasksTypes[dfg1[task].TypeID].SWPriority == 0
+		if (TasksTypes[GetNodeTaskType(dFG,task)].SWPriority == 0
 				&& FindFreeGPP(0xFF,pes->SWPE)>=0
 				&& getTaskMode(task) == HybHW) {
 			setTaskMode(task, HybSW);
@@ -464,10 +498,10 @@ int RCSchedIII(Queue ReadyQ, struct Counts *counters, struct PEs *pes) {
 		}
 #endif
 
-		if ((tmp=SearchReuse(ReadyQ,pes->HWPE,MAX_QUEUE_TASKS))>=0)
+		if ((tmp=SearchReuse(ReadyQ,pes->HWPE,MAX_QUEUE_TASKS, dFG))>=0)
 				{task=tmp;
-					nd.ExecCount = (unsigned int) dfg1[task].Emu.HWdelay;
-					nd.Module = dfg1[task].TypeID;
+					nd.ExecCount = (unsigned int) GetNodeEmulationHWdelay(dFG,task);
+					nd.Module = GetNodeTaskType(dFG,task);
 					nd.TaskID = task;
 
 				}
@@ -478,7 +512,7 @@ int RCSchedIII(Queue ReadyQ, struct Counts *counters, struct PEs *pes) {
 				return 5;
 			}
 			if ((freePRR = FindFreePRRPrio(
-					getTaskTypeCanRun(dfg1[task].TypeID), pes->HWPE)) < 0) {
+					getTaskTypeCanRun(GetNodeTaskType(dFG,task)), pes->HWPE)) < 0) {
 #if SW_HW_MIG
 				if (FindFreeGPP(0xFF,pes->SWPE)>=0
 						&& getTaskMode(task) == HybHW) {
@@ -498,7 +532,7 @@ int RCSchedIII(Queue ReadyQ, struct Counts *counters, struct PEs *pes) {
 #endif
 			}
 #if SW_HW_MIG
-			else if (TasksTypes[dfg1[task].TypeID].SWPriority <= freePRR
+			else if (TasksTypes[GetNodeTaskType(dFG,task)].SWPriority <= freePRR
 					&& FindFreeGPP(0xFF,pes->SWPE)>=0
 					&& getTaskMode(task) == HybHW) {
 				setTaskMode(task, HybSW);
@@ -544,7 +578,7 @@ int RCSchedIII(Queue ReadyQ, struct Counts *counters, struct PEs *pes) {
 	return EXIT_SUCCESS;
 }
 
-int SearchReuse(Queue readyQ, struct PE *pRRs, int qSize )
+int SearchReuse(Queue readyQ,  struct PE *pRRs, int qSize, struct node *dFG )
 {
 
 	Queue qtmp;
@@ -555,7 +589,7 @@ int SearchReuse(Queue readyQ, struct PE *pRRs, int qSize )
 	while(!IsEmpty(readyQ))
 	{
 		tmp=FrontAndDequeue(readyQ);
-		if ( (ReusePRR_V2(dfg1[tmp].TypeID, pRRs)) >=0 && !found)
+		if ( (ReusePRR_V2(GetNodeTaskType(dFG,tmp), pRRs)) >=0 && !found)
 		{
 			task=tmp;
 			found=YES;

@@ -1,7 +1,7 @@
 #ifndef PROCESSORS_H_
 #define PROCESSORS_H_
 
-
+#include "data.h"
 #define YES 1
 #define NO 0
 
@@ -54,9 +54,9 @@ void SetProcessorNotBusy( struct Processor *);
 int CheckCurrentModule( struct Processor *);
 int TickProcessor( struct Processor *);
 int LoadProcessor( struct Processor *, struct NodeData  );
-int TickAllProcessors(struct Processor *, int );
+int TickAllProcessors(struct Processor *, int , struct node *);
 void FreeProcessors(struct Processor * processor);
-unsigned int Ticker(struct PEs *);
+unsigned int Ticker(struct PEs *, struct node *);
 void CleanAllProcessor(struct PEs *pEs);
 void CreateAllPEs(struct PEs *pEs,int noOfPRRs, int noOfGPPs);
 void CleanAllPEs(struct PEs *pEs);

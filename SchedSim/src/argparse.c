@@ -15,6 +15,13 @@
 #include <unistd.h>
 #include "argparse.h"
 #include "data.h"
+#include "PlatformConfig.h"
+
+void displayVersion()
+{
+	fprintf(stdout,"Scheduler Simulator Version [%s] \n ",VERSION_NUMBER);
+	exit(EXIT_SUCCESS);
+}
 
 /*
 	 * * FIXME  THIS FUNCTION NEED TO BE CHANGED COMPLETELY
@@ -31,7 +38,7 @@
 	   int c;
 	   opterr = 0;
   argdatar->TaskTypeFlag=0;
-	   while ((c = getopt(argc, argv, "d:n:t:p:u:s:")) != -1)
+	   while ((c = getopt(argc, argv, "d:n:t:p:u:s:v")) != -1)
 		   switch (c) {
 		   case 'n':
 			   argdatar->NodesNo = atoi(optarg);
@@ -48,6 +55,10 @@
 			   break;
 		   case 's':
 			   argdatar->Sync = atoi(optarg);
+			   break;
+		   case 'V':
+		   case 'v':
+			   displayVersion();
 			   break;
 		   case 't':
 
@@ -74,13 +85,21 @@
 	   int i = 0;
 	   for (index = optind - 1; index < argc; index++, i++) {
 		   argdatar->Tasktypes[i] = atoi(argv[index]);
-		  // setNodeTaskType(dfg1,i,argdatar);
+		  // setNodeTaskType(dFG,i,argdatar);
 		 //  fprintf(stderr,"data  %d   [%d] \n", argdatar->Tasktypes[i], atoi(argv[index]));
 
 	   }
 	   return 0;
    }
 
-
+  void InitArgdatar(struct ArgData *arg)
+  {
+  	arg->DFGNo=0;
+  	arg->NodesNo=0;
+  	arg->PRRsNo=0;
+  	arg->TaskTypeFlag=0;
+//  	arg->Tasktypes;
+  	arg->Uniformity=0;
+  }
 
 #endif /* ARGPARSE_C_ */
