@@ -1,0 +1,3 @@
+PROCESSOR=microblaze_1
+REPOSITORIES=-lp /home/ahmed/works/PHD_RS/sched/ph2_2mb_2_100M/edk/drivers -lp /home/ahmed/works/PHD_RS/Ph1Porting/Porting/VSK_Repository
+HWSPEC=../hw_platform_0/system.xml

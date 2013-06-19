@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item value="C:\OldProfile\aalwatta\Documents\works\ph2_2mb_2_100M_5PRR\edk2Ser\implementation\system_bd.bmm" key="hw_platform_0-bmmFile"/>
+	<item value="bootloop" key="hw_platform_0-microblaze_1-initElf"/>
+	<item value="C:\OldProfile\aalwatta\Documents\works\ph2_2mb_2_100M_5PRR\imageUniform2\FullADD.bit" key="hw_platform_0-bitFile"/>
+	<item value="bootloop" key="hw_platform_0-microblaze_0-initElf"/>
+</section>

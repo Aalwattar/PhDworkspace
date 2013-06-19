@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete 5 resources" deleteContents="false" description="Delete 5 resources" element1="/Controller/src/templates/dfgTemplate10_5_2.txt" element2="/Controller/src/templates/dfgTemplate100_150_2.txt" element3="/Controller/src/templates/dfgTemplate150_200_2.txt" element4="/Controller/src/templates/dfgTemplate25_10_2.txt" element5="/Controller/src/templates/dfgTemplate50_50_2.txt" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="5" stamp="1344187776149"/>
+</session>

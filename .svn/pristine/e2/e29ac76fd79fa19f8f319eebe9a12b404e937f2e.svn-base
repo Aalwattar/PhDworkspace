@@ -1,0 +1,34 @@
+/*
+ * schedulers.h
+ *
+ *  Created on: May 30, 2012
+ *      Author: aalwatta
+ */
+
+#ifndef SCHEDULERS_H_
+#define SCHEDULERS_H_
+#include "headers.h"
+
+#include "queue.h"
+#define MAX_QUEUE_TASKS 64
+#define BUSY 1
+#define QEmpty 3
+#define ERROR 4
+#define SUCCESS 0
+
+ struct Counts
+{
+	 u32 busyCounterSW;
+	 u32 busyCounterHW;
+	 u32 SW2HWMig;
+	 u32 HW2SWMig;
+};
+
+
+int IsNodeReady(u32 id );
+int ReusePRR(int module);
+int FindFreePRR();
+int RunTask(Queue ReadyQ , XMbox *Mbox, struct Counts *Counters,XHwIcap *HwIcap);
+int SchedSimple(Queue ReadyQ);
+
+#endif /* SCHEDULERS_H_ */

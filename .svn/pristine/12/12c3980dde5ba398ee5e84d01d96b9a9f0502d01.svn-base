@@ -1,0 +1,719 @@
+/*
+ * schedulers.c
+ *
+ *  Created on: May 30, 2012
+ *      Author: aalwatta
+ */
+
+#include "headers.h"
+#include "xtmrctr.h"
+#include "schedulers.h"
+#include "queue.h"
+
+/*****************************************************************************
+ * This Test if the node is ready by checking it's dependency .
+ * If all the dependancy are are ready the it's ready .
+ *
+ * @param	u32 Node ID
+ *
+ * @return		True/False (Ready or not )
+ *
+ * @note		None.
+ *
+ ******************************************************************************/
+int IsNodeReady(u32 id )
+{
+        if(dfg1[id].D.isAdd_op1 == NO && dfg1[id].D.isAdd_op2 ==NO) {
+        //	 printf ("ID [%d]ready yes \r\n",id);
+                return YES;
+        }
+
+        if (dfg1[id].D.isAdd_op1 == YES && dfg1[id].D.isAdd_op2 ==YES) {
+       // 	printf ("ID [%d] is readysecond [%d] \r\n",id,dfg1[dfg1[id].D.op1].Done && dfg1[dfg1[id].D.op2].Done);
+                return (dfg1[dfg1[id].D.op1].Done && dfg1[dfg1[id].D.op2].Done) ;
+        }
+
+        if (dfg1[id].D.isAdd_op1 ==YES) {
+
+        //	printf ("ID [%d] is ready third[%d] \r\n",id,dfg1[dfg1[id].D.op1].Done);
+
+                return dfg1[dfg1[id].D.op1].Done;
+
+        }
+     //   printf ("ID [%d] is ready final [%d] \r\n",id,dfg1[dfg1[id].D.op2].Done);
+        return dfg1[dfg1[id].D.op2].Done;
+}
+/*
+ * schedSimple
+ */
+int SchedSimple(Queue ReadyQ)
+{
+	 int i=0;
+
+
+	do {
+
+		if (IsNodeReady(i)== NO || dfg1[i].Q==YES  )
+		{i++;
+			continue;
+		}
+
+		switch (dfg1[i].mode) {
+
+		case HybSW:
+		case SWOnly:
+
+			Enqueue(i,ReadyQ);
+			dfg1[i].Q=YES;
+			break;
+		case HWOnly:
+		case HybHW:
+
+			Enqueue(i,ReadyQ);
+			dfg1[i].Q=YES;
+			/*TODO add some error checking here */
+				//printf(" can run %X-->",TasksTypes[dfg1[i].TypeID].CanRun);
+				TasksTypes[dfg1[i].TypeID].CanRun=dfg1[i].CanRun;
+				printf(" can run %X \n",dfg1[i].CanRun);
+				//	TasksTypes[dfg1[i].TypeID].CanRun=0xFF;
+#if DEBUG_PRINT
+			printf("Engueue %d \r\n",i);
+#endif
+			break;
+
+		case CustomHW:
+		case CustomHWnSW:
+		default:
+
+			print ("Unsupported mode check you DFG file .. Exiting\r\n");
+			return XST_FAILURE;
+		}
+	i++;
+	}while(i<=LAST_NODE);
+
+
+ return XST_SUCCESS;
+};
+
+
+
+int ReusePRR(int module)
+{
+#if SIMPLE_SCHED_II_REUSE
+	int i;
+	for (i=0;i<AVAILABLE_PRR;i++)
+	{
+	if (PRRs[i].Current==module && PRRs[i].Busy==NO)
+	{
+#if DEBUG_PRINT
+		printf("found module %d, reusing %d\r\n",module,i);
+#endif
+		return i;
+	}
+	}
+#endif
+	return -1;
+}
+/*
+ * This function differ from the ReusePRR in that it check the TypeID instead of module
+ * to work with different emulated type ID
+ */
+int ReusePRR_V2(int module)
+{
+#if SIMPLE_SCHED_III_REUSE
+	int i;
+	for (i=0;i<AVAILABLE_PRR;i++)
+	{
+	if (PRRs[i].CurrentTypeID==module && PRRs[i].Busy==NO)
+	{
+#if DEBUG_PRINT
+		printf("found module %d, reusing %d\r\n",module,i);
+#endif
+		return i;
+	}
+	}
+#endif
+	return -1;
+}
+
+
+inline int CanRun(u32 mask, u32 prr)
+{ //  printf("%s\r\n",(mask & (((u32)1) <<prr))? "can run" : "CanNNOOOOOTTT RUN");
+	return (mask & (((u32)1) <<prr));
+}
+int FindFreePRR(u32 mask)
+{
+	struct TimerValue tmpTV;
+
+	 int count=0;
+	int i, rantmp;
+	int temp[AVAILABLE_PRR];
+	//int j;
+//	for (j=0;j<1;j++)
+	//{
+// i=count need to fix this
+	for (i=0;i<AVAILABLE_PRR;i++)
+		{
+			if (PRRs[i].Busy== NO && CanRun(mask,i) )
+			{
+#if DEBUG_PRINT
+			printf("found free PRR %d\r\n",i);
+#endif
+			temp[count++]=i;
+
+			//return i;
+
+			}
+		}
+
+//	if (count)
+//		printf("count is [%d]\r\n",count);
+//	if (count>AVAILABLE_PRR-1 )
+//	{
+//	//	print ("count is zero again \r\n");
+//		count=0;
+//	}
+//	//}
+//	//print("busy byssss \r\n");
+
+	/* TODO init srand() */
+
+
+if (count){
+    GetTime(&tmpTV);
+    /*init seed*/
+    srand(tmpTV.Value);
+
+	rantmp=temp[rand()%count];
+	//printf("randtmp =[%d] \r\n",rantmp);
+	return (rantmp);
+}
+
+	return -1;
+}
+
+
+
+/*
+ * Find free original
+ *
+ */
+
+int FindFreePRROrig(u32 mask)
+{
+//	struct TimerValue tmpTV;
+
+	 static int count=AVAILABLE_PRR-1;
+	int i;
+	//int temp[5]={4,2,3,0,1};
+	//int j;
+//	for (j=0;j<1;j++)
+	//{
+// i=count need to fix this
+	for (i=count;i>=0;i--)
+		{
+
+			if (PRRs[i].Busy== NO && CanRun(mask,i)  )
+			{
+#if DEBUG_PRINT
+			printf("found free PRR %d\r\n",i);
+#endif
+			//temp[count++]=i;
+			count=i;
+			//return temp[i];
+//			printf("found %d\r\n",i);
+			return i;
+			}
+		}
+
+
+	if (count==0 )
+	{
+//	//	print ("count is zero again \r\n");
+		count=AVAILABLE_PRR-1;
+	}
+//	//}
+
+
+
+
+
+
+	return -1;
+}
+
+int FindFreePRRBestCase(u32 mask)
+{
+  static int count=0;
+	int i;
+	for (i=count;i<AVAILABLE_PRR;i++)
+		{
+			if (PRRs[i].Busy== NO && CanRun(mask,i))
+			{
+#if DEBUG_PRINT
+			printf("found free PRR %d\r\n",i);
+#endif
+
+			return i;
+			}
+		}
+
+
+	if (count>=AVAILABLE_PRR-1 )
+	{
+
+		count=0;
+	}
+
+	return -1;
+}
+
+
+int FindFreePRR_PRIO(u32 mask)
+{
+
+	 int count=0;
+	int i;
+	//int j;
+//	for (j=0;j<1;j++)
+	//{
+		for (i=0;i<AVAILABLE_PRR;i++)
+		{
+			if (PRRs[i].Busy== NO && CanRun(mask,i))
+			{ count++;
+#if DEBUG_PRINT
+			printf("found free PRR %d\r\n",i);
+#endif
+			return i;
+			}
+		}
+
+
+	return -1;
+}
+/*
+ * Run task
+ */
+int RunTask(Queue ReadyQ , XMbox *Mbox, struct Counts *Counters,XHwIcap *HwIcap)
+	{
+
+	struct TimerValue tmpTV;
+	int task;
+	struct PRRMOD PRR_T;
+
+#if SIMPLE_SCHED_SER
+	static int i=0;
+#endif
+	int freePRR=5;
+
+	u32 msgS[5] = { 1111, 2, 12, 10 ,20000000};
+	msgS[0] = 1111;
+	if (IsEmpty(ReadyQ))
+		return QEmpty;
+	task =Front(ReadyQ);
+
+
+	PRR_T.Module= msgS[1] = dfg1[task].operation;
+	PRR_T.TypeID=dfg1[task].TypeID;
+	PRR_T.CanRun=TasksTypes[dfg1[task].TypeID].CanRun;
+	msgS[2] = dfg1[task].D.isAdd_op1 ? dfg1[dfg1[task].D.op1].result
+			: dfg1[task].D.op1;
+	msgS[3] = dfg1[task].D.isAdd_op2 ? dfg1[dfg1[task].D.op2].result
+			: dfg1[task].D.op2;
+	msgS[4]=dfg1[task].Emu.HWdelay;
+
+
+	switch (dfg1[task].mode) {
+
+	case HybSW:
+
+	case SWOnly:
+
+		if (MB1.Busy== YES)
+		{
+
+#if SW_HW_MIG
+			if(dfg1[task].mode==HybSW)
+			{
+			dfg1[task].mode=HybHW;
+			Counters->SW2HWMig++;
+#if DEBUG_PRINT
+			printf("Task %d migrate from SW to Any\r\n",task);
+#endif
+			} else
+			{
+#endif
+				Counters->busyCounterSW++;
+				return BUSY;
+		}
+
+#if SW_HW_MIG
+		}
+#endif
+		Dequeue(ReadyQ);
+		dfg1[task].Sim.PRRUsed=SW_PE_ID;
+		MB1.Busy = YES;
+		MB1.DFGID=task;
+		Counters->SWTasksCounter++;
+#if DEBUG_PRINT
+		print("SW operation \r\n");
+#endif
+
+		/* TODO change to non blocking one */
+		GetTime(&tmpTV);
+		GetTime(&dfg1[task].Sim.ExecTV);
+		msgS[4]=(u32) dfg1[task].Emu.SWdelay;
+		XMbox_WriteBlocking(Mbox, (u32*) (msgS), 20);
+		GetElapsedTime(&tmpTV,&dfg1[task].Sim.ConfigTime);
+#if DEBUG_PRINT
+		printf(" op1 %ld  operation %ld op2 %ld \r\n", msgS[2],
+				msgS[task], msgS[task]);
+#endif
+		//   i = dfg1[i].next;
+		break;
+
+
+
+
+	case HybHW:
+	case HWOnly:
+
+#if SIMPLE_SCHED_SER
+		for (i=0 ; i<AVAILABLE_PRR ;i++)
+		{
+			if (PRRs[i].Busy== NO )
+			{
+				freePRR=i;
+				break;
+			}
+		}
+		if (freePRR>AVAILABLE_PRR-1)
+		{
+#if SW_HW_MIG
+			if (MB1.Busy==NO && dfg1[task].mode==HybHW)
+			{
+				dfg1[task].mode=HybSW;
+				Counters->HW2SWMig++;
+#if DEBUG_PRINT
+			printf("Task %d migrate from ANY to SW\r\n",task);
+#endif
+
+				return 0;
+			}
+			else
+			{
+#endif
+			Counters->busyCounterHW++;
+			return BUSY ;
+#if SW_HW_MIG
+			}
+#endif
+		}
+#endif
+
+
+#if SIMPLE_SCHED_II
+
+		if ((freePRR=ReusePRR(PRR_T.Module )) <0)
+		{
+#if SCHED_II_WORSTCASE
+			if((freePRR=FindFreePRROrig(PRR_T.CanRun))<0)
+#elif  SCHED_II_RANDOM
+			if((freePRR=FindFreePRR(PRR_T.CanRun))<0)
+#else
+				if((freePRR=FindFreePRRBestCase(PRR_T.CanRun))<0)
+#endif
+			{
+#if SW_HW_MIG
+				if (MB1.Busy==NO && dfg1[task].mode==HybHW)
+				{
+					dfg1[task].mode=HybSW;
+					Counters->HW2SWMig++;
+#if DEBUG_PRINT
+			printf("Task %d migrate from HW to SW\r\n",task);
+#endif
+					return 0;
+				}
+				else
+				{
+#endif
+				Counters->busyCounterHW++;
+				return BUSY;
+#if SW_HW_MIG
+				}
+#endif
+				}
+			Dequeue(ReadyQ);
+			PRR_T.PRR_ID=freePRR;
+		//	printf(" used  %ud \r\n", freePRR);
+			dfg1[task].Sim.PRRUsed=freePRR;
+			dfg1[task].Sim.Reused=NO;
+
+
+
+
+			GetTime(&tmpTV);
+
+			Config(&PRR_T, HwIcap,dfg1[task].Emu.HWdelay);
+
+			GetElapsedTime(&tmpTV,&dfg1[task].Sim.ConfigTime);
+	//		print("Configured \r\n");
+		} else
+
+		{
+			Counters->ReuseCounter++;
+			dfg1[task].Sim.PRRUsed=freePRR;
+			dfg1[task].Sim.Reused=YES;
+			Dequeue(ReadyQ);
+
+		}
+
+#endif
+
+
+
+#if DEBUG_PRINT
+		printf("Using PRR MATH%d \r\n",freePRR);
+#endif
+		PRR_T.PRR_ID=freePRR;
+
+#if	SIMPLE_SCHED_SER
+
+		Dequeue(ReadyQ);
+		dfg1[task].Sim.PRRUsed=freePRR;
+		dfg1[task].Sim.Reused=NO;
+		GetTime(&tmpTV);
+		Config(&PRR_T, HwIcap,dfg1[task].Emu.HWdelay);
+		GetElapsedTime(&tmpTV,&dfg1[task].Sim.ConfigTime);
+#endif
+
+		// print("HW accelerator \r\n");
+		//   GetTime(&tmpTV);
+		// XIntc_Stop(&IntcInst);
+
+		// XIntc_Start(&IntcInst, XIN_REAL_MODE);
+		// GetElapsedTime(&tmpTV,&simT[RECON][i]);
+
+		PRRs[PRR_T.PRR_ID].DFGID=task;
+		PRRs[PRR_T.PRR_ID].Busy= YES;
+		GetTime(&dfg1[task].Sim.ExecTV);
+		HWMath(msgS[2], msgS[3],PRR_T.PRR_ID);
+		//print("send for result\r\n");
+
+		// i = dfg1[i].next;
+		break;
+
+	case CustomHW:
+	case CustomHWnSW:
+	default:
+		print ("Unsupported mode check your DFG file .. Exiting\r\n");
+		return XST_FAILURE;
+	}
+	return SUCCESS;
+}
+
+
+
+/*
+ * Run task schedule III
+ */
+int RunTaskSIII(Queue ReadyQ , XMbox *Mbox, struct Counts *Counters,XHwIcap *HwIcap)
+	{
+
+	struct TimerValue tmpTV,tmpTV2;
+	int task;
+	struct PRRMOD PRR_T;
+
+	int freePRR=5;
+
+	u32 msgS[5] = { 1111, 2, 12, 10 ,20000000};
+	msgS[0] = 1111;
+	if (IsEmpty(ReadyQ))
+		return QEmpty;
+	task =Front(ReadyQ);
+
+ /* TODO look into this and unify all to take data from taskTypes array */
+	PRR_T.Module= msgS[1] = dfg1[task].operation;
+	PRR_T.TypeID=dfg1[task].TypeID;
+	PRR_T.CanRun=TasksTypes[dfg1[task].TypeID].CanRun;
+	msgS[2] = dfg1[task].D.isAdd_op1 ? dfg1[dfg1[task].D.op1].result
+			: dfg1[task].D.op1;
+	msgS[3] = dfg1[task].D.isAdd_op2 ? dfg1[dfg1[task].D.op2].result
+			: dfg1[task].D.op2;
+	msgS[4]=dfg1[task].Emu.HWdelay;
+
+
+	switch (dfg1[task].mode) {
+
+	case HybSW:
+
+	case SWOnly:
+
+		if (MB1.Busy== YES)
+		{
+
+#if SW_HW_MIG
+			if(dfg1[task].mode==HybSW )
+			{
+					/*
+					 * TODO probably it's better to move it to HW only if there is a free PRR or the SW priority is less that HW
+					 */
+			dfg1[task].mode=HybHW;
+			Counters->SW2HWMig++;
+#if DEBUG_PRINT
+			printf("Task %d migrate from SW to Any\r\n",task);
+#endif
+			} else
+			{
+#endif
+				Counters->busyCounterSW++;
+				return BUSY;
+		}
+
+#if SW_HW_MIG
+		}
+#endif
+		Dequeue(ReadyQ);
+		dfg1[task].Sim.PRRUsed=SW_PE_ID;
+		MB1.Busy = YES;
+		MB1.DFGID=task;
+		Counters->SWTasksCounter++;
+#if DEBUG_PRINT
+		print("SW operation \r\n");
+#endif
+
+		/* TODO change to non blocking one .. In a second thought its not that important*/
+		GetTime(&tmpTV);
+
+
+		GetTime(&dfg1[task].Sim.ExecTV);
+		msgS[4]=(u32) dfg1[task].Emu.SWdelay;
+		XMbox_WriteBlocking(Mbox, (u32*) (msgS), 20);
+		GetElapsedTime(&tmpTV,&dfg1[task].Sim.ConfigTime);
+#if DEBUG_PRINT
+		printf(" op1 %ld  operation %ld op2 %ld \r\n", msgS[2],
+				msgS[task], msgS[task]);
+#endif
+		//   i = dfg1[i].next;
+		break;
+
+
+
+
+	case HybHW:
+	case HWOnly:
+
+
+#if SW_HW_MIG
+		 if(TasksTypes[dfg1[task].TypeID].SWPriority==0 && MB1.Busy==NO && dfg1[task].mode==HybHW)
+		 {
+				dfg1[task].mode=HybSW;
+				Counters->HW2SWMig++;
+		#if DEBUG_PRINT
+		printf("Task %d migrate from HW to SW highest prio \r\n",task);
+		#endif
+				return 0;
+		 }
+#endif
+
+		if ((freePRR=ReusePRR_V2(PRR_T.TypeID )) <0)
+		{
+			if((freePRR=FindFreePRR_PRIO(PRR_T.CanRun))<0)
+			{
+#if SW_HW_MIG
+				if (MB1.Busy==NO && dfg1[task].mode==HybHW)
+				{
+					dfg1[task].mode=HybSW;
+					Counters->HW2SWMig++;
+#if DEBUG_PRINT
+			printf("Task %d migrate from HW to SW\r\n",task);
+#endif
+					return 0;
+				}
+				else
+				{
+#endif
+					Counters->busyCounterHW++;
+				return BUSY;
+#if SW_HW_MIG
+				}
+#endif
+				}
+#if SW_HW_MIG
+				else if (TasksTypes[dfg1[task].TypeID].SWPriority <= freePRR && MB1.Busy==NO && dfg1[task].mode==HybHW )
+				{
+					dfg1[task].mode=HybSW;
+				    Counters->HW2SWMig++;
+				    return 0;
+#if DEBUG
+				    printf("tasks [%d] moved to software due to priority \r\n",task);
+#endif
+				}
+#endif
+			Dequeue(ReadyQ);
+			PRR_T.PRR_ID=freePRR;
+			dfg1[task].Sim.PRRUsed=freePRR;
+			dfg1[task].Sim.Reused=NO;
+
+
+
+
+			GetTime(&tmpTV);
+			Config(&PRR_T, HwIcap,dfg1[task].Emu.HWdelay);
+
+
+			if(PRRs[PRR_T.PRR_ID].ConfigTime==0)
+						{
+						GetTime(&tmpTV2);
+						if (tmpTV2.ExpNo !=tmpTV.ExpNo) break;
+						PRRs[PRR_T.PRR_ID].ConfigTime= tmpTV2.Value-tmpTV.Value;
+						}
+
+//			if(TasksTypes[dfg1[task].TypeID].ConfigTime[PRR_T.PRR_ID]==0)
+//			{
+//			GetTime(&tmpTV2);
+//			if (tmpTV2.ExpNo !=tmpTV.ExpNo) break;
+//			TasksTypes[dfg1[task].TypeID].ConfigTime[PRR_T.PRR_ID]= tmpTV2.Value-tmpTV.Value;
+//			}
+			GetElapsedTime(&tmpTV,&dfg1[task].Sim.ConfigTime);
+		}
+
+
+		else
+		{
+			dfg1[task].Sim.PRRUsed=freePRR;
+			dfg1[task].Sim.Reused=YES;
+			Dequeue(ReadyQ);
+			Counters->ReuseCounter++;
+
+		}
+
+
+
+
+
+#if DEBUG_PRINT
+		printf("Using PRR MATH%d \r\n",freePRR);
+#endif
+		PRR_T.PRR_ID=freePRR;
+
+
+
+		PRRs[PRR_T.PRR_ID].DFGID=task;
+		PRRs[PRR_T.PRR_ID].Busy= YES;
+		GetTime(&dfg1[task].Sim.ExecTV);
+		HWMath(msgS[2], msgS[3],PRR_T.PRR_ID);
+
+
+		// i = dfg1[i].next;
+		break;
+
+	case CustomHW:
+	case CustomHWnSW:
+	default:
+		print ("Unsupported mode check your DFG file .. Exiting\r\n");
+		return XST_FAILURE;
+	}
+	return SUCCESS;
+}
+

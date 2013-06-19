@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item value="399" key="DIALOG_WIDTH"/>
+		<item value="307" key="DIALOG_Y_ORIGIN"/>
+		<item value="634" key="DIALOG_X_ORIGIN"/>
+		<item value="377" key="DIALOG_HEIGHT"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item value="true" key="wrap"/>
+		<item value="true" key="casesensitive"/>
+		<item value="false" key="isRegEx"/>
+		<item value="false" key="incremental"/>
+		<item value="true" key="wholeword"/>
+		<item value="dummy" key="selection"/>
+		<list key="findhistory">
+			<item value="SWET"/>
+			<item value="dummy"/>
+			<item value="Config"/>
+			<item value="getTaskSimulation"/>
+			<item value="setTaskSimulation"/>
+			<item value="simtmp"/>
+			<item value="Exec"/>
+			<item value="TimerTime"/>
+		</list>
+		<list key="replacehistory">
+			<item value="TypeID=1,.CanRun=0x1F,"/>
+			<item value="TypeID=2,.CanRun=0x00,"/>
+			<item value=".TypeID=3,.CanRun=0x0f"/>
+			<item value="0x03"/>
+			<item value="i"/>
+			<item value=""/>
+			<item value=".mode"/>
+			<item value="setTaskMode(task,HybSW)"/>
+		</list>
+	</section>
+</section>

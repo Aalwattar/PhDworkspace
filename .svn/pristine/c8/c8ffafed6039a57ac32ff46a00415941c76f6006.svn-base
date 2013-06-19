@@ -1,0 +1,671 @@
+/*
+ * data.c
+ *
+ *  Created on: Jun 1, 2011
+ *      Author: ahmed
+ */
+#include "xstatus.h"
+#include "data.h"
+/*
+struct data
+{ int op1;
+  int op2;
+  unsigned  isAdd_op1 : 1;
+  unsigned  isAdd_op2: 1;
+  unsigned :0 ;
+};
+enum Mode {SW=0x0001,HW=0x0002,Any=0x0003,CustomHW=0x0004,
+	CustomHWnSW=0x0005}
+struct PRRProcess
+{
+	int No;
+	enum PRRID PRR_ID[MAX_PR_MODULES];
+};
+
+struct node {
+	Xuint32 id;
+	u8 operation;
+	enum Mode mode;
+	struct PRRProcess PRRP;
+	u32 next;
+	struct data D;
+	int result;
+	Xuint32 prio;
+	Xuint32 dl;
+	int Q;
+};
+*/
+
+enum Operations {OpAdd,OpSub,OPMult,OpShift,OpBlank};
+
+struct TaskType TasksTypes[MAX_TASKS_TYPES];
+
+
+
+
+struct  node dfg1[]  = {
+
+		{
+				.id= 0 , .operation= OpAdd, .mode =HybHW , .next=1 ,.Done=NO,.prio=0, .Q=NO, .TypeID=1,
+				.PRRP= {.No=1, .PRR_ID[0]=Math0},
+				.D={.op1=1 ,.op2=5 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+
+		},
+
+
+		{
+				.id= 1 , .operation= OpShift, .mode =HybHW , .next=3 ,.Done=NO, .prio=1,.Q=NO,.TypeID=4,
+				.PRRP= {.No=1, .PRR_ID[0]=Math1},
+				.D={.op1=8 ,.op2=1 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+				.id= 2 , .operation= OpSub, .mode =HybHW , .next=4 ,.Done=NO, .prio=2,.Q=NO,.TypeID=2,
+				.PRRP= {.No=1, .PRR_ID[0]=Math2},
+				.D={.op1=3 ,.op2=2 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+
+		{
+				.id= 3 , .operation= OPMult, .mode =HybHW , .next=4 ,.Done=NO, .prio=3,.Q=NO, .TypeID=3,
+				.PRRP= {.No=1, .PRR_ID[0]=Math2},
+				.D={.op1=8 ,.op2=0 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+
+		{
+				.id= 4 , .operation= OPMult, .mode =HybHW , .next=2 ,.Done=NO,.prio=4,.Q=NO,.TypeID=3,
+				.PRRP= {.No=1, .PRR_ID[0]=Math3},
+				.D={.op1=5 ,.op2=1 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+
+		{
+				.id= 5 , .operation= OpAdd, .mode =HybHW , .next=4 ,.Done=NO, .prio=5,.Q=NO,.TypeID=1,
+				.PRRP= {.No=1, .PRR_ID[0]=Math2},
+				.D={.op1=4 ,.op2=2 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+
+
+		{
+				.id= 6 , .operation= OPMult, .mode =HybHW , .next=4 ,.Done=NO, .prio=6,.Q=NO,.TypeID=3,
+				.PRRP= {.No=1, .PRR_ID[0]=Math2},
+				.D={.op1=5 ,.op2=2 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+				.id= 7 , .operation= OpAdd, .mode =HybHW , .next=5 ,.Done=NO,.prio=7,.Q=NO,.TypeID=1,
+				.PRRP= {.No=1, .PRR_ID[0]=Math4},
+				.D={.op1=3 ,.op2=4 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+
+		{
+				.id= 8 , .operation= OPMult, .mode =HybHW , .next=5 ,.Done=NO,.prio=8,.Q=NO,.TypeID=3,
+				.PRRP= {.No=1, .PRR_ID[0]=Math0},
+				.D={.op1=7 ,.op2=6 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+				.id= 9 , .operation= OPMult, .mode =HybHW , .next=6 ,.Done=NO,.prio=9,.Q=NO,.TypeID=3,
+				.PRRP= {.No=1, .PRR_ID[0]=Math0},
+				.D={.op1=1 ,.op2=2 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+				.id= 10 , .operation= OpAdd, .mode =HybHW , .next=6 ,.Done=NO,.prio=10,.Q=NO,.TypeID=1,
+				.PRRP= {.No=1, .PRR_ID[0]=Math0},
+				.D={.op1=2 ,.op2=3 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+		{
+				.id= 11 , .operation= OpSub, .mode =HybHW , .next=4 ,.Done=NO,.prio=11,.Q=NO,.TypeID=2,
+				.PRRP= {.No=1, .PRR_ID[0]=Math0},
+				.D={.op1=5 ,.op2=2 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+		{
+				.id= 12 , .operation= OpAdd, .mode =HybHW , .next=5 ,.Done=NO,.prio=12,.Q=NO,.TypeID=1,
+				.PRRP= {.No=1, .PRR_ID[0]=Math0},
+				.D={.op1=9 ,.op2=10 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+		{
+				.id= 13 , .operation= OPMult, .mode =HybHW , .next=5 ,.Done=NO,.prio=13,.Q=NO,.TypeID=3,
+				.PRRP= {.No=1, .PRR_ID[0]=Math0},
+				.D={.op1=4 ,.op2=11 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+		{
+				.id= 14 , .operation= OpAdd, .mode =HybHW , .next=4 ,.Done=NO,.prio=14,.Q=NO,.TypeID=1,
+				.PRRP= {.No=1, .PRR_ID[0]=Math0},
+				.D={.op1=8 ,.op2=12 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+		{
+				.id= 15 , .operation= OPMult, .mode =HybHW , .next=4 ,.Done=NO,.prio=15,.Q=NO,.TypeID=3,
+				.PRRP= {.No=1, .PRR_ID[0]=Math0},
+				.D={.op1=5 ,.op2=13 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+		{
+				.id= 16 , .operation= OpAdd, .mode =HybHW , .next=17 ,.Done=NO,.prio=16,.Q=NO,.TypeID=1,
+				.PRRP= {.No=1, .PRR_ID[0]=Math0},
+				.D={.op1=14 ,.op2=15 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+		{
+				.id= 17 , .operation= OpAdd, .mode =HybHW , .next=18 ,.Done=NO,.prio=12,.Q=NO,.TypeID=1,
+				.PRRP= {.No=1, .PRR_ID[0]=Math0},
+				.D={.op1=9 ,.op2=10 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+		{
+				.id= 18 , .operation= OPMult, .mode =HybHW , .next=19 ,.Done=NO,.prio=13,.Q=NO,.TypeID=3,
+				.PRRP= {.No=1, .PRR_ID[0]=Math0},
+				.D={.op1=4 ,.op2=11 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+		{
+				.id= 19 , .operation= OpAdd, .mode =HybHW , .next=20 ,.Done=NO,.prio=14,.Q=NO,.TypeID=1,
+				.PRRP= {.No=1, .PRR_ID[0]=Math0},
+				.D={.op1=8 ,.op2=12 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+		{
+				.id= 20 , .operation= OPMult, .mode =HybHW , .next=21 ,.Done=NO,.prio=15,.Q=NO,.TypeID=3,
+				.PRRP= {.No=1, .PRR_ID[0]=Math0},
+				.D={.op1=5 ,.op2=13 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+		{
+				.id= 21 , .operation= OpShift, .mode =HybHW , .next=22 ,.Done=NO, .prio=1,.Q=NO,.TypeID=4,
+				.PRRP= {.No=1, .PRR_ID[0]=Math1},
+				.D={.op1=8 ,.op2=1 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+				.id= 22 , .operation= OpSub, .mode =HybHW , .next=23 ,.Done=NO, .prio=2,.Q=NO,.TypeID=2,
+				.PRRP= {.No=1, .PRR_ID[0]=Math2},
+				.D={.op1=3 ,.op2=2 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+
+		{
+				.id= 23 , .operation= OPMult, .mode =HybHW , .next=24 ,.Done=NO, .prio=3,.Q=NO, .TypeID=3,
+				.PRRP= {.No=1, .PRR_ID[0]=Math2},
+				.D={.op1=8 ,.op2=0 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+		{
+				.id= 24 , .operation= OpShift, .mode =HybHW , .next=25 ,.Done=NO, .prio=1,.Q=NO,.TypeID=4,
+				.PRRP= {.No=1, .PRR_ID[0]=Math1},
+				.D={.op1=8 ,.op2=1 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+				.id= 25 , .operation= OpSub, .mode =HybHW , .next=26 ,.Done=NO, .prio=2,.Q=NO,.TypeID=2,
+				.PRRP= {.No=1, .PRR_ID[0]=Math2},
+				.D={.op1=3 ,.op2=2 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+
+		{
+				.id= 26 , .operation= OPMult, .mode =HybHW , .next=27 ,.Done=NO, .prio=3,.Q=NO, .TypeID=3,
+				.PRRP= {.No=1, .PRR_ID[0]=Math2},
+				.D={.op1=8 ,.op2=0 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+		{        		.id= 27 , .operation= OPMult, .mode =HybHW , .next=28 ,.Done=NO,.prio=9,.Q=NO,.TypeID=3,
+				.PRRP= {.No=1, .PRR_ID[0]=Math0},
+				.D={.op1=1 ,.op2=2 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+				.id= 28 , .operation= OpAdd, .mode =HybHW , .next=29 ,.Done=NO,.prio=10,.Q=NO,.TypeID=1,
+				.PRRP= {.No=1, .PRR_ID[0]=Math0},
+				.D={.op1=2 ,.op2=3 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+		{
+				.id= 29 , .operation= OpSub, .mode =HybHW , .next=30 ,.Done=NO,.prio=11,.Q=NO,.TypeID=2,
+				.PRRP= {.No=1, .PRR_ID[0]=Math0},
+				.D={.op1=5 ,.op2=2 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+		{
+				.id= 30 , .operation= OPMult, .mode =HybHW , .next=31 ,.Done=NO,.prio=9,.Q=NO,.TypeID=3,
+				.PRRP= {.No=1, .PRR_ID[0]=Math0},
+				.D={.op1=1 ,.op2=2 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+
+		{
+				.id= 31 , .operation= OpAdd, .mode =HybHW , .next=32 ,.Done=NO,.prio=10,.Q=NO,.TypeID=1,
+				.PRRP= {.No=1, .PRR_ID[0]=Math0},
+				.D={.op1=2 ,.op2=3 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+		{
+				.id= 32 , .operation= OpSub, .mode =HybHW , .next=33 ,.Done=NO,.prio=11,.Q=NO,.TypeID=2,
+				.PRRP= {.No=1, .PRR_ID[0]=Math0},
+				.D={.op1=5 ,.op2=2 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+		{
+				.id= 33 , .operation= OpAdd, .mode =HybHW , .next=34 ,.Done=NO,.prio=12,.Q=NO,.TypeID=1,
+				.PRRP= {.No=1, .PRR_ID[0]=Math0},
+				.D={.op1=9 ,.op2=10 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+		},
+		{
+				.id= 34 , .operation= OpAdd, .mode =HybHW , .next=35 ,.Done=NO,.prio=0, .Q=NO, .TypeID=1,
+				.PRRP= {.No=1, .PRR_ID[0]=Math0},
+				.D={.op1=1 ,.op2=5 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+
+		},
+
+
+		{
+				.id= 35 , .operation= OpShift, .mode =HybHW , .next=36 ,.Done=NO, .prio=1,.Q=NO,.TypeID=4,
+				.PRRP= {.No=1, .PRR_ID[0]=Math1},
+				.D={.op1=8 ,.op2=1 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+				.id= 36 , .operation= OpSub, .mode =HybHW , .next=37 ,.Done=NO, .prio=2,.Q=NO,.TypeID=2,
+				.PRRP= {.No=1, .PRR_ID[0]=Math2},
+				.D={.op1=3 ,.op2=2 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+		{
+				.id= 37 , .operation= OpAdd, .mode =HybHW , .next=38 ,.Done=NO,.prio=0, .Q=NO, .TypeID=1,
+				.PRRP= {.No=1, .PRR_ID[0]=Math0},
+				.D={.op1=1 ,.op2=5 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+
+		},
+
+
+		{
+				.id= 38 , .operation= OpShift, .mode =HybHW , .next=39 ,.Done=NO, .prio=1,.Q=NO,.TypeID=4,
+				.PRRP= {.No=1, .PRR_ID[0]=Math1},
+				.D={.op1=8 ,.op2=1 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+				.id= 39 , .operation= OpSub, .mode =HybHW , .next=40 ,.Done=NO, .prio=2,.Q=NO,.TypeID=2,
+				.PRRP= {.No=1, .PRR_ID[0]=Math2},
+				.D={.op1=3 ,.op2=2 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+		{
+				.id= 40 , .operation= OpAdd, .mode =HybHW , .next=41 ,.Done=NO,.prio=0, .Q=NO, .TypeID=1,
+				.PRRP= {.No=1, .PRR_ID[0]=Math0},
+				.D={.op1=1 ,.op2=5 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+
+		},
+
+
+		{
+				.id= 41 , .operation= OpShift, .mode =HybHW , .next=42 ,.Done=NO, .prio=1,.Q=NO,.TypeID=4,
+				.PRRP= {.No=1, .PRR_ID[0]=Math1},
+				.D={.op1=8 ,.op2=1 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+				.id= 42 , .operation= OpSub, .mode =HybHW , .next=43 ,.Done=NO, .prio=2,.Q=NO,.TypeID=2,
+				.PRRP= {.No=1, .PRR_ID[0]=Math2},
+				.D={.op1=3 ,.op2=2 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+		{
+				.id= 43 , .operation= OpShift, .mode =HybHW , .next=44 ,.Done=NO, .prio=1,.Q=NO,.TypeID=4,
+				.PRRP= {.No=1, .PRR_ID[0]=Math1},
+				.D={.op1=8 ,.op2=1 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+		{
+				.id= 44 , .operation= OpShift, .mode =HybHW , .next=45 ,.Done=NO, .prio=1,.Q=NO,.TypeID=4,
+				.PRRP= {.No=1, .PRR_ID[0]=Math1},
+				.D={.op1=8 ,.op2=1 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+		{
+				.id= 45 , .operation= OpAdd, .mode =HybHW , .next=46 ,.Done=NO,.prio=0, .Q=NO, .TypeID=1,
+				.PRRP= {.No=1, .PRR_ID[0]=Math0},
+				.D={.op1=1 ,.op2=5 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+
+		},
+
+		{
+				.id= 46 , .operation= OpShift, .mode =HybHW , .next=47 ,.Done=NO, .prio=1,.Q=NO,.TypeID=4,
+				.PRRP= {.No=1, .PRR_ID[0]=Math1},
+				.D={.op1=8 ,.op2=1 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+		{
+				.id= 47 , .operation= OpSub, .mode =HybHW , .next=48 ,.Done=NO, .prio=2,.Q=NO,.TypeID=2,
+				.PRRP= {.No=1, .PRR_ID[0]=Math2},
+				.D={.op1=3 ,.op2=2 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		},
+
+
+		{
+				.id= 48 , .operation= OPMult, .mode =HybHW , .next=49 ,.Done=NO, .prio=3,.Q=NO, .TypeID=3,
+				.PRRP= {.No=1, .PRR_ID[0]=Math2},
+				.D={.op1=8 ,.op2=0 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+		},
+		{
+				.id= 49 , .operation= OpShift, .mode =HybHW , .next=50 ,.Done=NO, .prio=1,.Q=NO,.TypeID=4,
+				.PRRP= {.No=1, .PRR_ID[0]=Math1},
+				.D={.op1=8 ,.op2=1 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+		},
+
+		{
+				.id= 50 , .operation= OpSub, .mode =HybHW , .next=0 ,.Done=NO, .prio=2,.Q=NO,.TypeID=2,
+				.PRRP= {.No=1, .PRR_ID[0]=Math2},
+				.D={.op1=3 ,.op2=2 , .isAdd_op1=NO, .isAdd_op2=NO},
+				.Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+		}
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*struct  node dfg1[]  = {
+
+        {
+                .id= 0 , .operation= OpAdd, .mode =HybHW , .next=1 ,.Done=NO,.prio=0, .Q=NO, .TypeID=1,
+                .PRRP= {.No=1, .PRR_ID[0]=Math0},
+                .D={.op1=1 ,.op2=5 , .isAdd_op1=NO, .isAdd_op2=NO},
+                .Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+
+        },
+
+
+        {
+                .id= 1 , .operation= OpShift, .mode =HybHW , .next=3 ,.Done=NO, .prio=1,.Q=NO,.TypeID=4,
+                .PRRP= {.No=1, .PRR_ID[0]=Math1},
+                .D={.op1=8 ,.op2=1 , .isAdd_op1=NO, .isAdd_op2=NO},
+                        .Emu={.HWdelay=TASK_4_HW_DELAY, .SWdelay=TASK_4_SW_DELAY}
+        },
+
+        {
+                        .id= 2 , .operation= OpSub, .mode =HybHW , .next=4 ,.Done=NO, .prio=2,.Q=NO,.TypeID=2,
+                        .PRRP= {.No=1, .PRR_ID[0]=Math2},
+                        .D={.op1=3 ,.op2=2 , .isAdd_op1=NO, .isAdd_op2=NO},
+                        .Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+         },
+
+
+        {
+                .id= 3 , .operation= OPMult, .mode =HybHW , .next=4 ,.Done=NO, .prio=3,.Q=NO, .TypeID=3,
+                .PRRP= {.No=1, .PRR_ID[0]=Math2},
+                .D={.op1=8 ,.op2=0 , .isAdd_op1=NO, .isAdd_op2=YES},
+                .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+        },
+
+
+        {
+                .id= 4 , .operation= OPMult, .mode =HybHW , .next=2 ,.Done=NO,.prio=4,.Q=NO,.TypeID=3,
+                .PRRP= {.No=1, .PRR_ID[0]=Math3},
+                .D={.op1=5 ,.op2=1 , .isAdd_op1=NO, .isAdd_op2=YES},
+                        .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+        },
+
+
+        {
+					.id= 5 , .operation= OpAdd, .mode =HybHW , .next=4 ,.Done=NO, .prio=5,.Q=NO,.TypeID=1,
+					.PRRP= {.No=1, .PRR_ID[0]=Math2},
+					.D={.op1=4 ,.op2=2 , .isAdd_op1=NO, .isAdd_op2=NO},
+					.Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+        },
+
+
+        {
+					.id= 6 , .operation= OPMult, .mode =HybHW , .next=4 ,.Done=NO, .prio=6,.Q=NO,.TypeID=3,
+					.PRRP= {.No=1, .PRR_ID[0]=Math2},
+					.D={.op1=5 ,.op2=2 , .isAdd_op1=YES, .isAdd_op2=YES},
+			                .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+         },
+
+        {
+                .id= 7 , .operation= OpAdd, .mode =HybHW , .next=5 ,.Done=NO,.prio=7,.Q=NO,.TypeID=1,
+                .PRRP= {.No=1, .PRR_ID[0]=Math4},
+                .D={.op1=3 ,.op2=4 , .isAdd_op1=YES, .isAdd_op2=YES},
+                .Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+        },
+
+        {
+                .id= 8 , .operation= OPMult, .mode =HybHW , .next=5 ,.Done=NO,.prio=8,.Q=NO,.TypeID=3,
+                .PRRP= {.No=1, .PRR_ID[0]=Math0},
+                .D={.op1=7 ,.op2=6 , .isAdd_op1=YES, .isAdd_op2=YES},
+                        .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+        },
+
+        {
+        		.id= 9 , .operation= OPMult, .mode =HybHW , .next=6 ,.Done=NO,.prio=9,.Q=NO,.TypeID=3,
+        		.PRRP= {.No=1, .PRR_ID[0]=Math0},
+        		.D={.op1=1 ,.op2=2 , .isAdd_op1=NO, .isAdd_op2=NO},
+                        .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+        },
+
+        {
+        		.id= 10 , .operation= OpAdd, .mode =HybHW , .next=6 ,.Done=NO,.prio=10,.Q=NO,.TypeID=1,
+        		.PRRP= {.No=1, .PRR_ID[0]=Math0},
+        		.D={.op1=2 ,.op2=3 , .isAdd_op1=NO, .isAdd_op2=NO},
+        		.Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+        },
+        {
+        		.id= 11 , .operation= OpSub, .mode =HybHW , .next=4 ,.Done=NO,.prio=11,.Q=NO,.TypeID=2,
+        		.PRRP= {.No=1, .PRR_ID[0]=Math0},
+        		.D={.op1=5 ,.op2=2 , .isAdd_op1=NO, .isAdd_op2=NO},
+        		.Emu={.HWdelay=TASK_2_HW_DELAY, .SWdelay=TASK_2_SW_DELAY}
+        },
+        {
+        		.id= 12 , .operation= OpAdd, .mode =HybHW , .next=5 ,.Done=NO,.prio=12,.Q=NO,.TypeID=1,
+        		.PRRP= {.No=1, .PRR_ID[0]=Math0},
+        		.D={.op1=9 ,.op2=10 , .isAdd_op1=YES, .isAdd_op2=YES},
+        		.Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+        },
+        {
+        		.id= 13 , .operation= OPMult, .mode =HybHW , .next=5 ,.Done=NO,.prio=13,.Q=NO,.TypeID=3,
+        		.PRRP= {.No=1, .PRR_ID[0]=Math0},
+        		.D={.op1=4 ,.op2=11 , .isAdd_op1=NO, .isAdd_op2=YES},
+                        .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+        },
+        {
+        		.id= 14 , .operation= OpAdd, .mode =HybHW , .next=4 ,.Done=NO,.prio=14,.Q=NO,.TypeID=1,
+        		.PRRP= {.No=1, .PRR_ID[0]=Math0},
+        		.D={.op1=8 ,.op2=12 , .isAdd_op1=YES, .isAdd_op2=YES},
+        		.Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+        },
+        {
+        		.id= 15 , .operation= OPMult, .mode =HybHW , .next=4 ,.Done=NO,.prio=15,.Q=NO,.TypeID=3,
+        		.PRRP= {.No=1, .PRR_ID[0]=Math0},
+        		.D={.op1=5 ,.op2=13 , .isAdd_op1=NO, .isAdd_op2=YES},
+                        .Emu={.HWdelay=TASK_3_HW_DELAY, .SWdelay=TASK_3_SW_DELAY}
+        },
+        {
+        		.id= 16 , .operation= OpAdd, .mode =HybHW , .next=0 ,.Done=NO,.prio=16,.Q=NO,.TypeID=1,
+        		.PRRP= {.No=1, .PRR_ID[0]=Math0},
+        		.D={.op1=14 ,.op2=15 , .isAdd_op1=YES, .isAdd_op2=YES},
+        		.Emu={.HWdelay=TASK_1_HW_DELAY, .SWdelay=TASK_1_SW_DELAY}
+        }
+
+
+}; */
+
+//
+//struct  node dfg1[]  = {
+//
+//        {
+//                .id= 0 , .operation= OpAdd, .mode =HybHW , .next=1 ,.Done=NO,.prio=0, .Q=NO,
+//                .PRRP= {.No=1, .PRR_ID[0]=Math0},
+//                .D={.op1=1 ,.op2=5 , .isAdd_op1=NO, .isAdd_op2=NO}
+//        },
+//
+//
+//        {
+//                .id= 1 , .operation= OpAdd, .mode =HybHW , .next=3 ,.Done=NO, .prio=1,.Q=NO,
+//                .PRRP= {.No=1, .PRR_ID[0]=Math1},
+//                .D={.op1=8 ,.op2=1 , .isAdd_op1=NO, .isAdd_op2=NO}
+//        },
+//
+//        {
+//                        .id= 2 , .operation= OpAdd, .mode =HybHW , .next=4 ,.Done=NO, .prio=2,.Q=NO,
+//                        .PRRP= {.No=1, .PRR_ID[0]=Math2},
+//                        .D={.op1=3 ,.op2=2 , .isAdd_op1=NO, .isAdd_op2=NO}
+//         },
+//
+//
+//        {
+//                .id= 3 , .operation= OpAdd, .mode =HybHW , .next=4 ,.Done=NO, .prio=3,.Q=NO,
+//                .PRRP= {.No=1, .PRR_ID[0]=Math2},
+//                .D={.op1=8 ,.op2=0 , .isAdd_op1=NO, .isAdd_op2=YES}
+//        },
+//
+//
+//        {
+//                .id= 4 , .operation= OpAdd, .mode =HybHW , .next=2 ,.Done=NO,.prio=4,.Q=NO,
+//                .PRRP= {.No=1, .PRR_ID[0]=Math3},
+//                .D={.op1=5 ,.op2=1 , .isAdd_op1=NO, .isAdd_op2=YES}
+//        },
+//
+//
+//        {
+//					.id= 5 , .operation= OpAdd, .mode =HybHW , .next=4 ,.Done=NO, .prio=5,.Q=NO,
+//					.PRRP= {.No=1, .PRR_ID[0]=Math2},
+//					.D={.op1=4 ,.op2=2 , .isAdd_op1=NO, .isAdd_op2=NO}
+//        },
+//
+//
+//        {
+//					.id= 6 , .operation= OpAdd, .mode =HybHW , .next=4 ,.Done=NO, .prio=6,.Q=NO,
+//					.PRRP= {.No=1, .PRR_ID[0]=Math2},
+//					.D={.op1=5 ,.op2=2 , .isAdd_op1=YES, .isAdd_op2=YES}
+//         },
+//
+//        {
+//                .id= 7 , .operation= OpAdd, .mode =HybHW , .next=5 ,.Done=NO,.prio=7,.Q=NO,
+//                .PRRP= {.No=1, .PRR_ID[0]=Math4},
+//                .D={.op1=3 ,.op2=4 , .isAdd_op1=YES, .isAdd_op2=YES}
+//        },
+//
+//        {
+//                .id= 8 , .operation= OpAdd, .mode =HybHW , .next=5 ,.Done=NO,.prio=8,.Q=NO,
+//                .PRRP= {.No=1, .PRR_ID[0]=Math0},
+//                .D={.op1=7 ,.op2=6 , .isAdd_op1=YES, .isAdd_op2=YES}
+//        },
+//
+//        {
+//        		.id= 9 , .operation= OpAdd, .mode =HybHW , .next=6 ,.Done=NO,.prio=9,.Q=NO,
+//        		.PRRP= {.No=1, .PRR_ID[0]=Math0},
+//        		.D={.op1=1 ,.op2=2 , .isAdd_op1=NO, .isAdd_op2=NO}
+//        },
+//
+//        {
+//        		.id= 10 , .operation= OpAdd, .mode =HybHW , .next=6 ,.Done=NO,.prio=10,.Q=NO,
+//        		.PRRP= {.No=1, .PRR_ID[0]=Math0},
+//        		.D={.op1=2 ,.op2=3 , .isAdd_op1=NO, .isAdd_op2=NO}
+//        },
+//        {
+//        		.id= 11 , .operation= OpAdd, .mode =HybHW , .next=4 ,.Done=NO,.prio=11,.Q=NO,
+//        		.PRRP= {.No=1, .PRR_ID[0]=Math0},
+//        		.D={.op1=5 ,.op2=2 , .isAdd_op1=NO, .isAdd_op2=NO}
+//        },
+//        {
+//        		.id= 12 , .operation= OpAdd, .mode =HybHW , .next=5 ,.Done=NO,.prio=12,.Q=NO,
+//        		.PRRP= {.No=1, .PRR_ID[0]=Math0},
+//        		.D={.op1=9 ,.op2=10 , .isAdd_op1=YES, .isAdd_op2=YES}
+//        },
+//        {
+//        		.id= 13 , .operation= OpAdd, .mode =HybHW , .next=5 ,.Done=NO,.prio=13,.Q=NO,
+//        		.PRRP= {.No=1, .PRR_ID[0]=Math0},
+//        		.D={.op1=4 ,.op2=11 , .isAdd_op1=NO, .isAdd_op2=YES}
+//        },
+//        {
+//        		.id= 14 , .operation= OpAdd, .mode =HybHW , .next=4 ,.Done=NO,.prio=14,.Q=NO,
+//        		.PRRP= {.No=1, .PRR_ID[0]=Math0},
+//        		.D={.op1=8 ,.op2=12 , .isAdd_op1=YES, .isAdd_op2=YES}
+//        },
+//        {
+//        		.id= 15 , .operation= OpAdd, .mode =HybHW , .next=4 ,.Done=NO,.prio=15,.Q=NO,
+//        		.PRRP= {.No=1, .PRR_ID[0]=Math0},
+//        		.D={.op1=5 ,.op2=13 , .isAdd_op1=NO, .isAdd_op2=YES}
+//        },
+//        {
+//        		.id= 16 , .operation= OpAdd, .mode =HybHW , .next=0 ,.Done=NO,.prio=16,.Q=NO,
+//        		.PRRP= {.No=1, .PRR_ID[0]=Math0},
+//        		.D={.op1=14 ,.op2=15 , .isAdd_op1=YES, .isAdd_op2=YES}
+//        }
+//
+//
+//};
+
+void Init_TasksTypes(void)
+{
+	int i,k;
+	for (i =0;i<MAX_TASKS_TYPES;i++)
+	{
+		TasksTypes[i].ID=i;
+		TasksTypes[i].name=NULL;
+		TasksTypes[i].SWET=0;
+		TasksTypes[i].HWET=0;
+		TasksTypes[i].SWPriority=SW_PE_ID/2 ;
+		for (k=0;k<MAX_PR_MODULES;k++)
+		{
+			TasksTypes[i].ConfigTime[k]=0;
+		}
+		TasksTypes[i].CanRun=0XFF;
+		TasksTypes[i].Module=adder;
+
+	}
+}
+ enum SystemStates State=Start;
+
+
+//  __attribute__ ((aligned (4))){0,0,1,1,{1,5,0,0},0},{1,3,1,3,{8,1,0,0},0},{2,2,1,4,{8,0,0,1},0} ,{3,2,0,2,{5,1,0,1},0},{4,0,0,0,{3,2,1,1},0}};

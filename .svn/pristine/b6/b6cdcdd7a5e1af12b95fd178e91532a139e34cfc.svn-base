@@ -1,0 +1,69 @@
+/*
+ * data.h
+ *
+ *  Created on: Jun 1, 2011
+ *      Author: ahmed
+ */
+
+#ifndef DATA_H_
+#define DATA_H_
+
+#include "headers.h"
+#include "timer.h"
+/* TODO use more compact structure
+ * by using btwise operators and one words for all flags
+ */
+#define LAST_NODE 16
+enum Mode {SWOnly=0x0001,HWOnly=0x0002,HybSW=0x0003,HybHW=0x0013, CustomHW=0x0004,
+           CustomHWnSW=0x0005
+          };
+
+struct Simulation
+{
+	enum PRRID PRRUsed;
+	u8 Reused;
+	 struct TimerTime ConfigTime;
+	 struct TimerTime ExecTime;
+	struct TimerValue ExecTV;
+
+};
+struct data {
+        int op1;
+        int op2;
+        unsigned  isAdd_op1 : 1;
+        unsigned  isAdd_op2: 1;
+        unsigned :0 ;
+};
+struct PRRProcess {
+        int No;
+        enum PRRID PRR_ID[MAX_PR_MODULES];
+};
+
+struct node {
+        const Xuint32 id;
+        const u8 operation;
+         enum Mode mode;
+        const struct PRRProcess PRRP;
+        const u32 next;
+        const struct data D;
+        u8 Done ;
+        int result;
+        int Q;
+        Xuint32 prio;
+        Xuint32 dl;
+        struct Simulation Sim;
+
+};
+
+
+/* TODO DFG must be read from external memory
+ *  A agreed structure must be developed
+ *  and specification for the file format
+ */
+enum SystemStates {Start,CfgDone,TaskDone,None};
+
+extern enum SystemStates State;
+
+extern  struct node dfg1[];
+
+#endif /* DATA_H_ */
