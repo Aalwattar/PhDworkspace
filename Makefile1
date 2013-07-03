@@ -24,9 +24,10 @@
 #compiler options
 DEBUG			= 
 C_COMP 			= gcc
-COMP_OPTS 		= -c -g -I./header ${DEBUG}
+COMP_OPTS 		=  -c -fPIC -O3 -MMD -MP -I./header ${DEBUG}
 OBJ_OPTS		= -o
-LINK_OPTS 		= -lm -o
+LINK_OPTS 		= -shared -Wl,-soname=libnapoleon.so  -o "libnapoleon.so" 
+LINK_OPTS_END		= -lm
 
 #debugger options
 DBGR 			= gdb
@@ -53,15 +54,14 @@ OBJECT_FILES		= \
 			${OBJECT_LOCN}/napoleon${OBJECT_EXTN} \
 			${OBJECT_LOCN}/main${OBJECT_EXTN}
 
-BUILD = offlinescheduler${EXEC_EXTN}
+BUILD = napoleon.so
 
 #compilation, linking and debugging targets
 all: ${BUILD}
 	@ echo "Build updated"
 
-offlinescheduler${EXEC_EXTN}: ${OBJECT_FILES}
-	${C_COMP} ${OBJECT_FILES} ${LINK_OPTS} offlinescheduler${EXEC_EXTN}
-
+napoleon.so: ${OBJECT_FILES}
+	${C_COMP}  ${LINK_OPTS} ${OBJECT_FILES}  ${LINK_OPTS_END}
 debug:
 	${DBGR} ${DBG_OPTS} offlinescheduler${EXEC_EXTN}
 
