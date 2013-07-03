@@ -1,15 +1,24 @@
-/*************************************************************************/
-// Author  : Ziad Abuowaimer
-// Version : 0.1
-// Project : A DFG Off-Line Task Scheduler for FPGA
-// Team    : Ziad Abuowaimer
-/*************************************************************************/
+/*************************************************************************
+ * Author   : Ziad Abuowaimer
+ * Modifier : Jennifer Winer
+ * 
+ * Project  : A DFG Off-Line Task Scheduler for FPGA
+ * 
+ * Created  : May 22, 2013
+ * Modified : July 3, 2013
+ *************************************************************************/
 
-/*************************************************************************/
-// Filename: types.h
-// Description:
-// Header file which defines the types used in this system
-/*************************************************************************/
+/*************************************************************************
+ * Filename    : types.h
+ * 
+ * Description : Header file which defines the types used in this system
+ *************************************************************************/
+
+
+#ifndef TYPES_H
+#define TYPES_H
+
+#include "bounds.h"
 
 #define __INVALID 0
 
@@ -84,3 +93,5 @@ typedef struct s_task_Impl{
    int exec_pwr;
 } t_task_impl;
 
+
+#endif /* TYPES_H */
