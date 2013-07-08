@@ -37,11 +37,14 @@
 #include <ecodes.h>
 #include <io.h>
 #include <main.h>
+#include "common_interfaces.h"
 
-  int parse_task_type(char *);
+
+int parse_task_type(char *);
 int intfc_mode(char *);
 int get_index(char *, t_task_interface *, int);
 void print_error(int);
+
 
 
 void print_error(int ecode){
@@ -139,32 +142,32 @@ int parse_impl(FILE *in_strm, t_task_impl *task_impl){
             err = __RESFILE0;
 
 
-        if ((token = strtok(NULL, " "))) {
+        if((token = strtok(NULL, " "))){
             (task_impl + index)->id = index;
             (task_impl + index)->columns = atoi(token);
         }else{
             err = __RESFILE1;
             break;
         }
-        if ((token = strtok(NULL, " "))) {
+        if((token = strtok(NULL, " "))){
             (task_impl + index)->rows = atoi(token);
         }else{
             err = __RESFILE1;
             break;
         }
-        if ((token = strtok(NULL, " \n"))) {
+        if((token = strtok(NULL, " \n"))){
             (task_impl + index)->reconfig_time = atoi(token);
         }
-        if ((token = strtok(NULL, " "))) {
+        if((token = strtok(NULL, " "))){
             (task_impl + index)->latency = atoi(token);
         }else{
             err = __RESFILE2;
             break;
         }
-        if ((token = strtok(NULL, " \n"))) {
+        if((token = strtok(NULL, " \n"))){
             (task_impl + index)->reconfig_pwr = atoi(token);
         }
-        if ((token = strtok(NULL, " \n"))) {
+        if((token = strtok(NULL, " \n"))){
             (task_impl + index)->exec_pwr = atoi(token);
         }else{
             err = __RESFILE3;
@@ -219,25 +222,25 @@ int parse_res(FILE *in_strm, t_task_type *task_type){
         if(count_task_type < index)
             count_task_type = index;
 
-        if ((token = strtok(NULL, " "))) {
+        if((token = strtok(NULL, " "))){
             (task_type + index)->columns = atoi(token);
         }else{
             err = __RESFILE1;
             break;
         }
-        if ((token = strtok(NULL, " "))) {
+        if((token = strtok(NULL, " "))){
             (task_type + index)->rows = atoi(token);
         }else{
             err = __RESFILE1;
             break;
         }
-        if ((token = strtok(NULL, " "))) {
+        if((token = strtok(NULL, " "))){
             (task_type + index)->latency = atoi(token);
         }else{
             err = __RESFILE2;
             break;
         }
-        if ((token = strtok(NULL, " \n"))) {
+        if((token = strtok(NULL, " \n"))){
             (task_type + index)->reconfig_time = atoi(token);
         }else{
             err = __RESFILE3;
@@ -254,69 +257,50 @@ int parse_res(FILE *in_strm, t_task_type *task_type){
 }
 
 
-int parse_aif(FILE *in_strm, t_task *task, t_task_interface *task_interface){
-    int err = 0;
-    int count_intfc = 0, count_task = 0;
-    t_task *task_curr;
-    t_task_interface *task_interface_curr;
-    char buff[__SIZE_MAX_BUFF], *token;
 
+// FIX - so that structure initializes things
+int parse_aif(DFG * dfg, t_task * task, t_task_interface * task_interface){
     count_intfc = 1;
     count_task = 1;
-    task_curr = task + count_task;
-    task_interface_curr = task_interface + count_intfc;
+    int i, j;
+    
+    int err = 0;
+    int count_intfc = 0, count_task = 0;
 
-    //fprintf(log_strm,"Reading the aif file...\n");
-    while(fgets(buff, __SIZE_MAX_BUFF, in_strm)){
-        token = strtok(buff, " \n");
-        if(!strcasecmp(token, "inputs")
-           || !strcasecmp(token, "outputs")
-           || !strcasecmp(token, "regs")){
-            int mode = intfc_mode(token);
-            while ((token = strtok(NULL, " \n"))) {
-                strcpy(task_interface_curr->name, token);
-                task_interface_curr->mode = mode;
-                if ((token = strtok(NULL, " \n")))
-                    task_interface_curr->width = atoi(token);
-                count_intfc++;
-                task_interface_curr = task_interface + count_intfc;
-            }
-        }else if(!strcasecmp(token, "end")){
-            break;
-        }else{
-            int task_attrib = 0;
-            do{
-                // ERROR in AIF FORMAT
-                assert(task_attrib <= 6);
-                switch(task_attrib){
-                    case 0: //Task name
-                        strcpy(task_curr->name, token);
-                        break;
-                    case 1: //Task type
-                        task_curr->type = parse_task_type(token);
-                        break;
-                    case 2: //Task width
-                        task_curr->width = atoi(token);
-                        break;
-                    case 3: //input 1
-                        task_curr->input1 = get_index(token,
-                                                      task_interface, count_intfc - 1);
-                        break;
-                    case 4: //input 2
-                        task_curr->input2 = get_index(token,
-                                                      task_interface, count_intfc - 1);
-                        break;
-                    case 5: //output
-                        task_curr->output = get_index(token,
-                                                      task_interface, count_intfc - 1);
-                        break;
-                }
-                task_attrib++;
-            } while ((token = strtok(NULL, " \n")));
-            count_task++;
-            task_curr = task + count_task;
-        }
+    // Account for the source node
+    count_intfc = 1;
+    count_task = 1;
+    
+    for(i=0; dfg.inputs[i] = NULL; i++){
+        (task_interface[count_intfc]).mode = intfc_mode("inputs");
+        (task_interface[count_intfc]).width = DEFAULT_WIDTH;
+        strcpy((task_interface[count_intfc]).name, dfg.inputs[i]);
+        count_intfc ++;
     }
+    for(i=0; dfg.outputs[i] = NULL; i++){
+        (task_interface[count_intfc]).mode = intfc_mode("outputs");
+        (task_interface[count_intfc]).width = DEFAULT_WIDTH;
+        strcpy((task_interface[count_intfc]).name, dfg.outputs[i]);
+        count_intfc ++;
+    }
+    for(i=0; dfg.regs[i] = NULL; i++){
+        (task_interface[count_intfc]).mode = intfc_mode("regs");
+        (task_interface[count_intfc]).width = DEFAULT_WIDTH;
+        strcpy((task_interface[count_intfc]).name, dfg.regs[i]);
+        count_intfc ++;
+    }
+    
+    
+    for(i=0; i<dfg.num_nodes; i++){
+        strcpy(task[i+1].name, dfg.node[i].name);
+        task[count_task].type = dfg.node[i].task_type;
+        task[count_task].width = DEFAULT_WIDTH;
+        
+        strcpy(task[count_task].input1, dfg.node[i].inputs[0]);
+        strcpy(task[count_task].input2, dfg.node[i].inputs[1]);
+        strcpy(task[count_task].output, dfg.node[i].output);
+    }
+    
 
     task_interface->mode = __INVALID;
     task_interface->width = count_intfc - 1;
@@ -326,7 +310,8 @@ int parse_aif(FILE *in_strm, t_task *task, t_task_interface *task_interface){
     return err;
 }
 
-int parse_task_type(char *token) {
+
+int parse_task_type(char *token){
     int type = 0;
 
     if(!strcasecmp(token, "TASK1")) type = __ADD;
@@ -339,17 +324,6 @@ int parse_task_type(char *token) {
     else if(!strcasecmp(token, "TASK8")) type = __GTE;
 
     return type;
-}
-
-
-int intfc_mode(char *token){
-    int mode = 0;
-
-    if(!strcasecmp(token, "inputs")) mode = __INPUT;
-    else if(!strcasecmp(token, "outputs")) mode = __OUTPUT;
-    else if(!strcasecmp(token, "regs")) mode = __REGISTER;
-
-    return mode;
 }
 
 
@@ -402,7 +376,7 @@ void display_task(t_task *task, t_task_interface *task_interface){
 
     fprintf(stdout, "name type width latency reconfig_time columns rows input1 input2 output exec_sched " \
                  "reconfig_sched leftmost_column bottommost_row conf_power exec_power impl\n");
-    
+
     for(i = 1; i <= num_nodes; i++){
         printf("%s %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d\n", (task + i)->name, (task + i)->type, (task + i)->impl, (task + i)->width, (task + i)->latency, (task + i)->reconfig_time, (task + i)->columns, (task + i)->rows, (task + i)->input1, (task + i)->input2, (task + i)->output, (task_interface + (task + i)->output)->mode, (task + i)->exec_sched, (task + i)->reconfig_sched, (task + i)->leftmost_column, (task + i)->bottommost_row, (task + i)->reconfig_pwr, (task + i)->exec_pwr);
     }
@@ -444,4 +418,3 @@ void set_task_parameter(t_task *task, t_task_type *task_type){
     }
 
 }
-

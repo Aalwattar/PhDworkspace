@@ -30,4 +30,6 @@
 #define __NUM_FPGA_RECONFIGARATOR   1
 #define __SIZE_Q 		    1000
 
+#define DEFAULT_WIDTH 8
+
 #endif /* BOUNDS_H */

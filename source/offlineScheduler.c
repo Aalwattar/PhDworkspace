@@ -34,6 +34,7 @@
 #include "functions.h"
 #include "main.h"
 #include "offlineScheduler.h"
+#include "common_interfaces.h"
 
 // FIX - MAKE NON GLOBAL!!!
 static t_task_interface * task_interface; 
@@ -75,15 +76,7 @@ t_task * initNapoleon(char * aif_filename){
         (task_interface + i)->reg_out = 0;
     }
 
-    aif_strm = fopen(aif_filename, "r");
-    if(aif_strm == NULL){
-        free(task);
-        free(task_interface);
-        return NULL;
-    }
-
     err = parse_aif(aif_strm, task, task_interface);
-    fclose(aif_strm);
 
     if(err != __NO_ERROR){
         print_error(err);    //and exit on unsuccessful execution of the parse_aif function

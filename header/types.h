@@ -53,7 +53,7 @@ typedef struct s_task{
    int exec_sched;
    int reconfig_sched;
    int leftmost_column;
-  int bottommost_row;
+   int bottommost_row;
    int latency;
    int columns;
    int rows;

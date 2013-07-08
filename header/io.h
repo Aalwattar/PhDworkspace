@@ -20,8 +20,9 @@
 
 #include <stdio.h>
 #include <types.h>
+#include "common_interfaces.h"
 
-extern int parse_aif(FILE *, t_task *, t_task_interface *);
+extern int parse_aif(DFG *, t_task *, t_task_interface *);
 extern int parse_res(FILE *, t_task_type *);
 extern int  parse_impl(FILE *, t_task_impl *);
 

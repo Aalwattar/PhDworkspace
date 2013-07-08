@@ -33,13 +33,22 @@
 #include <ilp.h>
 #include <functions.h>
 #include <main.h>
+#include <stdbool.h>
+#include <confuse.h>    // WARNING - NON STANDARD LIBRARY
+
+#include "DFG_library.h"
 
 FILE *log_strm;
 void print_help(void);
 int parse_cmd_line_opts(int, char**, t_config*);
 
+DFG * initDFG(char *);
+void freeDFG(DFG);
+void printDFG(DFG);
+
 
 int main(int argc, char *argv[]){
+    DFG dfg;
     FILE *aif_strm, *res_strm, *ilp_strm, *grid_strm, *impl_strm;
     t_task_interface *task_interface;
     t_task *task;
@@ -71,6 +80,7 @@ int main(int argc, char *argv[]){
     //allocate memory for the tasks and the task interfaces
     task = (t_task*)malloc(sizeof (t_task) * __NUM_MAX_TASKS);
     for(i = 0; i < __NUM_MAX_TASKS; i++){
+        
         (task + i)->type = 0;
         (task + i)->exec_sched = 0;
         (task + i)->reconfig_sched = 0;
@@ -94,16 +104,15 @@ int main(int argc, char *argv[]){
         (task_interface + i)->reg_out = 0;
     }
 
-    //open the aif input file for reading
-    if((aif_strm = fopen(config.aif_fname, "r"))){
-        //parse the aif file
-        //and exit on unsuccessful execution of the parse_aif function
-        if((err = parse_aif(aif_strm, task, task_interface)))
-            print_error(err);
-        //fname = strtok(config.aif_fname, ".");
-        fclose(aif_strm);
-    }
-    //assert(aif_strm);
+
+    // MODIFIED BY: Jennifer Winer 
+    dfg = initDFG(aif_strm);
+    
+    // my file parsing function opens the file instead
+    if((err = parse_aif(dfg, task, task_interface)))
+        print_error(err);
+    
+    freeDFG();
 
     //allocate memory for resources
     task_type = (t_task_type*)malloc(sizeof (t_task_type) * __NUM_MAX_TASK_TYPES);
@@ -245,126 +254,7 @@ int main(int argc, char *argv[]){
 
 
         }
-        /*  (task+1)->latency = 75;
-          (task+1)->reconfig_time = 30;
-          (task+1)->columns = 3;
-          (task+1)->rows = 2;
-          (task+1)->exec_sched = 0;
-          (task+1)->reconfig_sched = 0;
-          (task+1)->leftmost_column = 0;
-          (task+1)->bottommost_row = 0;
-          (task+1)->reconfig_pwr = 0;
-          (task+1)->exec_pwr = 0;
-          (task+1)->impl = 2;
-
-          (task+2)->latency = 40;
-          (task+2)->reconfig_time = 125;
-          (task+2)->columns = 5;
-          (task+2)->rows = 5;
-          (task+2)->exec_sched = 0;
-          (task+2)->reconfig_sched = 0;
-          (task+2)->leftmost_column = 0;
-          (task+2)->bottommost_row = 0;
-          (task+2)->reconfig_pwr = 0;
-          (task+2)->exec_pwr = 0;
-          (task+2)->impl = 2;
-
-          (task+3)->latency = 10;
-          (task+3)->reconfig_time = 20;
-          (task+3)->columns = 2;
-          (task+3)->rows = 2;
-          (task+3)->exec_sched = 0;
-          (task+3)->reconfig_sched = 0;
-          (task+3)->leftmost_column = 0;
-          (task+3)->bottommost_row = 0;
-          (task+3)->reconfig_pwr = 0;
-          (task+3)->exec_pwr = 0;
-          (task+3)->impl = 3;
-
-          (task+4)->latency = 75;
-          (task+4)->reconfig_time = 30;
-          (task+4)->columns = 3;
-          (task+4)->rows = 2;
-          (task+4)->exec_sched = 0;
-          (task+4)->reconfig_sched = 0;
-          (task+4)->leftmost_column = 0;
-          (task+4)->bottommost_row = 0;
-          (task+4)->reconfig_pwr = 0;
-          (task+4)->exec_pwr = 0;
-          (task+4)->impl = 2;
-
-          (task+5)->latency = 30;
-          (task+5)->reconfig_time = 5;
-          (task+5)->columns = 1;
-          (task+5)->rows = 1;
-          (task+5)->exec_sched = 0;
-          (task+5)->reconfig_sched = 0;
-          (task+5)->leftmost_column = 0;
-          (task+5)->bottommost_row = 0;
-          (task+5)->reconfig_pwr = 0;
-          (task+5)->exec_pwr = 0;
-          (task+5)->impl = 1;
-
-          (task+6)->latency = 10;
-          (task+6)->reconfig_time = 10;
-          (task+6)->columns = 1;
-          (task+6)->rows = 2;
-          (task+6)->exec_sched = 0;
-          (task+6)->reconfig_sched = 0;
-          (task+6)->leftmost_column = 0;
-          (task+6)->bottommost_row = 0;
-          (task+6)->reconfig_pwr = 0;
-          (task+6)->exec_pwr = 0;
-          (task+6)->impl = 2;
-
-          (task+7)->latency = 125;
-          (task+7)->reconfig_time = 20;
-          (task+7)->columns = 2;
-          (task+7)->rows = 2;
-          (task+7)->exec_sched = 0;
-          (task+7)->reconfig_sched = 0;
-          (task+7)->leftmost_column = 0;
-          (task+7)->bottommost_row = 0;
-          (task+7)->reconfig_pwr = 0;
-          (task+7)->exec_pwr = 0;
-          (task+7)->impl = 1;
-
-          (task+8)->latency = 10;
-          (task+8)->reconfig_time = 20;
-          (task+8)->columns = 2;
-          (task+8)->rows = 2;
-          (task+8)->exec_sched = 0;
-          (task+8)->reconfig_sched = 0;
-          (task+8)->leftmost_column = 0;
-          (task+8)->bottommost_row = 0;
-          (task+8)->reconfig_pwr = 0;
-          (task+8)->exec_pwr = 0;
-          (task+8)->impl = 3;
-
-          (task+9)->latency = 10;
-          (task+9)->reconfig_time = 10;
-          (task+9)->columns = 1;
-          (task+9)->rows = 2;
-          (task+9)->exec_sched = 0;
-          (task+9)->reconfig_sched = 0;
-          (task+9)->leftmost_column = 0;
-          (task+9)->bottommost_row = 0;
-          (task+9)->reconfig_pwr = 0;
-          (task+9)->exec_pwr = 0;
-          (task+9)->impl = 2;
-
-          (task+10)->latency = 5;
-          (task+10)->reconfig_time = 30;
-          (task+10)->columns = 3;
-          (task+10)->rows = 2;
-          (task+10)->exec_sched = 0;
-          (task+10)->reconfig_sched = 0;
-          (task+10)->leftmost_column = 0;
-          (task+10)->bottommost_row = 0;
-          (task+10)->reconfig_pwr = 0;
-          (task+10)->exec_pwr = 0;
-          (task+10)->impl = 4;
-         */
+        
         display_task(task, task_interface);
 
         //call the napoleon scheduler
@@ -444,3 +334,184 @@ int parse_cmd_line_opts(int argc, char *argv[], t_config *config){
 }
 
 
+/******************   Jenn's File Parsing   *****************/
+
+int conf_validate_value(cfg_t *cfg, cfg_opt_t *opt){
+    int value = cfg_opt_getnint(opt, 0);
+    
+    if (value <= 0) {
+        cfg_error(cfg, "Integer option[%d] '%s' must be positive in section '%s'",
+        		value,cfg_opt_name(opt) ,cfg_name(cfg));
+        return -1;
+    }
+    
+    return 0;
+}
+
+// FIX - Needs a function header comment
+cfg_t * parse_conf_dfg(char *filename){
+    cfg_opt_t task_opts[] = {
+        CFG_INT("type", 0, CFGF_NODEFAULT ),
+        CFG_STR("output",0 , CFGF_NODEFAULT),
+        CFG_STR_LIST("inputs", 0, CFGF_NODEFAULT),
+        CFG_END()
+    };
+
+    cfg_opt_t opts[] = {
+        CFG_SEC("task", task_opts, CFGF_MULTI | CFGF_TITLE | CFGF_NODEFAULT | CFGF_NO_TITLE_DUPES),
+        CFG_STR("Name", "Unknown DFG file!", CFGF_NONE),
+        CFG_STR("Date", "Unknown Creation Date", CFGF_NONE),
+        
+        CFG_STR_LIST("inputs", 0, CFGF_NODEFAULT),
+        CFG_STR_LIST("outputs", 0, CFGF_NODEFAULT),
+        CFG_STR_LIST("regs", 0, CFGF_NODEFAULT),
+        CFG_END()
+    };
+
+    cfg_t * cfg = cfg_init(opts, CFGF_NODEFAULT);
+    // FIX - I have no idea what to validate in the DFG files!
+        // FIX - validate that each node's input and ouput is one of the options listed at the top
+        // FIX - validate that each node has exactly two inputs and only one output?
+        // FIX - validate that each node's output is another node's input etc. 
+    // cfg_set_validate_func(cfg, "inputs", conf_validate_processor);
+
+    switch (cfg_parse(cfg, filename)) {
+        case CFG_SUCCESS:
+            break;
+        
+        case CFG_FILE_ERROR:
+            // FIX - Make this error message better (or terminate / return -1 if the file could not be correctly read)
+            printf("warning: configuration file '%s' could not be read: %s\n", 
+                    filename, strerror(errno));
+            break;
+            
+        case CFG_PARSE_ERROR:
+            return NULL;
+    }
+
+    return cfg;
+}
+
+
+DFG initDFG(char * filename){
+    DFG task_schedule;
+    cfg_t * cfgDFG, * node;
+    int i, j;
+    
+    if(filename == NULL)
+        return NULL;
+    
+    cfgDFG = parse_conf_dfg(filename);
+    if(cfgDFG == NULL)
+        return NULL;       // FAILED TO PARSE THE FILE!
+
+    // FIX - Change the strncpy size to a #define static thing
+    strncpy(task_schedule.name, cfg_getstr(cfgDFG, "Name"), BUFF_SIZE);
+    strncpy(task_schedule.date, cfg_getstr(cfgDFG, "Date"), BUFF_SIZE);
+    
+    // read in all the inputs
+    task_schedule.inputs = malloc(sizeof(char *) * (cfg_size(cfgDFG, "inputs") + 1));
+    for(i=0; i < cfg_size(cfgDFG, "inputs"); i++){
+        task_schedule.inputs[i] = malloc(sizeof(char) * (strlen(cfg_getnstr(cfgDFG, "inputs", i)) + 1));
+        strcpy(task_schedule.inputs[i], cfg_getnstr(cfgDFG, "inputs", i));
+    }
+    task_schedule.inputs[i] = NULL;
+    
+    // read in all the outputs
+    task_schedule.outputs = malloc(sizeof(char *) * (cfg_size(cfgDFG, "outputs") + 1));
+    for(i=0; i < cfg_size(cfgDFG, "outputs"); i++){
+        task_schedule.outputs[i] = malloc(sizeof(char) * (strlen(cfg_getnstr(cfgDFG, "outputs", i)) + 1));
+        strcpy(task_schedule.outputs[i], cfg_getnstr(cfgDFG, "outputs", i));
+    }
+    task_schedule.outputs[i] = NULL;
+        
+    // read in all the registers
+    task_schedule.regs = malloc(sizeof(char *) * (cfg_size(cfgDFG, "regs") + 1));
+    for(i=0; i < cfg_size(cfgDFG, "regs"); i++){
+        task_schedule.regs[i] = malloc(sizeof(char) * (strlen(cfg_getnstr(cfgDFG, "regs", i)) + 1));
+        strcpy(task_schedule.regs[i], cfg_getnstr(cfgDFG, "regs", i));
+    }
+    task_schedule.regs[i] = NULL;
+    
+    // Read in all the nodes
+    task_schedule.num_nodes = cfg_size(cfgDFG, "task");
+    task_schedule.node = malloc(sizeof(Node) * task_schedule.num_nodes);
+    for(j=0; j < cfg_size(cfgDFG, "task"); j++){
+        node = cfg_getnsec(cfgDFG, "task", j);
+        
+        strncpy(task_schedule.node[j].name, cfg_title(node), BUFF_SIZE);
+        task_schedule.node[j].task_type = cfg_getint(node, "type");
+        strncpy(task_schedule.node[j].output, cfg_getstr(node, "output"), BUFF_SIZE);
+        
+        // read in all the inputs
+        task_schedule.node[j].inputs = malloc(sizeof(char *) * (cfg_size(node, "inputs") + 1));
+        for(i=0; i < cfg_size(node, "inputs"); i++){
+            task_schedule.node[j].inputs[i] = malloc(sizeof(char) * (strlen(cfg_getnstr(node, "inputs", i)) + 1));
+            strcpy(task_schedule.node[j].inputs[i], cfg_getnstr(node, "inputs", i));
+        }
+        task_schedule.node[j].inputs[i] = NULL;
+    }
+    
+    cfg_free(cfgDFG);
+    return task_schedule;
+}
+
+void freeDFG(DFG * task_schedule){
+    int i, j;
+
+    for(i = 0; i < task_schedule->num_nodes; i++){
+        for(j=0; task_schedule->node[i].inputs[j]!= NULL; j++)
+            free(task_schedule->node[i].inputs[j]);
+        
+        free(task_schedule->node[i].inputs);
+    }
+        
+    free(task_schedule->node);
+    
+    for(i=0; task_schedule->inputs[i] != NULL; i++)
+        free(task_schedule->inputs[i]);
+    free(task_schedule->inputs);
+    
+    for(i=0; task_schedule->outputs[i] != NULL; i++)
+        free(task_schedule->outputs[i]);
+    free(task_schedule->outputs);
+    
+    for(i=0; task_schedule->regs[i] != NULL; i++)
+        free(task_schedule->regs[i]);
+    free(task_schedule->regs);
+}
+
+void printDFG(DFG * task_schedule){
+    int i, j;
+    
+    fprintf(stdout, "Name = %s\n", task_schedule->name);
+    fprintf(stdout, "Date = %s\n\n", task_schedule->date);
+
+    fprintf(stdout, "Inputs = { ");
+    for(i=0; task_schedule->inputs[i] != NULL; i++)
+        fprintf(stdout, "%s, ", task_schedule->inputs[i]);
+    fprintf(stdout, "}\n");
+    
+    fprintf(stdout, "Outputs = { ");
+    for(i=0; task_schedule->outputs[i] != NULL; i++)
+        fprintf(stdout, "%s, ", task_schedule->outputs[i]);
+    fprintf(stdout, "}\n");
+    
+    fprintf(stdout, "regs = { ");
+    for(i=0; task_schedule->regs[i] != NULL; i++)
+        fprintf(stdout, "%s, ", task_schedule->regs[i]);
+    fprintf(stdout, "}\n");
+    
+    fprintf(stdout, "\nNODES:\n");
+    for(i = 0; i < task_schedule->num_nodes; i++){
+        fprintf(stdout, "\tName = %s\n", task_schedule->node[i].name);
+        
+        fprintf(stdout, "\tInputs = { ");
+        for(j=0; task_schedule->node[i].inputs[j]!= NULL; j++)
+            fprintf(stdout, "%s, ", task_schedule->node[i].inputs[j]);
+        fprintf(stdout, "}\n");
+        
+        fprintf(stdout, "\tOutput = %s\n", task_schedule->node[i].output);
+        fprintf(stdout, "\tType = %d\n\n", task_schedule->node[i].task_type);
+    }
+}
