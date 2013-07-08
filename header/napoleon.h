@@ -19,9 +19,8 @@
 #define NAPOLEON_H
 
 #include <stdio.h>
-#include "fitness.h"
 
 // FIX
-extern GA_Info Napoleon(FILE *, int *, int, t_task *);
+int Napoleon(FILE *, int *, int, t_task *);
 
 #endif /* NAPOLEON_H */

@@ -76,7 +76,7 @@ void print_error(int ecode){
 }
 
 
-int parse_impl(FILE *in_strm, t_task_impl *task_impl){
+int parse_impl(FILE * in_strm, t_task_impl *task_impl){
     int err = 0;
     int index = 0;
     char buff[__SIZE_MAX_BUFF], *token;
@@ -174,7 +174,7 @@ int parse_impl(FILE *in_strm, t_task_impl *task_impl){
             break;
         }
     }
-
+    
     // the first element is reserved for storing the number of elements
     // in the list.
 
@@ -260,50 +260,47 @@ int parse_res(FILE *in_strm, t_task_type *task_type){
 
 // FIX - so that structure initializes things
 int parse_aif(DFG * dfg, t_task * task, t_task_interface * task_interface){
-    count_intfc = 1;
-    count_task = 1;
+    int count_intfc = 1;
+    int count_task = 1;
     int i, j;
     
     int err = 0;
-    int count_intfc = 0, count_task = 0;
-
-    // Account for the source node
-    count_intfc = 1;
-    count_task = 1;
     
-    for(i=0; dfg.inputs[i] = NULL; i++){
+    for(i=0; dfg->inputs[i] != NULL; i++){
         (task_interface[count_intfc]).mode = intfc_mode("inputs");
         (task_interface[count_intfc]).width = DEFAULT_WIDTH;
-        strcpy((task_interface[count_intfc]).name, dfg.inputs[i]);
+        strcpy((task_interface[count_intfc]).name, dfg->inputs[i]);
         count_intfc ++;
     }
-    for(i=0; dfg.outputs[i] = NULL; i++){
+    for(i=0; dfg->outputs[i] != NULL; i++){
         (task_interface[count_intfc]).mode = intfc_mode("outputs");
         (task_interface[count_intfc]).width = DEFAULT_WIDTH;
-        strcpy((task_interface[count_intfc]).name, dfg.outputs[i]);
+        strcpy((task_interface[count_intfc]).name, dfg->outputs[i]);
         count_intfc ++;
     }
-    for(i=0; dfg.regs[i] = NULL; i++){
+    for(i=0; dfg->regs[i] != NULL; i++){
         (task_interface[count_intfc]).mode = intfc_mode("regs");
         (task_interface[count_intfc]).width = DEFAULT_WIDTH;
-        strcpy((task_interface[count_intfc]).name, dfg.regs[i]);
+        strcpy((task_interface[count_intfc]).name, dfg->regs[i]);
         count_intfc ++;
     }
     
     
-    for(i=0; i<dfg.num_nodes; i++){
-        strcpy(task[i+1].name, dfg.node[i].name);
-        task[count_task].type = dfg.node[i].task_type;
-        task[count_task].width = DEFAULT_WIDTH;
+    for(i=0; i<dfg->num_nodes; i++){
+        strcpy(task[i+1].name, dfg->node[i].name);
+        task[i+1].type = dfg->node[i].task_type;
+        task[i+1].width = DEFAULT_WIDTH;
         
-        strcpy(task[count_task].input1, dfg.node[i].inputs[0]);
-        strcpy(task[count_task].input2, dfg.node[i].inputs[1]);
-        strcpy(task[count_task].output, dfg.node[i].output);
+        task[i+1].input1 = get_index(dfg->node[i].inputs[0], task_interface, count_intfc - 1);
+        task[i+1].input2 = get_index(dfg->node[i].inputs[1], task_interface, count_intfc - 1);
+        task[i+1].output = get_index(dfg->node[i].output, task_interface, count_intfc - 1);
+        
     }
-    
+    count_task = i + 1;
 
     task_interface->mode = __INVALID;
     task_interface->width = count_intfc - 1;
+    
     task->type = __INVALID;
     task->width = count_task - 1;
 
@@ -324,6 +321,17 @@ int parse_task_type(char *token){
     else if(!strcasecmp(token, "TASK8")) type = __GTE;
 
     return type;
+}
+
+
+int intfc_mode(char *token){
+    int mode = 0;
+
+    if(!strcasecmp(token, "inputs")) mode = __INPUT;
+    else if(!strcasecmp(token, "outputs")) mode = __OUTPUT;
+    else if(!strcasecmp(token, "regs")) mode = __REGISTER;
+
+    return mode;
 }
 
 
@@ -374,8 +382,8 @@ void display_task(t_task *task, t_task_interface *task_interface){
     int i = 0;
     int num_nodes = task->width;
 
-    fprintf(stdout, "name type width latency reconfig_time columns rows input1 input2 output exec_sched " \
-                 "reconfig_sched leftmost_column bottommost_row conf_power exec_power impl\n");
+//    fprintf(stdout, "name type width latency reconfig_time columns rows input1 input2 output exec_sched " \
+//                 "reconfig_sched leftmost_column bottommost_row conf_power exec_power impl\n");
 
     for(i = 1; i <= num_nodes; i++){
         printf("%s %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d %4d\n", (task + i)->name, (task + i)->type, (task + i)->impl, (task + i)->width, (task + i)->latency, (task + i)->reconfig_time, (task + i)->columns, (task + i)->rows, (task + i)->input1, (task + i)->input2, (task + i)->output, (task_interface + (task + i)->output)->mode, (task + i)->exec_sched, (task + i)->reconfig_sched, (task + i)->leftmost_column, (task + i)->bottommost_row, (task + i)->reconfig_pwr, (task + i)->exec_pwr);

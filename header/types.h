@@ -45,6 +45,7 @@ typedef struct s_config{
  char res_fname[__SIZE_FILENAME];
  char log_fname[__SIZE_FILENAME];
  char opt_fname[__SIZE_FILENAME];
+ char arch_fname[__SIZE_FILENAME];
 } t_config;
 
 typedef struct s_task{

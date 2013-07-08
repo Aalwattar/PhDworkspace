@@ -24,9 +24,10 @@
 #compiler options
 DEBUG			= 
 C_COMP 			= gcc
-COMP_OPTS 		= -c -g -I./header ${DEBUG}
+COMP_OPTS 		= -c -g -I./header ${DEBUG} -Ilibs -Llibs -lcommonInterfaces -lconfuse
 OBJ_OPTS		= -o
 LINK_OPTS 		= -lm -o
+LINK_OPTS_END		= -Ilibs -Llibs -lcommonInterfaces -lconfuse
 
 #debugger options
 DBGR 			= gdb
@@ -60,7 +61,7 @@ all: ${BUILD}
 	@ echo "Build updated"
 
 offlinescheduler${EXEC_EXTN}: ${OBJECT_FILES}
-	${C_COMP} ${OBJECT_FILES} ${LINK_OPTS} offlinescheduler${EXEC_EXTN}
+	${C_COMP} ${OBJECT_FILES} ${LINK_OPTS} offlinescheduler${EXEC_EXTN}  ${LINK_OPTS_END}
 
 debug:
 	${DBGR} ${DBG_OPTS} offlinescheduler${EXEC_EXTN}

@@ -24,10 +24,10 @@
 #compiler options
 DEBUG			= 
 C_COMP 			= gcc
-COMP_OPTS 		=  -c -fPIC -O3 -MMD -MP -I./header ${DEBUG}
+COMP_OPTS 		=  -c -fPIC -O3 -MMD -MP -I./header ${DEBUG} -Ilibs -Llibs -lcommonInterfaces -lconfuse
 OBJ_OPTS		= -o
 LINK_OPTS 		= -shared -Wl,-soname=libnapoleon.so  -o "libnapoleon.so" 
-LINK_OPTS_END		= -lm
+LINK_OPTS_END		= -lm -Ilibs -Llibs -lcommonInterfaces -lconfuse
 
 #debugger options
 DBGR 			= gdb
