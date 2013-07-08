@@ -22,13 +22,40 @@
 #include <string.h>
 #include <strings.h>
 
-#include "fitness.h"
 #include "ecodes.h"
 #include "functions.h"
 #include "napoleon.h"
 #include "io.h" 
 #include "types.h"
 
+struct SimData {
+    int dFGID;
+    int noPRR;
+    int noGPP;
+    int noOfNodes;
+    int typeData[500];
+};
+
+
+struct SimResults {
+    int totalTime;
+    int noOfReuse;
+    int noOfConfiguration;
+    int noSW2HWMigration;
+    int noHW2SWMigration;
+    int noOfSWTasks;
+    int noSWBusyCounter;
+    int noHWBusyCounter;
+    int power;
+};
+
+// DEPRECIATED FIX - remove if time
+typedef struct{
+    int power;    // the power required to execute the schedule
+    int runtime;  // the total runtime of the schedule
+    int prefetch;
+    int reuse;
+}GA_Info;   
 
 /******************************************************************************
  * NAME : initNapoleon
@@ -41,7 +68,7 @@
  * RETURNS : true if Napoleon was successfully initialized
  *           false if anything has gone wrong (error message printed to stderr)
  *****************************************************************************/
-t_task * initNapoleon(char *);
+int initNapoleon(char *);
 
 /******************************************************************************
  * NAME : freeNapoleon
@@ -53,7 +80,7 @@ t_task * initNapoleon(char *);
 void freeNapoleon(void);
 
 
-// FIX
-GA_Info getSchedule(t_task * task);
+// FIX - needs a comment
+void getSchedule(int *, struct SimResults *);
 
 #endif /* OFFLINE_SCHEDULER_H */

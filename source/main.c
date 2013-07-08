@@ -61,7 +61,7 @@ int main(int argc, char *argv[]){
     int i = 0, j = 0;
     int random_num;
 
-    if(argc > 1){
+    if(argc > 2){
         if((err = parse_cmd_line_opts(argc, argv, &config))){
             print_help();
             fprintf(stderr, "Error Code: %d\n", err);

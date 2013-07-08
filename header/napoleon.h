@@ -19,8 +19,10 @@
 #define NAPOLEON_H
 
 #include <stdio.h>
+#include "offlineScheduler.h"
 
 // FIX
 int Napoleon(FILE *, int *, int, t_task *);
+GA_Info GANapoleon(FILE *, int *, int , t_task *);
 
 #endif /* NAPOLEON_H */

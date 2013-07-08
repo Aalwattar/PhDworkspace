@@ -38,15 +38,18 @@
 
 // FIX - MAKE NON GLOBAL!!!
 static t_task_interface * task_interface; 
+static t_task * task;
 
 static int * succ_adj_mat;
 static int * reuse_mat;
 
+static Architecture_Library arch_lib;
+
 // FIX - make smaller
 // FIX - add error checking
-t_task * initNapoleon(char * aif_filename){
+int initNapoleon(char * arch_lib_filename, char * dfg_filename){
+    DFG * dfg;
     FILE *aif_strm;
-    t_task * task;
     int err;
     int i;
 
@@ -76,14 +79,15 @@ t_task * initNapoleon(char * aif_filename){
         (task_interface + i)->reg_out = 0;
     }
 
-    err = parse_aif(aif_strm, task, task_interface);
+    initDFG(dfg_filename, &dfg);
 
-    if(err != __NO_ERROR){
-        print_error(err);    //and exit on unsuccessful execution of the parse_aif function
-        free(task);
-        free(task_interface);
-        return NULL;
-    }
+    // my file parsing function opens the file instead
+    if((err = parse_aif(&dfg, task, task_interface)))
+        print_error(err);
+    
+    freeDFG(&dfg);
+    
+    initArchLibrary(arch_lib_filename, &arch_lib);
 
     //allocate memory for the successor graph adjacency matrix
     succ_adj_mat = (int*)malloc(sizeof (int)*(task->width + 2)*(task->width + 2));
@@ -94,7 +98,7 @@ t_task * initNapoleon(char * aif_filename){
         free(task);
         free(task_interface);
         free(succ_adj_mat);
-        return NULL;
+        return 0;
     }
 
     //allocate memory for the reuse matrix
@@ -107,20 +111,45 @@ t_task * initNapoleon(char * aif_filename){
         free(task_interface);
         free(succ_adj_mat);
         free(reuse_mat);
-        return NULL;
+        return 0;
     }
     
-    return task;
+    return 1;
 }
 
-GA_Info getSchedule(t_task * task){
-    return ( Napoleon(NULL, succ_adj_mat, task->width, task) );
+void getSchedule(struct SimData * input, struct SimResults * output){
+    GA_Info results;
+    int i;
+    
+    for(i = 0; i < input->noOfNodes; i++){
+        task[i + 1].impl = input.typeData[i];
+
+        task[i + 1].columns = arch_lib[task[i+1].type].impl[task[i + 1].impl].columns;
+        task[i + 1].rows = arch_lib[task[i+1].type].impl[task[i + 1].impl].rows;
+        task[i + 1].reconfig_pwr = arch_lib[task[i+1].type].impl[task[i + 1].impl].config_power;
+        task[i + 1].exec_pwr = arch_lib[task[i+1].type].impl[task[i + 1].impl].exec_power;
+        task[i + 1].latency = arch_lib[task[i+1].type].impl[task[i + 1].impl].exec_time;
+        task[i + 1].reconfig_time = arch_lib[task[i+1].type].impl[task[i + 1].impl].config_time;
+
+        task[i + 1].exec_sched = 0;
+        task[i + 1].reconfig_sched = 0;
+        task[i + 1].bottommost_row = 0;
+        task[i + 1].leftmost_column = 0;
+    }
+    
+    results = GANapoleon(NULL, succ_adj_mat, task->width, task);
+    
+    output->totalTime = results.runtime;
+    output->noOfReuse = results.reuse;
+    output->noOfConfiguration = results.prefetch;
+    output->power = results.power;
 }
 
 
 void freeNapoleon(void){
+    freeArchLibrary(&arch_lib);
     free(reuse_mat);
     free(succ_adj_mat);
-    
     free(task_interface);
+    free(task);
 }
