@@ -26,7 +26,7 @@ DEBUG			=
 C_COMP 			= gcc
 COMP_OPTS 		=  -c -fPIC -O3 -MMD -MP -I./header ${DEBUG} -Ilibs -Llibs -lcommonInterfaces -lconfuse
 OBJ_OPTS		= -o
-LINK_OPTS 		= -shared -Wl,-soname=libnapoleon.so  -o "libnapoleon.so" 
+LINK_OPTS 		= -shared -Wl,-soname=libofflineScheduler.so  -o "libofflineScheduler.so" 
 LINK_OPTS_END		= -lm -Ilibs -Llibs -lcommonInterfaces -lconfuse
 
 #debugger options
@@ -52,15 +52,15 @@ OBJECT_FILES		= \
 			${OBJECT_LOCN}/io${OBJECT_EXTN} \
 			${OBJECT_LOCN}/ilp${OBJECT_EXTN} \
 			${OBJECT_LOCN}/napoleon${OBJECT_EXTN} \
-			${OBJECT_LOCN}/main${OBJECT_EXTN}
+			${OBJECT_LOCN}/offlineScheduler${OBJECT_EXTN}
 
-BUILD = napoleon.so
+BUILD = offlineScheduler.so
 
 #compilation, linking and debugging targets
 all: ${BUILD}
 	@ echo "Build updated"
 
-napoleon.so: ${OBJECT_FILES}
+offlineScheduler.so: ${OBJECT_FILES}
 	${C_COMP}  ${LINK_OPTS} ${OBJECT_FILES}  ${LINK_OPTS_END}
 debug:
 	${DBGR} ${DBG_OPTS} offlinescheduler${EXEC_EXTN}
@@ -91,10 +91,10 @@ ${OBJECT_LOCN}/napoleon${OBJECT_EXTN}: \
 	${C_COMP} ${COMP_OPTS} ${SOURCE_LOCN}/napoleon${SOURCE_EXTN} \
 		${OBJ_OPTS} ${OBJECT_LOCN}/napoleon${OBJECT_EXTN}
 
-${OBJECT_LOCN}/main${OBJECT_EXTN}: \
-	${SOURCE_LOCN}/main${SOURCE_EXTN} ${HEADER_FILES_MAIN}
-	${C_COMP} ${COMP_OPTS} ${SOURCE_LOCN}/main${SOURCE_EXTN} \
-		${OBJ_OPTS} ${OBJECT_LOCN}/main${OBJECT_EXTN}
+${OBJECT_LOCN}/offlineScheduler${OBJECT_EXTN}: \
+	${SOURCE_LOCN}/offlineScheduler${SOURCE_EXTN} ${HEADER_FILES_MAIN}
+	${C_COMP} ${COMP_OPTS} ${SOURCE_LOCN}/offlineScheduler${SOURCE_EXTN} \
+		${OBJ_OPTS} ${OBJECT_LOCN}/offlineScheduler${OBJECT_EXTN}
 
 rebuild:
 	${C_COMP} ${COMP_OPTS} ${SOURCE_LOCN}/functions${SOURCE_EXTN} \
@@ -105,7 +105,7 @@ rebuild:
 		${OBJ_OPTS} ${OBJECT_LOCN}/ilp${OBJECT_EXTN}
 	${C_COMP} ${COMP_OPTS} ${SOURCE_LOCN}/napoleon${SOURCE_EXTN} \
 		${OBJ_OPTS} ${OBJECT_LOCN}/napoleon${OBJECT_EXTN}
-	${C_COMP} ${COMP_OPTS} ${SOURCE_LOCN}/main${SOURCE_EXTN} \
-		${OBJ_OPTS} ${OBJECT_LOCN}/main${OBJECT_EXTN}
+	${C_COMP} ${COMP_OPTS} ${SOURCE_LOCN}/offlineScheduler${SOURCE_EXTN} \
+		${OBJ_OPTS} ${OBJECT_LOCN}/offlineScheduler${OBJECT_EXTN}
 	${C_COMP} ${OBJECT_FILES} ${LINK_OPTS} offlinescheduler${EXEC_EXTN}
 

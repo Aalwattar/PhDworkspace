@@ -22,11 +22,8 @@
 #include <string.h>
 #include <strings.h>
 
-#include "ecodes.h"
-#include "functions.h"
-#include "napoleon.h"
-#include "io.h" 
-#include "types.h"
+#ifndef RCSSIMULATOR_H_
+#define RCSSIMULATOR_H_
 
 struct SimData {
     int dFGID;
@@ -49,6 +46,8 @@ struct SimResults {
     int power;
 };
 
+#endif // RCSSIMULATOR_H_
+
 // DEPRECIATED FIX - remove if time
 typedef struct{
     int power;    // the power required to execute the schedule
@@ -68,7 +67,7 @@ typedef struct{
  * RETURNS : true if Napoleon was successfully initialized
  *           false if anything has gone wrong (error message printed to stderr)
  *****************************************************************************/
-int initNapoleon(char *);
+int initNapoleon(char * arch_lib_filename, char * dfg_filename);
 
 /******************************************************************************
  * NAME : freeNapoleon
@@ -81,6 +80,6 @@ void freeNapoleon(void);
 
 
 // FIX - needs a comment
-void getSchedule(int *, struct SimResults *);
+void getSchedule(struct SimData *, struct SimResults *);
 
 #endif /* OFFLINE_SCHEDULER_H */

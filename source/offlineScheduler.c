@@ -48,7 +48,7 @@ static Architecture_Library arch_lib;
 // FIX - make smaller
 // FIX - add error checking
 int initNapoleon(char * arch_lib_filename, char * dfg_filename){
-    DFG * dfg;
+    DFG dfg;
     FILE *aif_strm;
     int err;
     int i;
@@ -119,17 +119,21 @@ int initNapoleon(char * arch_lib_filename, char * dfg_filename){
 
 void getSchedule(struct SimData * input, struct SimResults * output){
     GA_Info results;
+    int task_type;
+    int implementation;
     int i;
     
     for(i = 0; i < input->noOfNodes; i++){
-        task[i + 1].impl = input.typeData[i];
-
-        task[i + 1].columns = arch_lib[task[i+1].type].impl[task[i + 1].impl].columns;
-        task[i + 1].rows = arch_lib[task[i+1].type].impl[task[i + 1].impl].rows;
-        task[i + 1].reconfig_pwr = arch_lib[task[i+1].type].impl[task[i + 1].impl].config_power;
-        task[i + 1].exec_pwr = arch_lib[task[i+1].type].impl[task[i + 1].impl].exec_power;
-        task[i + 1].latency = arch_lib[task[i+1].type].impl[task[i + 1].impl].exec_time;
-        task[i + 1].reconfig_time = arch_lib[task[i+1].type].impl[task[i + 1].impl].config_time;
+        task_type = task[i+1].type;
+        implementation = input->typeData[i];
+        
+        task[i + 1].impl = implementation;
+        task[i + 1].columns = arch_lib.task[task_type].impl[implementation].columns;
+        task[i + 1].rows = arch_lib.task[task_type].impl[implementation].rows;
+        task[i + 1].reconfig_pwr = arch_lib.task[task_type].impl[implementation].config_power;
+        task[i + 1].exec_pwr = arch_lib.task[task_type].impl[implementation].exec_power;
+        task[i + 1].latency = arch_lib.task[task_type].impl[implementation].exec_time;
+        task[i + 1].reconfig_time = arch_lib.task[task_type].impl[implementation].config_time;
 
         task[i + 1].exec_sched = 0;
         task[i + 1].reconfig_sched = 0;
