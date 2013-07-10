@@ -124,7 +124,7 @@ void getSchedule(struct SimData * input, struct SimResults * output){
     int i;
     
     for(i = 0; i < input->noOfNodes; i++){
-        task_type = task[i+1].type;
+        task_type = task[i+1].type - 1;
         implementation = input->typeData[i];
         
         task[i + 1].impl = implementation;
