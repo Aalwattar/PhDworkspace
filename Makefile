@@ -27,7 +27,7 @@ C_COMP 			= gcc
 COMP_OPTS 		= -c -g ${DEBUG} -Iheader -I${HOME}/include -lcommonInterfaces -lconfuse
 OBJ_OPTS		= -o
 LINK_OPTS 		= -lm -o
-LINK_OPTS_END		= -L${HOME}/libs -lcommonInterfaces -lconfuse
+LINK_OPTS_END		= -L${HOME}/lib -lcommonInterfaces -lconfuse
 
 #debugger options
 DBGR 			= gdb
@@ -73,9 +73,13 @@ clean:
 	
 
 ${OBJECT_LOCN}/functions${OBJECT_EXTN}: \
-	${SOURCE_LOCN}/functions${SOURCE_EXTN} ${HEADER_FILES_FUNCTIONS}
+	${SOURCE_LOCN}/functions${SOURCE_EXTN} ${HEADER_FILES_FUNCTIONS} \
+	objdir
 	${C_COMP} ${COMP_OPTS} ${SOURCE_LOCN}/functions${SOURCE_EXTN} \
 		${OBJ_OPTS} ${OBJECT_LOCN}/functions${OBJECT_EXTN}
+
+objdir: 
+	mkdir -p object
 
 ${OBJECT_LOCN}/io${OBJECT_EXTN}: \
 	${SOURCE_LOCN}/io${SOURCE_EXTN} ${HEADER_FILES_IO}

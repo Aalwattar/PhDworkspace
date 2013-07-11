@@ -67,7 +67,7 @@ debug:
 
 clean:
 	rm -rf ${OBJECT_LOCN}/*
-	rm -rf offlinescheduler${EXEC_EXTN}
+	rm -rf libofflineScheduler.so
 	rm -rf outScheduler.txt ilp_equations.lp
 	
 
