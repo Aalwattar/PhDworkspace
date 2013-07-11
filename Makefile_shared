@@ -24,10 +24,10 @@
 #compiler options
 DEBUG			= 
 C_COMP 			= gcc
-COMP_OPTS 		=  -c -fPIC -O3 -MMD -MP -I./header ${DEBUG} -Ilibs -Llibs -lcommonInterfaces -lconfuse
+COMP_OPTS 		= -c -fPIC -O3 -MMD -MP -Iheader -I${HOME}/include -lcommonInterfaces -lconfuse
 OBJ_OPTS		= -o
 LINK_OPTS 		= -shared -Wl,-soname=libofflineScheduler.so  -o "libofflineScheduler.so" 
-LINK_OPTS_END		= -lm -Ilibs -Llibs -lcommonInterfaces -lconfuse
+LINK_OPTS_END		= -lm -L${HOME}/lib -lcommonInterfaces -lconfuse
 
 #debugger options
 DBGR 			= gdb
