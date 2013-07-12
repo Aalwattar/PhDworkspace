@@ -98,7 +98,7 @@ int initNapoleon(char * arch_lib_filename, char * dfg_filename){
         free(task);
         free(task_interface);
         free(succ_adj_mat);
-        return 0;
+        return EXIT_FAILURE;
     }
 
     //allocate memory for the reuse matrix
@@ -111,10 +111,10 @@ int initNapoleon(char * arch_lib_filename, char * dfg_filename){
         free(task_interface);
         free(succ_adj_mat);
         free(reuse_mat);
-        return 0;
+        return EXIT_FAILURE;
     }
     
-    return 1;
+    return EXIT_SUCCESS;
 }
 
 void getSchedule(struct SimData * input, struct SimResults * output){
