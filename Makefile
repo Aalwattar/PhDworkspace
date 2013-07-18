@@ -24,10 +24,10 @@
 #compiler options
 DEBUG			= 
 C_COMP 			= gcc
-COMP_OPTS 		= -c -g ${DEBUG} -Iheader -I${HOME}/include -lcommonInterfaces -lconfuse
+COMP_OPTS 		= -c -g ${DEBUG} -Iheader -I../../include -lcommonInterfaces -lconfuse
 OBJ_OPTS		= -o
 LINK_OPTS 		= -lm -o
-LINK_OPTS_END		= -L${HOME}/lib -lcommonInterfaces -lconfuse
+LINK_OPTS_END		= -L../../lib -lcommonInterfaces -lconfuse
 
 #debugger options
 DBGR 			= gdb

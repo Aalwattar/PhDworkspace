@@ -24,10 +24,10 @@
 #compiler options
 DEBUG			= 
 C_COMP 			= gcc
-COMP_OPTS 		= -c -fPIC -O3 -MMD -MP -Iheader -I${HOME}/include -lcommonInterfaces -lconfuse
+COMP_OPTS 		= -c -fPIC -O3 -MMD -MP -Iheader -I../../include -lcommonInterfaces -lconfuse
 OBJ_OPTS		= -o
 LINK_OPTS 		= -shared -Wl,-soname=libofflineScheduler.so  -o "libofflineScheduler.so" 
-LINK_OPTS_END		= -lm -L${HOME}/lib -lcommonInterfaces -lconfuse
+LINK_OPTS_END		= -lm -L../../lib -lcommonInterfaces -lconfuse
 
 #debugger options
 DBGR 			= gdb
@@ -62,9 +62,11 @@ all: ${BUILD}
 
 offlineScheduler.so: ${OBJECT_FILES}
 	${C_COMP}  ${LINK_OPTS} ${OBJECT_FILES}  ${LINK_OPTS_END}
+	cp libofflineScheduler.so ../../lib
+	cp header/offlineScheduler.h ../../include
+
 debug:
 	${DBGR} ${DBG_OPTS} offlinescheduler${EXEC_EXTN}
-	cp libofflineScheduler.so header/offlineScheduler.h ../GeneticAlgorithm/libs
 
 clean:
 	rm -rf ${OBJECT_LOCN}/*
