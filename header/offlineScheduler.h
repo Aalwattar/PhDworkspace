@@ -29,7 +29,9 @@ struct SimData{
     unsigned int flags;
     int noOfNodes;
     int typeData[500];
+    int iteration;
 };
+
 
 struct SimResults{
     unsigned int totalTime;
