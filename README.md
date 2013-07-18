@@ -54,3 +54,16 @@ List of source files:
 	napoleon.c
 	main.c
 
+
+Directory Structure
+-------------------
+
+header  	= all header files and the configuration file (.h files)
+input		= all input files (architecture libraries, DFGs and prr files)
+Makefile  	= Builds and cleans Napoleon as an independant program
+makefile  	= Builds and cleans Napoleon as a shared library
+nbproject	= A configuration folder for Netbeans Projects (my IDE)
+obj		= where the object files are stored to create the library 
+README.md	= All information regarding Napoelon **** INCOMPLETE ****
+src		= source code (.c files)
+
