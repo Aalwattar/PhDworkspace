@@ -64,6 +64,7 @@ offlineScheduler.so: ${OBJECT_FILES}
 	${C_COMP}  ${LINK_OPTS} ${OBJECT_FILES}  ${LINK_OPTS_END}
 debug:
 	${DBGR} ${DBG_OPTS} offlinescheduler${EXEC_EXTN}
+	cp libofflineScheduler.so header/offlineScheduler.h ../GeneticAlgorithm/libs
 
 clean:
 	rm -rf ${OBJECT_LOCN}/*
