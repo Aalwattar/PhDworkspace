@@ -38,8 +38,6 @@
 #include <confuse.h>    // WARNING - NON STANDARD LIBRARY
 
 #include "common_interfaces.h"
-#include "dfg_library.h"
-#include "architecture_library.h"
 
 FILE *log_strm;
 void print_help(void);
