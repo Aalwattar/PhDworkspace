@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "parameters.h"
 #include "data.h"
 
@@ -18,6 +19,8 @@ enum DepType {REG='r',OUT='o',INP='c'};
  * TODO to be completely cleaned up.
  *
  */
+
+
 struct output
 	{
 		int node;
@@ -60,6 +63,11 @@ int main(void) {
 	int isoutput[MAX_NO_OF_NODES];
 	int count;
 	char *outstr="r200_3333";
+
+    time_t current_time;
+    char* c_time_string;
+
+
  struct NodeStruct ndar[MAX_NO_OF_NODES];
 
 
@@ -71,12 +79,20 @@ int main(void) {
 
 
 
+    /* Obtain current time as seconds elapsed since the Epoch. */
+    current_time = time(NULL);
+
+    c_time_string = ctime(&current_time);
+
+ //   (void) printf("Date  = \"%s\"\b \n", c_time_string);
+    printf("Name= \"B2_dfgTemplateB2_50_60_2\" \n");
+    printf("Date= \"July 8th, 2013\" \n\n");
 
 /* init ndarr node array */
  init(ndar);
 
  count =0 ;
-	printf("inputs ");
+	printf("inputs = { ");
 
 	do {
 
@@ -94,14 +110,14 @@ int main(void) {
     		}
     	if (!DFG[i].D.isAdd_op1)
     	{
-    	 printf("c%d 8 ",count);
+    	 printf("c%d , ",count);
     	 ndar[i].input[0].node=count;
     	 ndar[i].input[0].type=INP;
     	 isreg[i][1]=YES;
     	 count ++;
     	}
     	if(!DFG[i].D.isAdd_op2)
-         {printf("c%d 8 ",count);
+         {printf("c%d , ",count);
          isreg[i][0]=YES;
 
          ndar[i].input[1].node=count;
@@ -111,11 +127,11 @@ int main(void) {
 
     } while (DFG[i++].next);
 
-  printf("\n");
+  printf("}\n");
 ////////////////////
  i=0;
  count =0;
- printf("outputs ");
+ printf("outputs = { ");
  do {
 		k=0;
 		do {
@@ -142,19 +158,19 @@ int main(void) {
 
   	if (isoutput[i])
   	{
-  		printf("o%d 8 ",count);
+  		printf("o%d , ",count);
   		ndar[i].output.node=count;
   		ndar[i].output.type=OUT;
   		count++;
   	}
 
   } while (DFG[i++].next);
- printf("\n");
+ printf("}\n");
 
  //////////////////////////////
 i=0;
 count=0;
-	printf("regs ");
+	printf("regs = {");
 
 	do {
 
@@ -171,7 +187,7 @@ count=0;
  		ndar[DFG[i].D.op1].output.node=count;
  		ndar[i].input[0].node=count;
  		ndar[i].input[0].type=REG;
- 		printf("r%d 8 ",count);
+ 		printf("r%d , ",count);
  		count++;
 
  	 }
@@ -192,7 +208,7 @@ count=0;
  	 		ndar[DFG[i].D.op2].output.node= count ;
  	 		ndar[i].input[1].node=count;
  	 		ndar[i].input[1].type=REG;
- 	 		printf("r%d 8 ",count);
+ 	 		printf("r%d , ",count);
  	 		count++;
  	 	 }
  	 	 else
@@ -208,20 +224,24 @@ count=0;
 
  } while (DFG[i++].next);
 
-printf("\n");
+printf("}\n\n");
 ////////////////////
 
 i=0;
 
 	do {
 
-		printf("T%d TASK%d 8 %c%d %c%d %c%d\n",i, DFG[i].TypeID, ndar[i].input[0].type,ndar[i].input[0].node,
+		printf("\ntask T%d{\n"
+				"\t type = %d \n"
+				"\t inputs = {%c%d ,%c%d }\n"
+				"\t output = %c%d\n"
+				"}",i, DFG[i].TypeID, ndar[i].input[0].type,ndar[i].input[0].node,
 				ndar[i].input[1].type,ndar[i].input[1].node,ndar[i].output.type,ndar[i].output.node);
 
 
   } while (DFG[i++].next);
 
-printf("end \n");
+printf("\n");
 
 
 	return EXIT_SUCCESS;
