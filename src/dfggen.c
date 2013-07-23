@@ -270,11 +270,15 @@ void genTasksMatrix(struct genmatrix * matstruct, int relationNo)
 					exit(1);
 				}
 
-	    		   if(matstruct->hasRelation[matstruct->matrix[l][0]-1]==0)
-	    			   matstruct->hasRelation[matstruct->matrix[l][0]-1]=1;
 
-	    		   if(matstruct->hasRelation[matstruct->matrix[l][1]-1]==0)
-	    			   matstruct->hasRelation[matstruct->matrix[l][1]-1]=1;
+				if (matstruct->matrix[l][0])
+	    		   if(matstruct->hasRelation[matstruct->matrix[l][0]-1]==0){
+	    			   matstruct->hasRelation[matstruct->matrix[l][0]-1]=1;
+	    		   }
+
+				if (matstruct->matrix[l][1])
+	    		   if(matstruct->hasRelation[matstruct->matrix[l][1]-1]==0){
+	    		   }
 
 				relationCount++;
 

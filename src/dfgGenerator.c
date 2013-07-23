@@ -119,6 +119,7 @@ int main (int argc, char *argv[])
     fpRandom=openfile("/dev/urandom","r");
     fpDFG=openfile(dfgFileName,"w");
     fpDot=openfile(dotFileName,"w");
+
     initGenMatrix(lgenmatrixp,globalArgs.no_of_nodes,
     		globalArgs.dep_per_node,globalArgs.no_of_types);
     genTasksMatrix(lgenmatrixp , globalArgs.total_dep_no);
