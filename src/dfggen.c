@@ -23,6 +23,7 @@
 #include <string.h>
 #include "genConfig.h"
 #include "parseArgs.h"
+#include "data.h"
 
 #define HEADER_COMMENT	" \n/*" \
 						"* DFG automatically generated file, \n" \
@@ -35,6 +36,7 @@
 			 	 	 	 "#define DFGTEMPLATE_H_ \n\n"\
 						 "#include \"data.h\" \n\n"
 //#define  HEADER1(value)	"/* DONT FORGET TO ADD (#define LAST_NODE %d ) in platform_config.h */" , (value)
+
 #define HEADER1(value) 	 "\n\t{\n\t .size=%d, \n",(value)
 #define HEADER2  	"\n\t .dfg  = {\n\n"
 #define FOOTER1  	"#endif /* DFGTEMPLATE_H_ */\n"
@@ -87,7 +89,8 @@ void writeheader(FILE *fp, char *dfgFileName)
 	}
 	//fprintf(fp,HEADER0);
 	fprintf(fp,"\t /*  Do NOT forget to add #include \"templates/%s\"   \n "
-			"\t and copy the generated .txt file to the template directory */ \n",dfgFileName+2);
+			"\t and copy the generated .txt file to the template directory */ \n",dfgFileName+2); // to remove the ./ at the beginning of the filename
+    
 	fprintf(fp,HEADER1(globalArgs.no_of_nodes));
 	fprintf(fp,HEADER2);
 }
@@ -266,8 +269,10 @@ void genTasksMatrix(struct genmatrix * matstruct, int relationNo)
 					puts(" genTaskMatrix:Something went horribly wrong !! \n exiting");
 					exit(1);
 				}
+
 	    		   if(matstruct->hasRelation[matstruct->matrix[l][0]-1]==0)
 	    			   matstruct->hasRelation[matstruct->matrix[l][0]-1]=1;
+
 	    		   if(matstruct->hasRelation[matstruct->matrix[l][1]-1]==0)
 	    			   matstruct->hasRelation[matstruct->matrix[l][1]-1]=1;
 

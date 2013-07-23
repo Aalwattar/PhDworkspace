@@ -10,11 +10,16 @@
 
 #include "parameters.h"
 #include "timer.h"
+
 /* TODO use more compact structure
  * by using btwise operators and one words for all flags
  */
-enum PRRID {Math0,Math1,Math2,Math3,Math4};
-enum PRModules {adder,sub,mult,shift,blank};
+enum PRRID {
+	Math0, Math1, Math2, Math3, Math4
+};
+enum PRModules {
+	adder, sub, mult, shift, blank
+};
 
 #define TASK_1_HW_DELAY 20000000LU  // add Same HW/SW
 #define TASK_1_SW_DELAY (TASK_1_HW_DELAY )
@@ -37,13 +42,19 @@ enum PRModules {adder,sub,mult,shift,blank};
 #define TASK_10_HW_DELAY 20000000LU  // add
 #define TASK_10_SW_DELAY (TASK_10_HW_DELAY )
 
-enum Mode {SWOnly=0x0001,HWOnly=0x0002,HybSW=0x0003,HybHW=0x0013, CustomHW=0x0004,
-	CustomHWnSW=0x0005
+enum Mode {
+	SWOnly = 0x0001,
+	HWOnly = 0x0002,
+	HybSW = 0x0003,
+	HybHW = 0x0013,
+	CustomHW = 0x0004,
+	CustomHWnSW = 0x0005
 };
-enum Operations {OpAdd,OpSub,OPMult,OpShift,OpBlank};
+enum Operations {
+	OpAdd, OpSub, OPMult, OpShift, OpBlank
+};
 
-struct Simulation
-{
+struct Simulation {
 	enum PRRID PRRUsed;
 	u8 Reused;
 	struct TimerTime ConfigTime;
@@ -56,17 +67,16 @@ struct Simulation
  * store time delay for software and hardware
  * TODO delete this
  */
-struct Emulation
-{
+struct Emulation {
 	Xuint32 HWdelay;
 	Xuint32 SWdelay;
 };
 struct data {
 	int op1;
 	int op2;
-	unsigned  isAdd_op1 : 1;
-	unsigned  isAdd_op2: 1;
-	unsigned :0 ;
+	unsigned isAdd_op1 :1;
+	unsigned isAdd_op2 :1;
+	unsigned :0;
 };
 struct PRRProcess {
 	int No;
@@ -81,12 +91,9 @@ struct PRRProcess {
  *
  * */
 
-
-
-struct nodeData
-{
+struct nodeData {
 	enum Mode mode;
-	u8 Done ;
+	u8 Done;
 	int result;
 	u8 Q;
 	//   Xuint32 prio; // initial priority to start with
@@ -96,7 +103,7 @@ struct nodeData
 struct node {
 	const Xuint32 id;
 	const u8 operation;
-	const   enum Mode mode;
+	const enum Mode mode;
 	const Xuint32 next;
 	const struct data D;
 	const Xuint32 initPrio; // initial priority to start with
@@ -106,7 +113,7 @@ struct node {
 
 };
 
-struct TaskType{
+struct TaskType {
 	int ID;
 	char * name;
 	Xuint32 SWET;
@@ -117,12 +124,12 @@ struct TaskType{
 	enum PRModules Module;
 
 };
-struct tasksTableToken
-{	struct node *dfg;
-struct taskData *TaskTable;
-void * token;
-int ID;
-int size;
+struct tasksTableToken {
+	struct node *dfg;
+	struct taskData *TaskTable;
+	void * token;
+	int ID;
+	int size;
 };
 
 struct DFG {
@@ -130,12 +137,7 @@ struct DFG {
 	struct node dfg[MAX_NO_OF_NODES];
 };
 
-
-
-
-extern   struct node *dfg1;
-extern struct DFG DFGArray[];
-
-
+extern struct node *dfg1;
+extern struct DFG DFGArray[NO_OF_DFGS];
 
 #endif /* DATA_H_ */

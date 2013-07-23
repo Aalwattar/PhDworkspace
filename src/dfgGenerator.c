@@ -1,10 +1,10 @@
 /*******************************************************************************
- * File         : tasksgeneration.c
+ * File         : dfgGenerator.c
  * Author       : Ahmed Al-Wattar
  * Modified By  : Jennifer Winer
- * 
+ *
  * Project  : A DFG generator
- * 
+ *
  * Created  : Jun 14, 2012
  ******************************************************************************/
 
@@ -12,16 +12,20 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <time.h>
+
 #include "utility.h"
 #include "genConfig.h"
 #include "dfggen.h"
 #include "graph.h"
 #include "parseArgs.h"
+#include "confFormat.h"
+
 
 struct globalArgs globalArgs;
 
-/* Description: 
- *  Parse command line arguments into global structure, 'globalArgs'  
+/* Description:
+ *  Parse command line arguments into global structure, 'globalArgs'
  * Parameters:
  *  -char *argv[], an array of pointers to strings, analogous to argv found in
  *      main parameters.
@@ -33,14 +37,14 @@ struct globalArgs globalArgs;
 static int parseArgs(int argc, char *argv[]){
     int c;
     extern char *optarg;
-    extern int optind, optopt;
-    
+    extern int optopt;
+
     int errflg = 0;
     while ((c = getopt(argc, argv, "f:g:n:d:t:a:")) != -1) {
         switch(c) {
             case 'f':
                 globalArgs.dfg_filename = optarg;
-                break;     
+                break;
             case 'g':
                 globalArgs.dotgraph_filename = optarg;
                 break;
@@ -55,13 +59,13 @@ static int parseArgs(int argc, char *argv[]){
                 break;
             case 'a':
                 globalArgs.total_dep_no = atoi ( optarg );
-                break;    
+                break;
             case ':':       /* -f or -o without operand */
-                    fprintf(stderr, "Option -%c requires an operand\n", optopt);
-                    break;
+                fprintf(stderr, "Option -%c requires an operand\n", optopt);
+                break;
             case '?':
-                    fprintf(stderr, "Unrecognized option: -%c\n", optopt);
-                    break;
+                fprintf(stderr, "Unrecognized option: -%c\n", optopt);
+                break;
         }
     }
 
@@ -70,13 +74,14 @@ static int parseArgs(int argc, char *argv[]){
         "<number of nodes> -d <dependencies per node> -t <number of types> -a "
         "<total dependencies number>\n\n");
         return 0;
-    } 
+    }
 
     return 1;
 }
 
+
 int main (int argc, char *argv[])
-{    
+{
     //Set default values defined in genConfig.h
     globalArgs.dfg_filename = DFG_FILENAME;
     globalArgs.dotgraph_filename = DOTGRAPH_FILENAME;
@@ -84,10 +89,10 @@ int main (int argc, char *argv[])
     globalArgs.dep_per_node = DEP_PER_NODE;
     globalArgs.no_of_types = NO_OF_TYPES;
     globalArgs.total_dep_no = TOTAL_DEP_NO;
-    
+
     if ( 0 == parseArgs( argc, argv ) ){
         printf ( "Using all default defined values:\n" );
-    } else { 
+    } else {
        printf ( "Graph values:\n" );
     }
 
@@ -110,7 +115,7 @@ int main (int argc, char *argv[])
             ,globalArgs.no_of_nodes,globalArgs.total_dep_no,globalArgs.dep_per_node);
 	sprintf(dotFileName,"%s_%d_%d_%d.dot",globalArgs.dotgraph_filename,globalArgs.no_of_nodes,
 			globalArgs.total_dep_no,globalArgs.dep_per_node);
-    
+
     fpRandom=openfile("/dev/urandom","r");
     fpDFG=openfile(dfgFileName,"w");
     fpDot=openfile(dotFileName,"w");
@@ -123,11 +128,14 @@ int main (int argc, char *argv[])
     writeGraphDot(fpDot, lgenmatrixp );
     typeStat(lgenmatrixp);
 
+    sprintf(dfgFileName,"%s_%d_%d_%d.conf", globalArgs.dfg_filename
+                ,globalArgs.no_of_nodes,globalArgs.total_dep_no,globalArgs.dep_per_node);
+
+    writeConf(dfgFileName);
+
     freeGenMatrix(lgenmatrixp);
 	fclose(fpRandom);
 	fclose(fpDFG);
 	fclose(fpDot);
 	return EXIT_SUCCESS;
 }
-
-

@@ -7,6 +7,7 @@
 
 #ifndef DFG_C_
 #define DFG_C_
+
 #include "timer.h"
 //#define RUNNING 1
 //#define IDLE 0
