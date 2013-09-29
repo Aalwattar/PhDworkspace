@@ -8,7 +8,7 @@
 #ifndef DFGGEN_H_
 #define DFGGEN_H_
 #define MAX_TYPES_NO 128
-
+#include "confFormat.h"
 
 struct genmatrix
 {
@@ -49,8 +49,8 @@ extern const struct Types GTasksTypes;
 void writeheader(FILE *fp,char *dfgFileName);
 void initGenMatrix(struct genmatrix * matstruct, int size , int dim,unsigned int typesNo);
 void freeGenMatrix(struct genmatrix * matstruct);
-void genTasksMatrix(struct genmatrix * matstruct, int relationNo);
-void writeDFG(FILE *fp, char *dfgFileName,struct genmatrix * matstruct);
+void genTasksMatrix(struct genmatrix * matstruct, int relationNo, unsigned long int);
+void writeDFG(FILE *fp, char *dfgFileName,struct genmatrix * matstruct, struct Nodes *, unsigned long);
 void typeStat(struct genmatrix * matstruct);
 
 #endif /* DFGGEN_H_ */

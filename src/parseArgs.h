@@ -6,6 +6,8 @@ struct globalArgs {
     int dep_per_node;        // -d option
     int no_of_types;         // -t option
     int total_dep_no;        // -a option
+    unsigned long int seed;        // -s option
+    unsigned  int id;        // -i option
 }; 
 
 

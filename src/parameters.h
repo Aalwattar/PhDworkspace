@@ -13,9 +13,9 @@
 #define NO 0
 
 #define NO_OF_DFGS 1
-#define MAX_NO_OF_NODES 200
-#define MAX_PR_MODULES 5
-#define MAX_TASKS_TYPES 8
+#define MAX_NO_OF_NODES 1000
+#define MAX_PR_MODULES 50
+#define MAX_TASKS_TYPES 16
 typedef  unsigned int Xuint32;
 typedef unsigned char u8;
 

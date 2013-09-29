@@ -23,7 +23,8 @@
 #include <string.h>
 #include "genConfig.h"
 #include "parseArgs.h"
-#include "data.h"
+
+
 
 #define HEADER_COMMENT	" \n/*" \
 						"* DFG automatically generated file, \n" \
@@ -47,27 +48,34 @@
 //	char color[50];
 //	char name[50];
 //};
-/*FIXME fix this and change the size to the right global virabile
- * TODO Try to move this to a configuration file or somthing.
+/*FIXME fix this and change the size to the right global variable
+ * TODO Try to move this to a configuration file or something.
  *
  */
 const struct Types GTasksTypes=
-		{.size=8 ,
+		{.size=MAX_TASKS_TYPES ,
 				.task[0]={.id=0, .groupID=0,.color="bisque1",.name="T1"},
-				.task[1]={.id=1, .groupID=1,.color="green",.name="T2"},
-				.task[2]={.id=2, .groupID=1,.color="cyan",.name="T3"},
-				.task[3]={.id=3, .groupID=1,.color="pink",.name="T4"},
-				.task[4]={.id=0, .groupID=1,.color="blueviolet",.name="T5"},
-				.task[5]={.id=1, .groupID=1,.color="coral1",.name="T6"},
-				.task[6]={.id=2, .groupID=0,.color="firbrick1",.name="T7"},
-				.task[7]={.id=3, .groupID=0,.color="goldenrod",.name="T8"},
+				.task[1]={.id=1, .groupID=0,.color="green",.name="T2"},
+				.task[2]={.id=2, .groupID=0,.color="cyan",.name="T3"},
+				.task[3]={.id=3, .groupID=0,.color="pink",.name="T4"},
+				.task[4]={.id=4, .groupID=0,.color="blueviolet",.name="T5"},
+				.task[5]={.id=5, .groupID=0,.color="coral1",.name="T6"},
+				.task[6]={.id=6, .groupID=0,.color="firbrick1",.name="T7"},
+				.task[7]={.id=7, .groupID=0,.color="darkolivegreen3",.name="T8"},
+				.task[8]={.id=0, .groupID=0,.color="coral3",.name="T9"},
+				.task[9]={.id=1, .groupID=0,.color="gray50",.name="T10"},
+				.task[10]={.id=2, .groupID=0,.color="grey100",.name="T11"},
+				.task[11]={.id=3, .groupID=0,.color="hotpink3",.name="T12"},
+				.task[12]={.id=4, .groupID=0,.color="mediumspringgreen",.name="T13"},
+				.task[13]={.id=5, .groupID=0,.color="slateblue2",.name="T14"},
+				.task[14]={.id=6, .groupID=0,.color="tomato2",.name="T15"},
+				.task[15]={.id=7, .groupID=0,.color="yellow3",.name="T16"},
 
 
 
-
-				.groups={.size=2,
-						.percentage[0]=0.25,
-						.percentage[1]=0.75,
+				.groups={.size=1,
+						.percentage[0]=1.0,
+						.percentage[1]=0.0,
 						.percentage[2]=0.0,
 						.percentage[3]=0.0
 
@@ -122,7 +130,7 @@ void initGenMatrix(struct genmatrix * matstruct, int size , int dim,unsigned int
     for (i=0;i<size;i++)
     {
 
-    	matstruct->matrix[i] =(unsigned int *) calloc(2,sizeof (unsigned int));
+    	matstruct->matrix[i] =calloc(2,sizeof (unsigned int));
     	if(matstruct->matrix[i]==NULL)
     	{
     		fprintf(stderr,"initmatrix: Error in allocating memory matrix[i]\n exiting \n ");
@@ -141,9 +149,9 @@ void freeGenMatrix(struct genmatrix * matstruct)
     {
     	free(matstruct->matrix[i]);
     }
-  //  free(matstruct->matrix);
-   // free(matstruct->hasRelation);
-    //free(matstruct->types);
+    free(matstruct->matrix);
+    free(matstruct->hasRelation);
+    free(matstruct->types);
 }
 
 
@@ -154,7 +162,8 @@ void gentypes(gsl_rng *r,struct genmatrix * matstruct)
 	double randNo;
   	 int *memberPerGroup=(int*)calloc(GTasksTypes.groups.size,sizeof(int ));
   	int *groupOffset=(int*)calloc(GTasksTypes.groups.size,sizeof(int ));
-	for (i=0 ;i < GTasksTypes.size;i++)
+	//for (i=0 ;i < GTasksTypes.size;i++)
+  	for (i=0 ;i < matstruct->typesNo;i++)
 	{
 		memberPerGroup[GTasksTypes.task[i].groupID]++;
 	}
@@ -179,19 +188,19 @@ void gentypes(gsl_rng *r,struct genmatrix * matstruct)
 					{
 						taskType=groupOffset[k];
 						found=1;
-					//	printf("[1]  type %d \n",taskType);
+//					printf("[1]  type %d \n",taskType);
 						break;
 					} else if(memberPerGroup[k]==2)
 					{
 						taskType=groupOffset[k]+gsl_ran_bernoulli(r,0.5);
 						found=1;
-						//printf("[2]  type %d \n",taskType);
+//						printf("[2]  type %d \n",taskType);
 						break;
 					} else if (memberPerGroup[k]>2)
 					{
 						taskType=groupOffset[k]+gsl_rng_uniform_int(r,memberPerGroup[k]);
 						found=1;
-					//	printf("[>2]  type %d \n",taskType);
+//						printf("[>2]  type %d \n",taskType);
 						break;
 					} else
 					{
@@ -214,11 +223,7 @@ void gentypes(gsl_rng *r,struct genmatrix * matstruct)
 	free(memberPerGroup);
 }
 
-/*
- * TODO
- *  	Change this dumb function to a unified multi-dimensions generator!
- */
-void genTasksMatrix(struct genmatrix * matstruct, int relationNo)
+void genTasksMatrix_new(struct genmatrix * matstruct, int relationNo)
 	{
 	int relationCount =0;
 	int k,l,onoff;
@@ -230,6 +235,98 @@ void genTasksMatrix(struct genmatrix * matstruct, int relationNo)
 
     T = gsl_rng_default;
     r = gsl_rng_alloc (T);
+
+
+	while(relationCount<relationNo)
+	{
+		k=gsl_rng_uniform_int(r,matstruct->size);
+		l=gsl_rng_uniform_int(r,matstruct->size);
+		onoff=gsl_ran_bernoulli(r,0.5);
+		if(l-k>0)
+		{
+			if (matstruct->dim==1)
+			{
+				if (matstruct->matrix[l][0]) continue;
+				matstruct->matrix[l][0]=k+1;
+				//printf("[%d] tasks[%d]= %d\n ",relation,l,k);
+	    		   if(matstruct->hasRelation[matstruct->matrix[l][0]-1]==0)
+	    			   matstruct->hasRelation[matstruct->matrix[l][0]-1]=1;
+				relationCount++;
+
+			}else if (matstruct->dim==2)
+			{
+				if (matstruct->matrix[l][0] && matstruct->matrix[l][1]) continue;
+
+				if (!matstruct->matrix[l][0] && !matstruct->matrix[l][1])
+				{
+
+					matstruct->matrix[l][onoff]=k+1;
+				} else if (matstruct->matrix[l][0])
+				{
+					if (matstruct->matrix[l][0]==k+1) continue;
+					matstruct->matrix[l][1]=k+1;
+				}else if (matstruct->matrix[l][1])
+				{
+					if (matstruct->matrix[l][1]==k+1) continue;
+					matstruct->matrix[l][0]=k+1;
+				} else
+				{
+					puts(" genTaskMatrix:Something went horribly wrong !! \n exiting");
+					exit(1);
+				}
+
+
+				if (matstruct->matrix[l][0])
+	    		   if(matstruct->hasRelation[matstruct->matrix[l][0]-1]==0){
+	    			   matstruct->hasRelation[matstruct->matrix[l][0]-1]=1;
+	    		   }
+
+				if (matstruct->matrix[l][1])
+	    		   if(matstruct->hasRelation[matstruct->matrix[l][1]-1]==0){
+	    		   }
+
+				relationCount++;
+
+			}else
+			{
+				fprintf(stderr,"Dimensions other than 1 and 2 is not supported ! \n"
+						"This has to function has to be changed it's so dumb bud I didn't have time\n"
+						"Exiting ...\n");
+				exit(1);
+			}
+		}
+
+	}
+
+	gentypes(r,matstruct);
+
+
+	gsl_rng_free (r);
+
+}
+
+/*
+ * TODO
+ *  	Change this dumb function to a unified multi-dimensions generator!
+ */
+void genTasksMatrix(struct genmatrix * matstruct, int relationNo, unsigned long int seed )
+	{
+	int relationCount =0;
+	int k,l,onoff;
+
+    const gsl_rng_type * T;
+    gsl_rng * r;
+
+    gsl_rng_env_setup();
+
+    T = gsl_rng_default;
+    T=gsl_rng_knuthran2;
+    r = gsl_rng_alloc (T);
+
+    gsl_rng_set(r,seed);
+
+    printf ("generator type: %s\n", gsl_rng_name (r));
+
 
 
 	while(relationCount<relationNo)
@@ -330,25 +427,35 @@ int updatefield_s(char *src,char * field,char * value)
   return 0;
 }
 
-void writeDFG(FILE *fp,char *dfgFileName, struct genmatrix * matstruct)
+void writeDFG(FILE *fp,char *dfgFileName, struct genmatrix * matstruct, struct Nodes *dFG, unsigned long seed)
 { int i;
 	char strtmp[1024];
 	writeheader(fp,dfgFileName);
+	fprintf(fp,"/* SEED = %lu */\n\n", seed);
 	for (i=0;i<matstruct->size;i++)
 		{
 		//strtmp=(char *)malloc(sizeof(char)* strlen(TasksTemplate[i]));
 			strcpy(strtmp,TasksTemplate[matstruct->types[i]]);
+			dFG[i].TypeID=matstruct->types[i];
 			updatefield_i(strtmp,F_ID,i);
-			if (i==matstruct->size-1)
+			if (i==matstruct->size-1){
 				updatefield_i(strtmp,F_NEXT,0);
-			else
+				dFG[i].next=0;
+			}
+			else{
 				updatefield_i(strtmp,F_NEXT,i+1);
+				dFG[i].next=i+1;
+			}
 		//	updatefield_i(strtmp,F_OP1,matstruct->matrix[i][0]?matstruct->matrix[i][0]:i+matstruct->types[i]);
 		//	updatefield_i(strtmp,F_OP2,matstruct->matrix[i][1]?matstruct->matrix[i][1]:i+matstruct->types[i]);
 			updatefield_i(strtmp,F_OP1,matstruct->matrix[i][0]?matstruct->matrix[i][0]-1:2);
+			dFG[i].D.op1=matstruct->matrix[i][0]?matstruct->matrix[i][0]-1:2;
 			updatefield_i(strtmp,F_OP2,matstruct->matrix[i][1]?matstruct->matrix[i][1]-1:1);
+			dFG[i].D.op2=matstruct->matrix[i][1]?matstruct->matrix[i][1]-1:1;
 			updatefield_s(strtmp,F_ISADD_OP1,matstruct->matrix[i][0]?"YES":" NO");
+			dFG[i].D.isAdd_op1=matstruct->matrix[i][0]?1: 0;
 			updatefield_s(strtmp,F_ISADD_OP2,matstruct->matrix[i][1]?"YES":" NO");
+			dFG[i].D.isAdd_op2=matstruct->matrix[i][1]?1: 0;
 			fprintf(fp,strtmp);
 			fprintf(fp,",\n\n");
 		//	free(strtmp);
@@ -365,9 +472,10 @@ void typeStat(struct genmatrix * matstruct)
 for (i=0;i < matstruct->size ;i++)
 	{
 		memberPerType[matstruct->types[i]]++;
-		//printf(" task[%d] type [%d]\n",i,matstruct->types[i]);
+//		printf(" task[%d] type [%d]\n",i,matstruct->types[i]);
 	}
-for (i=0;i <GTasksTypes.size ;i++)
+//for (i=0;i <GTasksTypes.size ;i++)
+	for (i=0;i <matstruct->typesNo ;i++)
 {
 	printf("Tasks[%d] repeated [%d] >> [%d]%%\n"
 			,i,memberPerType[i],((memberPerType[i]*100)/matstruct->size));

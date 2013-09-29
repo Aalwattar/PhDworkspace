@@ -12,23 +12,20 @@
 #include <time.h>
 
 
-#include "data.h"
-#include "parameters.h"
+
+#include "genConfig.h"
 #include "confFormat.h"
 
-//extern struct DFG DFGArray[NO_OF_DFGS];
 
 void clearNodes(struct confNode *);
 
-int writeConf(char * filename) {
+int writeConf(char * filename, struct Nodes *dFG, unsigned long seed) {
 	FILE * fp;
 	struct confNode ndar[MAX_NO_OF_NODES]; // IO info for all nodes
 	struct output outp[MAX_NO_OF_NODES];
 	int isoutput[MAX_NO_OF_NODES];// flags the nodes that don't output to a register
 	int isreg[MAX_NO_OF_NODES][2];	// flags the nodes that output to a register
-	// FIXME - fix input file!
-		struct node * DFG;
-			DFG=	DFGArray[0].dfg ;
+
 
 	// date stuff
 	time_t curtime;
@@ -38,7 +35,7 @@ int writeConf(char * filename) {
 	// indices
 	int count;
 	int i = 0, k = 0;
-	char * outstr = "r200_3333";
+
 
 
 	fp = fopen(filename, "w");
@@ -51,7 +48,7 @@ int writeConf(char * filename) {
 	loctime = localtime(&curtime);
 	strftime(buffer, BUFF_SIZE, "Date= \"%b %d, %Y\" \n\n", loctime);
 	fprintf(fp, buffer);
-
+	fprintf(fp, "# SEED = %lu\n\n",seed);
 	/* init ndarr node array */
 	clearNodes(ndar); // make non-global somehow
 
@@ -69,22 +66,30 @@ int writeConf(char * filename) {
 		outp[i].dep_id = -1;
 		//isoutput=YES;
 
-		if (DFG[i].D.isAdd_op1 && DFG[i].D.isAdd_op2) { // neither are adrress
+		if (dFG[i].D.isAdd_op1 && dFG[i].D.isAdd_op2) { // neither are address
 			isreg[i][0] = YES;
 			isreg[i][1] = YES;
 			continue;
 		}
 
 		// FIXME - logic is funky
-		if (!DFG[i].D.isAdd_op1) {
-			fprintf(fp, "c%d , ", count);
+		if (!dFG[i].D.isAdd_op1) {
+			fprintf(fp, "c%d", count);
+			if (dFG[i].next)
+			{
+				fprintf(fp, " %c ", ',');
+			}
 			ndar[i].input[0].node = count;
 			ndar[i].input[0].type = INP;
 			isreg[i][1] = YES; // assume second one is an address
 			count++;
 		}
-		if (!DFG[i].D.isAdd_op2) {
-			fprintf(fp, "c%d , ", count);
+		if (!dFG[i].D.isAdd_op2) {
+			fprintf(fp, "c%d", count);
+			if (dFG[i].next)
+			{
+				fprintf(fp, " %c ", ',');
+			}
 			isreg[i][0] = YES; // then the first is an address
 
 			ndar[i].input[1].node = count;
@@ -92,7 +97,7 @@ int writeConf(char * filename) {
 			count++;
 		}
 
-	} while (DFG[i++].next);// if 0 then no more nodes - IN THE ARRAY, NOT TREE (nodes stored as array without dependancies, not tree)
+	} while (dFG[i++].next);// if 0 then no more nodes - IN THE ARRAY, NOT TREE (nodes stored as array without dependencies, not tree)
 
 	fprintf(fp, "}\n");
 ////////////////////  printing the list of all inputs (one function)
@@ -108,31 +113,35 @@ int writeConf(char * filename) {
 		do {
 
 			// check if any other node uses the current node as an input (register / address)
-			if (!DFG[k].D.isAdd_op1 && !DFG[k].D.isAdd_op2)
+			if (!dFG[k].D.isAdd_op1 && !dFG[k].D.isAdd_op2)
 				continue; // the comparison node has no inputs
 
-			if (DFG[k].D.isAdd_op1 && DFG[k].D.op1 == i) {
+			if (dFG[k].D.isAdd_op1 && dFG[k].D.op1 == i) {
 				isoutput[i] = NO;
 				ndar[i].output.type = REG;
 				break;
 			}
 
-			if (DFG[k].D.isAdd_op2 && DFG[k].D.op2 == i) {
+			if (dFG[k].D.isAdd_op2 && dFG[k].D.op2 == i) {
 				isoutput[i] = NO;
 				ndar[i].output.type = REG;
 				break;
 			}
 
-		} while (DFG[k++].next);
+		} while (dFG[k++].next);
 
 		if (isoutput[i]) {
-			fprintf(fp, "o%d , ", count);
+			fprintf(fp, "o%d", count);
+			if (dFG[i].next)
+			{
+				fprintf(fp, " %c ", ',');
+			}
 			ndar[i].output.node = count;
 			ndar[i].output.type = OUT;
 			count++;
 		}
 
-	} while (DFG[i++].next);
+	} while (dFG[i++].next);
 	fprintf(fp, "}\n");
 
 	////////////////////  printing the list of all outputs (one function)
@@ -144,46 +153,55 @@ int writeConf(char * filename) {
 
 	do {
 
-		if (!DFG[i].D.isAdd_op1 && !DFG[i].D.isAdd_op2)
+		if (!dFG[i].D.isAdd_op1 && !dFG[i].D.isAdd_op2)
 			continue;
 
-		if (DFG[i].D.isAdd_op1) {
+		if (dFG[i].D.isAdd_op1) {
 
-			if (ndar[DFG[i].D.op1].output.node < 0) // output can go to more than one input
+			if (ndar[dFG[i].D.op1].output.node < 0) // output can go to more than one input
 					{
-				ndar[DFG[i].D.op1].output.node = count;
+				ndar[dFG[i].D.op1].output.node = count;
 				ndar[i].input[0].node = count;
 				ndar[i].input[0].type = REG;
-				fprintf(fp, "r%d , ", count);
+				fprintf(fp, "r%d", count);
+				if (dFG[i].next)
+				{
+					fprintf(fp, " %c ", ',');
+				}
 				count++;
 
 			} else {
-				ndar[i].input[0].node = ndar[DFG[i].D.op1].output.node; // take the register name that has already been initialized
+				ndar[i].input[0].node = ndar[dFG[i].D.op1].output.node; // take the register name that has already been initialized
 				ndar[i].input[0].type = REG;
 			}
-// 	 outp[DFG[i].D.op1].node=i;
-// 	outp[DFG[i].D.op1].dep_id=1;
+// 	 outp[dFG[i].D.op1].node=i;
+// 	outp[dFG[i].D.op1].dep_id=1;
 
 		}
-		if (DFG[i].D.isAdd_op2) {
+		if (dFG[i].D.isAdd_op2) {
 
-			if (ndar[DFG[i].D.op2].output.node < 0) {
-				ndar[DFG[i].D.op2].output.node = count;
+			if (ndar[dFG[i].D.op2].output.node < 0) {
+				ndar[dFG[i].D.op2].output.node = count;
 				ndar[i].input[1].node = count;
 				ndar[i].input[1].type = REG;
-				fprintf(fp, "r%d , ", count);
+				fprintf(fp, "r%d", count);
+				if (dFG[i].next)
+				{
+					fprintf(fp, " %c ", ',');
+				}
 				count++;
 			} else {
-				ndar[i].input[1].node = ndar[DFG[i].D.op2].output.node;
+				ndar[i].input[1].node = ndar[dFG[i].D.op2].output.node;
 				ndar[i].input[1].type = REG;
 			}
 
 //      fprintf("r%d_2 8 ",i);
-//      outp[DFG[i].D.op1].node=i;
-//      	outp[DFG[i].D.op1].dep_id=2;
+//      outp[dFG[i].D.op1].node=i;
+//      	outp[dFG[i].D.op1].dep_id=2;
 		}
 
-	} while (DFG[i++].next);
+	} while (dFG[i++].next);
+
 
 	fprintf(fp, "}\n\n");
 ////////////////////  printing the list of all registers (one function)
@@ -196,12 +214,12 @@ int writeConf(char * filename) {
 				"\t type = %d \n"
 				"\t inputs = {%c%d ,%c%d }\n"
 				"\t output = %c%d\n"
-				"}", i, DFG[i].TypeID, ndar[i].input[0].type,
+				"}", i, dFG[i].TypeID, ndar[i].input[0].type,
 				ndar[i].input[0].node, ndar[i].input[1].type,
 				ndar[i].input[1].node, ndar[i].output.type,
 				ndar[i].output.node);
 
-	} while (DFG[i++].next);
+	} while (dFG[i++].next);
 
 	fprintf(fp, "\n");
 

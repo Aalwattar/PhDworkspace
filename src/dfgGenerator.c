@@ -21,7 +21,6 @@
 #include "parseArgs.h"
 #include "confFormat.h"
 
-
 struct globalArgs globalArgs;
 
 /* Description:
@@ -34,107 +33,123 @@ struct globalArgs globalArgs;
  * Return:
  *   0 for error, 1 for success
  */
-static int parseArgs(int argc, char *argv[]){
-    int c;
-    extern char *optarg;
-    extern int optopt;
+static int parseArgs(int argc, char *argv[]) {
+	int c;
+	extern char *optarg;
+	extern int optopt;
 
-    int errflg = 0;
-    while ((c = getopt(argc, argv, "f:g:n:d:t:a:")) != -1) {
-        switch(c) {
-            case 'f':
-                globalArgs.dfg_filename = optarg;
-                break;
-            case 'g':
-                globalArgs.dotgraph_filename = optarg;
-                break;
-            case 'n':
-                globalArgs.no_of_nodes = atoi( optarg );
-                break;
-            case 'd':
-                globalArgs.dep_per_node = atoi( optarg );
-                break;
-            case 't':
-                globalArgs.no_of_types = atoi ( optarg );
-                break;
-            case 'a':
-                globalArgs.total_dep_no = atoi ( optarg );
-                break;
-            case ':':       /* -f or -o without operand */
-                fprintf(stderr, "Option -%c requires an operand\n", optopt);
-                break;
-            case '?':
-                fprintf(stderr, "Unrecognized option: -%c\n", optopt);
-                break;
-        }
-    }
+	int errflg = 0;
+	while ((c = getopt(argc, argv, "f:g:n:d:t:a:s:")) != -1) {
+		switch (c) {
+		case 'f':
+			globalArgs.dfg_filename = optarg;
+			break;
+		case 'g':
+			globalArgs.dotgraph_filename = optarg;
+			break;
+		case 'n':
+			globalArgs.no_of_nodes = atoi(optarg);
+			break;
+		case 's':
+			globalArgs.seed = atoi(optarg);
+			break;
+		case 'd':
+			globalArgs.dep_per_node = atoi(optarg);
+			break;
+		case 't':
+			globalArgs.no_of_types = atoi(optarg);
+			break;
+		case 'a':
+			globalArgs.total_dep_no = atoi(optarg);
+			break;
+		case ':': /* -f or -o without operand */
+			fprintf(stderr, "Option -%c requires an operand\n", optopt);
+			break;
+		case '?':
+			fprintf(stderr, "Unrecognized option: -%c\n", optopt);
+			break;
+		}
+	}
 
-    if ( errflg > 0 || argc < 2 ) {
-        fprintf(stderr, "\nusage: -f <dfg filename> -g <dotgraph filename> -n "
-        "<number of nodes> -d <dependencies per node> -t <number of types> -a "
-        "<total dependencies number>\n\n");
-        return 0;
-    }
+	if (errflg > 0 || argc < 2) {
+		fprintf(stderr,
+				"\nusage: -f <dfg filename> -g <dotgraph filename> -n "
+						"<number of nodes> -d <dependencies per node> -t <number of types> -a "
+						"<total dependencies number>\n\n");
+		return 0;
+	}
 
-    return 1;
+	return 1;
 }
 
-
-int main (int argc, char *argv[])
-{
-    //Set default values defined in genConfig.h
-    globalArgs.dfg_filename = DFG_FILENAME;
-    globalArgs.dotgraph_filename = DOTGRAPH_FILENAME;
-    globalArgs.no_of_nodes = NO_OF_NODES;
-    globalArgs.dep_per_node = DEP_PER_NODE;
-    globalArgs.no_of_types = NO_OF_TYPES;
-    globalArgs.total_dep_no = TOTAL_DEP_NO;
-
-    if ( 0 == parseArgs( argc, argv ) ){
-        printf ( "Using all default defined values:\n" );
-    } else {
-       printf ( "Graph values:\n" );
-    }
-
-    printf ("    dfg filename = %s\n", globalArgs.dfg_filename);
-    printf ("    dotgraph filename = %s\n", globalArgs.dotgraph_filename);
-    printf ("    no of nodes = %d\n", globalArgs.no_of_nodes);
-    printf ("    dep per node = %d\n",globalArgs.dep_per_node);
-    printf ("    no of types = %d\n",globalArgs.no_of_types);
-    printf ("    total dep no = %d\n\n", globalArgs.total_dep_no);
-
-    /* Variable definitions */
+int main(int argc, char *argv[]) {
+	//Set default values defined in genConfig.h
+	globalArgs.dfg_filename = DFG_FILENAME;
+	globalArgs.dotgraph_filename = DOTGRAPH_FILENAME;
+	globalArgs.no_of_nodes = NO_OF_NODES;
+	globalArgs.dep_per_node = DEP_PER_NODE;
+	globalArgs.no_of_types = NO_OF_TYPES;
+	globalArgs.total_dep_no = TOTAL_DEP_NO;
+	globalArgs.seed=0;
+	struct Nodes *dFG;
+	/* Variable definitions */
 	FILE *fpRandom; /* open the /dev/urandom for getting random numbers */
 	FILE *fpDFG; /* Handler for DFG file structure */
-	FILE *fpDot; /* Handler for the graph .dot file strucuture */
-	struct genmatrix  lgenmatrix ;
-	struct genmatrix  *lgenmatrixp=&lgenmatrix ;
+	FILE *fpDot; /* Handler for the graph .dot file structure */
+	fpRandom = openfile("/dev/urandom", "r");
+	fread(&globalArgs.seed,1,sizeof(globalArgs.seed), fpRandom);
+
+	if (0 == parseArgs(argc, argv)) {
+		printf("Using all default defined values:\n");
+	} else {
+		printf("Graph values:\n");
+	}
+
+	printf("    dfg filename = %s\n", globalArgs.dfg_filename);
+	printf("    dotgraph filename = %s\n", globalArgs.dotgraph_filename);
+	printf("    no of nodes = %d\n", globalArgs.no_of_nodes);
+	printf("    dep per node = %d\n", globalArgs.dep_per_node);
+	printf("    no of types = %d\n", globalArgs.no_of_types);
+	printf("    total dep no = %d\n", globalArgs.total_dep_no);
+	printf("    Seed value  = %lu\n", globalArgs.seed);
+	printf("____________________________________________\n\n");
+
+
+	struct genmatrix lgenmatrix;
+	struct genmatrix *lgenmatrixp = &lgenmatrix;
 	char dfgFileName[255];
 	char dotFileName[255];
-	sprintf(dfgFileName,"%s_%d_%d_%d.txt", globalArgs.dfg_filename
-            ,globalArgs.no_of_nodes,globalArgs.total_dep_no,globalArgs.dep_per_node);
-	sprintf(dotFileName,"%s_%d_%d_%d.dot",globalArgs.dotgraph_filename,globalArgs.no_of_nodes,
-			globalArgs.total_dep_no,globalArgs.dep_per_node);
+	sprintf(dfgFileName, "%s_%d_%d_%d_t%d.txt", globalArgs.dfg_filename,
+			globalArgs.no_of_nodes, globalArgs.total_dep_no,
+			globalArgs.dep_per_node, globalArgs.no_of_types);
+	sprintf(dotFileName, "%s_%d_%d_%d_t%d.dot", globalArgs.dotgraph_filename,
+			globalArgs.no_of_nodes, globalArgs.total_dep_no,
+			globalArgs.dep_per_node,globalArgs.no_of_types);
 
-    fpRandom=openfile("/dev/urandom","r");
-    fpDFG=openfile(dfgFileName,"w");
-    fpDot=openfile(dotFileName,"w");
 
-    initGenMatrix(lgenmatrixp,globalArgs.no_of_nodes,
-    		globalArgs.dep_per_node,globalArgs.no_of_types);
-    genTasksMatrix(lgenmatrixp , globalArgs.total_dep_no);
+	fpDFG = openfile(dfgFileName, "w");
+	fpDot = openfile(dotFileName, "w");
 
-    writeDFG(fpDFG, dfgFileName, lgenmatrixp );
+	dFG = calloc(globalArgs.no_of_nodes, sizeof(*dFG));
+	initGenMatrix(lgenmatrixp, globalArgs.no_of_nodes, globalArgs.dep_per_node,
+			globalArgs.no_of_types);
+	genTasksMatrix(lgenmatrixp, globalArgs.total_dep_no,globalArgs.seed);
 
-    writeGraphDot(fpDot, lgenmatrixp );
-    typeStat(lgenmatrixp);
+	writeDFG(fpDFG, dfgFileName, lgenmatrixp, dFG, globalArgs.seed);
 
-    sprintf(dfgFileName,"%s_%d_%d_%d.conf", globalArgs.dfg_filename
-                ,globalArgs.no_of_nodes,globalArgs.total_dep_no,globalArgs.dep_per_node);
+	writeGraphDot(fpDot, lgenmatrixp);
+	typeStat(lgenmatrixp);
 
-    writeConf(dfgFileName);
+	sprintf(dfgFileName, "%s_%d_%d_%d_t%d.conf", globalArgs.dfg_filename,
+			globalArgs.no_of_nodes, globalArgs.total_dep_no,
+			globalArgs.dep_per_node, globalArgs.no_of_types);
 
-    freeGenMatrix(lgenmatrixp);
+	//write conf file for the simulator
+
+	writeConf(dfgFileName, dFG, globalArgs.seed);
+
+	free(dFG);
+	freeGenMatrix(lgenmatrixp);
 	fclose(fpRandom);
 	fclose(fpDFG);
 	fclose(fpDot);

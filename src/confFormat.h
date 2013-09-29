@@ -34,6 +34,19 @@ struct confNode {
 	int size;
 };
 
-int writeConf(char *);
+struct nodeData {
+	int op1;
+	int op2;
+	unsigned isAdd_op1 :1;
+	unsigned isAdd_op2 :1;
+	unsigned :0;
+};
+struct Nodes{
+
+		 unsigned int next;
+		 struct nodeData D;
+		 int TypeID;
+};
+int writeConf(char *, struct Nodes *, unsigned long);
 
 #endif
